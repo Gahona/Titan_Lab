@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rutina Semanal — TitanLab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
+</head>
+ 
+<body>
+ 
+  <!-- HEADER -->
+  <header>
+    <a href="/" class="logo">
+      <img src="{{ url_for('static', filename='Titan-Lab-Logo.png') }}" alt="Titan Lab" class="logo-img"/>
+      <span class="logo-iron">Titan</span><span class="logo-path">Lab</span>
+    </a>
+    <nav>
+      <a href="#">Suplementos</a>
+      <a href="#">Ejercicios</a>
+      <a href="#">Rutina</a>
+      <a href="#">Dieta</a>
+      <a href="#">Reseñas</a>
+      <a href="#">Planes</a>
+      <a href="#">Colaboraciones</a>
+    </nav>
+    <a href="#" class="btn-cta">EMPIEZA YA</a>
+  </header>
+ 
+  <!-- SEMANA -->
+  <section class="semana-section">
+    <div class="semana-header">
+      <p class="section-label">// TU PLAN SEMANAL</p>
+      <h2 class="section-title">RUTINA SEMANAL <span class="accent">DE GIMNASIO</span></h2>
+      <p class="section-sub">Plan de entrenamiento dividido por días de la semana.</p>
+    </div>
+ 
+    <div class="semana">
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">01</span>
+          <h3 class="titulo">LUNES</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Lunes"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">02</span>
+          <h3 class="titulo">MARTES</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Martes"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">03</span>
+          <h3 class="titulo">MIÉRCOLES</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Miércoles"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">04</span>
+          <h3 class="titulo">JUEVES</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Jueves"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">05</span>
+          <h3 class="titulo">VIERNES</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Viernes"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">06</span>
+          <h3 class="titulo">SÁBADO</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Sábado"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="dia">
+        <div class="dia-inner">
+          <span class="dia-num">07</span>
+          <h3 class="titulo">DOMINGO</h3>
+          <ul class="ejercicios">
+            {% for ejercicio in rutina["Domingo"] %}
+              <li>{{ ejercicio }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <span class="logo-iron">Titan</span><span class="logo-path">Lab</span>
+    </div>
+    <p>© 2026 TitanLab. Todos los derechos reservados.</p>
+  </footer>
+ 
+</body>
+</html>
+ 
