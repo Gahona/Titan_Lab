@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planes y Precios — Titan Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='Plan5.css') }}" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    
+</head>
+<body>
+
+    <!-- ── Header ──────────────────────────────────────────── -->
+    <header>
+        <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="TitanLab" class="logo-img">
+        <span>Titan</span>Lab
+        </a>
+    <nav>
+        <a href="#">Suplementos</a>
+        <a href="#">Ejercicios</a>
+        <a href="#">Rutina</a>
+        <a href="#">Dieta</a>
+        <a href="/planes" class="active">Planes</a>
+    </nav>
+    <a href="/login" class="btn-cta">Empieza Ya</a>
+    </header>
+
+    <!-- ── Hero precios ─────────────────────────────────────── -->
+    <section class="pricing-hero">
+    <h1 class="hero-title">Planes &amp; <span class="highlight">Precios</span></h1>
+    <p class="pricing-sub">
+        Elige el plan que se adapta a tus objetivos.
+    </p>
+    </section>
+
+    <!-- ── Cards de planes ─────────────────────────────────── -->
+    <section class="pricing-section">
+    <div class="pricing-grid">
+
+        <!-- Plan Base -->
+        <div class="pricing-card">
+        <p class="plan-tier">Plan</p>
+        <h2 class="plan-name">Coach Básico</h2>
+        <div class="plan-price-row">
+            <span class="plan-currency">€</span>
+            <span class="plan-amount">11,99</span>
+            <span class="plan-period">/mes</span>
+        </div>
+        <ul class="plan-features">
+            <li>
+            <i class="ti ti-check"></i>
+            2 asesoramientos semanales
+            </li>
+            <li>
+            <i class="ti ti-check"></i>
+            Rutina personalizada
+            </li>
+            <li>
+            <i class="ti ti-tag"></i>
+            10% de descuento en productos <strong>io.genix</strong>
+            </li>
+        </ul>
+        <a href="/pago_sub" class="btn-plan btn-plan--outline">Ver detalles</a>
+        </div>
+
+        <!-- Plan Premium (destacado) -->
+        <div class="pricing-card pricing-card--featured">
+        <div class="plan-badge">Más popular</div>
+        <p class="plan-tier">Plan</p>
+        <h2 class="plan-name">Coach Premium</h2>
+<div class="plan-price-row">
+    <span class="plan-price-old">24,99€/mes</span>
+    <div style="display:flex; align-items:baseline; gap:.25rem;">
+        <span class="plan-currency">€</span>
+        <span class="plan-amount">22,99</span>
+        <span class="plan-period">/mes</span>
+    </div>
+</div>
+        <ul class="plan-features">
+            <li>
+            <i class="ti ti-user-check"></i>
+            Coach personal (lunes a viernes)
+            </li>
+            <li>
+            <i class="ti ti-check"></i>
+            Asesoramiento diario
+            </li>
+            <li>
+            <i class="ti ti-check"></i>
+            Rutina personalizada
+            </li>
+            <li>
+            <i class="ti ti-salad"></i>
+            Dieta personalizada
+            </li>
+            <li>
+            <i class="ti ti-tag"></i>
+            20% de descuento en productos <strong>io.genix</strong>
+            </li>
+        </ul>
+        <a href="/pago_sub" class="btn-plan btn-plan--outline">Ver detalles</a>
+        </div>
+
+    </div>
+    </section>
+
+    <!-- ── Métodos de pago ──────────────────────────────────── -->
+    <section class="payment-section">
+    <p class="payment-label">Métodos de pago aceptados</p>
+    <div class="payment-logos">
+        <div class="payment-pill">
+        <i class="ti ti-brand-paypal"></i>
+        <span>PayPal</span>
+        </div>
+        <div class="payment-pill">
+        <i class="ti ti-brand-apple"></i>
+        <span>Apple Pay</span>
+        </div>
+    </div>
+    </section>
+
+    <!-- ── Footer ───────────────────────────────────────────── -->
+    <footer>
+    <div class="footer-logo"><span>TITAN</span>LAB</div>
+    <p>© 2026 Titan Lab.</p>
+    <nav>
+        <a href="#" style="color:var(--gray-dim);font-size:.8rem;margin-left:1.4rem">Privacidad</a>
+        <a href="#" style="color:var(--gray-dim);font-size:.8rem;margin-left:1.4rem">Términos</a>
+        <a href="#" style="color:var(--gray-dim);font-size:.8rem;margin-left:1.4rem">Contacto</a>
+    </nav>
+    </footer>
+
+</body>
+</html>
