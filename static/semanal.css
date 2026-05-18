@@ -1,510 +1,1055 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rutina Semanal — TitanLab</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
-</head>
-<body>
-
-  <header class="site-header">
-    <a href="/" class="logo">
-      <img src="{{ url_for('static', filename='Titan-Lab-Logo.png') }}" alt="Titan Lab" class="logo-img"/>
-      <span class="logo-iron">Titan</span><span class="logo-path">Lab</span>
-    </a>
-
-    <nav class="site-nav">
-      <a href="#">Suplementos</a>
-      <a href="#">Ejercicios</a>
-      <a href="#rutina-semanal" class="nav-active">Rutina</a>
-      <a href="#">Dieta</a>
-      <a href="#">Planes</a>
-    </nav>
-
-    <a href="#" class="btn-cta">EMPIEZA YA</a>
-  </header>
-
-  {% set orden_dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
-
-  <section class="semana-section" id="rutina-semanal">
-    <div class="semana-header">
-      <p class="section-label">// TU PLAN SEMANAL</p>
-      <h2 class="section-title">RUTINA SEMANAL <span class="accent">DE GIMNASIO</span></h2>
-      <p class="section-sub">Plan de entrenamiento dividido por días de la semana.</p>
-
-      <div class="rutina-name-box">
-        <label for="nombreRutina" class="rutina-name-label">Nombre de la rutina</label>
-        <input type="text" id="nombreRutina" class="rutina-name-input" placeholder="Ej: Fuerza, Hipertrofia, Push Pull Legs...">
-      </div>
-    </div>
-
-    <div class="semana">
-      {% for dia in orden_dias %}
-      <div class="dia">
-        <div class="dia-inner">
-          <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
-          <h3 class="titulo">{{ dia | upper }}</h3>
-          <ul class="ejercicios">
-            {% for ejercicio in semanal[dia] %}
-              <li>{{ ejercicio.nombre }} — {{ ejercicio.series }}×{{ ejercicio.reps }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="page-hero" id="crear-rutina">
-    <p class="section-label">// PERSONALIZA TU ENTRENAMIENTO</p>
-    <h1 class="page-title">CREA TU <span class="accent">RUTINA</span></h1>
-    <p class="page-sub">Elige ejercicios del catálogo, asigna series y repeticiones a cada día.</p>
-  </section>
-
-  <div class="builder">
-    <aside class="catalogo-panel">
-      <div class="panel-header">
-        <h2 class="panel-title">EJERCICIOS</h2>
-        <input type="text" id="buscador" class="buscador" placeholder="Buscar ejercicio..."/>
-      </div>
-
-      {% for grupo, ejercicios in catalogo.items() %}
-      <div class="grupo" data-grupo="{{ grupo }}">
-        <button class="grupo-toggle" type="button">
-          <span>{{ grupo | upper }}</span>
-          <span class="chevron">▾</span>
-        </button>
-        <ul class="grupo-lista">
-          {% for ej in ejercicios %}
-          <li class="ej-item" data-nombre="{{ ej }}">
-            <span class="ej-nombre">{{ ej }}</span>
-            <span class="ej-add-hint">+ añadir</span>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
-    </aside>
-
-    <main class="dias-panel">
-      <div class="dias-acciones">
-        <button class="btn-guardar" id="btnGuardar" type="button">GUARDAR RUTINA</button>
-        <button class="btn-limpiar" id="btnLimpiar" type="button">LIMPIAR TODO</button>
-        <span class="save-msg" id="saveMsg"></span>
-      </div>
-
-      <div class="dias-grid">
-        {% for dia in orden_dias %}
-        <div class="dia-builder" data-dia="{{ dia }}">
-          <div class="dia-builder-header">
-            <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
-            <h3 class="titulo">{{ dia | upper }}</h3>
-          </div>
-
-          <ul class="ejercicios-asignados" id="lista-{{ dia }}"></ul>
-
-          <div class="dia-empty-msg" id="empty-{{ dia }}">
-            Pulsa un ejercicio del catálogo para añadirlo aquí
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </main>
-  </div>
-
-  <section class="rutinas-guardadas-section">
-    <div class="rutinas-guardadas-header">
-      <p class="section-label">// RUTINAS GUARDADAS</p>
-      <h2 class="section-title">RUTINAS <span class="accent">CON NOMBRE</span></h2>
-      <p class="section-sub">Aquí puedes ver las rutinas guardadas y las reseñas de otras personas con su puntuación.</p>
-    </div>
-
-    <div id="rutinasGuardadas" class="rutinas-guardadas-grid"></div>
-  </section>
-
-  <section class="reseñas-section">
-    <div class="rutinas-guardadas-header">
-      <p class="section-label">// DEJA TU OPINIÓN</p>
-      <h2 class="section-title">RESEÑAS <span class="accent">Y PUNTUACIONES</span></h2>
-      <p class="section-sub">Escribe una reseña y valora la rutina de 1 a 5 estrellas.</p>
-    </div>
-
-    <div class="review-form-box">
-      <input type="text" id="reviewNombre" class="review-input" placeholder="Tu nombre">
-      <textarea id="reviewTexto" class="review-textarea" placeholder="Escribe tu reseña..."></textarea>
-
-      <div class="rating-box">
-        <span class="rating-label">Puntuación</span>
-        <div class="stars" id="stars">
-          <button type="button" class="star-btn" data-value="1">★</button>
-          <button type="button" class="star-btn" data-value="2">★</button>
-          <button type="button" class="star-btn" data-value="3">★</button>
-          <button type="button" class="star-btn" data-value="4">★</button>
-          <button type="button" class="star-btn" data-value="5">★</button>
-        </div>
-      </div>
-
-      <button type="button" id="btnEnviarReseña" class="btn-guardar">ENVIAR RESEÑA</button>
-    </div>
-
-    <div id="listaReseñas" class="lista-reseñas"></div>
-  </section>
-
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <h3 class="modal-title">¿A qué día añadir?</h3>
-      <p class="modal-ej-nombre" id="modalEjNombre"></p>
-      <div class="modal-dias" id="modalDias">
-        {% for dia in orden_dias %}
-        <button class="modal-dia-btn" type="button" data-dia="{{ dia }}">{{ dia | upper }}</button>
-        {% endfor %}
-      </div>
-      <button class="modal-cerrar" id="modalCerrar" type="button">CANCELAR</button>
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2026 Titan Labs</p>
-  </footer>
-
-  <script>
-    const DIAS = {{ orden_dias | tojson }};
-    const STORAGE_KEY = "rutina_semanal_titanlab";
-    const ROUTINES_KEY = "rutinas_con_nombre_titanlab";
-    const REVIEWS_KEY = "reseñas_titanlab";
-
-    let rutina = {};
-    DIAS.forEach(d => { rutina[d] = []; });
-
-    const serverData = {{ semanal | tojson }};
-    DIAS.forEach(d => {
-      if (Array.isArray(serverData[d])) rutina[d] = serverData[d];
-    });
-
-    const modalOverlay = document.getElementById("modalOverlay");
-    const modalEjNombre = document.getElementById("modalEjNombre");
-    const modalDias = document.getElementById("modalDias");
-    const modalCerrar = document.getElementById("modalCerrar");
-    const buscador = document.getElementById("buscador");
-    const btnGuardar = document.getElementById("btnGuardar");
-    const btnLimpiar = document.getElementById("btnLimpiar");
-    const saveMsg = document.getElementById("saveMsg");
-    const nombreRutina = document.getElementById("nombreRutina");
-    const rutinasGuardadas = document.getElementById("rutinasGuardadas");
-    const reviewNombre = document.getElementById("reviewNombre");
-    const reviewTexto = document.getElementById("reviewTexto");
-    const stars = document.getElementById("stars");
-    const btnEnviarReseña = document.getElementById("btnEnviarReseña");
-    const listaReseñas = document.getElementById("listaReseñas");
-
-    let ejercicioSeleccionado = null;
-    let ratingActual = 0;
-
-    const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-    const cargarDesdeStorage = () => {
-      const guardado = localStorage.getItem(STORAGE_KEY);
-      if (!guardado) return;
-      try {
-        const data = JSON.parse(guardado);
-        DIAS.forEach(d => {
-          rutina[d] = Array.isArray(data[d]) ? data[d] : [];
-        });
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    };
-
-    const guardarEnStorage = () => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(rutina));
-    };
-
-    const leerRutinasGuardadas = () => {
-      try {
-        return JSON.parse(localStorage.getItem(ROUTINES_KEY) || "[]");
-      } catch {
-        return [];
-      }
-    };
-
-    const guardarRutinas = (arr) => {
-      localStorage.setItem(ROUTINES_KEY, JSON.stringify(arr));
-    };
-
-    const leerReseñas = () => {
-      try {
-        const reseñas = JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
-        let changed = false;
-
-        const actualizadas = reseñas.map(r => {
-          if (!r.id) {
-            changed = true;
-            return { id: uid(), ...r };
-          }
-          return r;
-        });
-
-        if (changed) localStorage.setItem(REVIEWS_KEY, JSON.stringify(actualizadas));
-        return actualizadas;
-      } catch {
-        return [];
-      }
-    };
-
-    const guardarReseñas = (arr) => {
-      localStorage.setItem(REVIEWS_KEY, JSON.stringify(arr));
-    };
-
-    function renderDia(dia) {
-      const lista = document.getElementById("lista-" + dia);
-      const emptyMsg = document.getElementById("empty-" + dia);
-      lista.innerHTML = "";
-
-      rutina[dia].forEach((e, idx) => {
-        const li = document.createElement("li");
-        li.className = "ej-asignado";
-        li.innerHTML = `
-          <div class="ej-asignado-top">
-            <span class="ej-asignado-nombre">${e.nombre}</span>
-            <button class="btn-eliminar" type="button" data-dia="${dia}" data-idx="${idx}" title="Eliminar">✕</button>
-          </div>
-          <div class="ej-controles">
-            <label>
-              <span>Series</span>
-              <input type="number" class="input-series" min="1" max="20" value="${e.series}" data-dia="${dia}" data-idx="${idx}"/>
-            </label>
-            <span class="x-sep">×</span>
-            <label>
-              <span>Reps</span>
-              <input type="number" class="input-reps" min="1" max="100" value="${e.reps}" data-dia="${dia}" data-idx="${idx}"/>
-            </label>
-          </div>
-        `;
-        lista.appendChild(li);
-      });
-
-      emptyMsg.style.display = rutina[dia].length === 0 ? "" : "none";
-
-      lista.querySelectorAll(".input-series").forEach(input => {
-        input.addEventListener("input", () => {
-          rutina[input.dataset.dia][input.dataset.idx].series = parseInt(input.value) || 1;
-          guardarEnStorage();
-        });
-      });
-
-      lista.querySelectorAll(".input-reps").forEach(input => {
-        input.addEventListener("input", () => {
-          rutina[input.dataset.dia][input.dataset.idx].reps = parseInt(input.value) || 1;
-          guardarEnStorage();
-        });
-      });
-
-      lista.querySelectorAll(".btn-eliminar").forEach(btn => {
-        btn.addEventListener("click", () => {
-          rutina[btn.dataset.dia].splice(parseInt(btn.dataset.idx), 1);
-          renderDia(btn.dataset.dia);
-          guardarEnStorage();
-        });
-      });
-    }
-
-    function renderTodo() {
-      DIAS.forEach(d => renderDia(d));
-    }
-
-    function cerrarModal() {
-      modalOverlay.classList.remove("visible");
-      ejercicioSeleccionado = null;
-    }
-
-    function añadirEjercicio(dia, nombre) {
-      rutina[dia].push({ nombre, series: 3, reps: 10 });
-      renderDia(dia);
-      guardarEnStorage();
-    }
-
-    function renderRutinasGuardadas() {
-      const rutinas = leerRutinasGuardadas();
-
-      if (!rutinas.length) {
-        rutinasGuardadas.innerHTML = `<p class="dia-empty-msg">Todavía no hay rutinas guardadas.</p>`;
-        return;
-      }
-
-      rutinasGuardadas.innerHTML = rutinas.map((r, index) => `
-        <article class="rutina-card">
-          <div class="rutina-card-top">
-            <h3>${r.nombre}</h3>
-            <button class="btn-eliminar-rutina" type="button" data-index="${index}">✕</button>
-          </div>
-          <ul>
-            ${DIAS.map(d => `<li><strong>${d}:</strong> ${(r.rutina[d] || []).length} ejercicios</li>`).join("")}
-          </ul>
-        </article>
-      `).join("");
-
-      document.querySelectorAll(".btn-eliminar-rutina").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const rutinasActuales = leerRutinasGuardadas();
-          rutinasActuales.splice(parseInt(btn.dataset.index), 1);
-          guardarRutinas(rutinasActuales);
-          renderRutinasGuardadas();
-        });
-      });
-    }
-
-    function renderReseñas() {
-      const reseñas = leerReseñas();
-
-      if (!reseñas.length) {
-        listaReseñas.innerHTML = `<p class="dia-empty-msg">Todavía no hay reseñas.</p>`;
-        return;
-      }
-
-      listaReseñas.innerHTML = reseñas.map((r) => `
-        <article class="review-card">
-          <div class="review-top">
-            <strong>${r.nombre}</strong>
-            <div class="review-actions">
-              <span class="review-stars">${"★".repeat(r.puntuacion)}${"☆".repeat(5 - r.puntuacion)}</span>
-              <button type="button" class="btn-eliminar-reseña" data-id="${r.id}">✕</button>
-            </div>
-          </div>
-          <p>${r.texto}</p>
-        </article>
-      `).join("");
-
-      document.querySelectorAll(".btn-eliminar-reseña").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const reseñasActuales = leerReseñas();
-          const nuevas = reseñasActuales.filter(r => r.id !== btn.dataset.id);
-          guardarReseñas(nuevas);
-          renderReseñas();
-        });
-      });
-    }
-
-    document.querySelectorAll(".grupo-toggle").forEach(btn => {
-      btn.addEventListener("click", () => btn.closest(".grupo").classList.toggle("open"));
-    });
-
-    document.querySelector(".grupo")?.classList.add("open");
-
-    buscador.addEventListener("input", () => {
-      const q = buscador.value.toLowerCase().trim();
-      document.querySelectorAll(".grupo").forEach(grupo => {
-        let visible = 0;
-        grupo.querySelectorAll(".ej-item").forEach(item => {
-          const match = item.dataset.nombre.toLowerCase().includes(q);
-          item.style.display = match ? "" : "none";
-          if (match) visible++;
-        });
-        grupo.style.display = visible === 0 && q ? "none" : "";
-        if (q) grupo.classList.add("open");
-      });
-    });
-
-    document.querySelectorAll(".ej-item").forEach(item => {
-      item.addEventListener("click", () => {
-        ejercicioSeleccionado = item.dataset.nombre;
-        modalEjNombre.textContent = ejercicioSeleccionado;
-        modalOverlay.classList.add("visible");
-      });
-    });
-
-    modalDias.querySelectorAll(".modal-dia-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (ejercicioSeleccionado) añadirEjercicio(btn.dataset.dia, ejercicioSeleccionado);
-        cerrarModal();
-      });
-    });
-
-    modalCerrar.addEventListener("click", cerrarModal);
-    modalOverlay.addEventListener("click", e => {
-      if (e.target === modalOverlay) cerrarModal();
-    });
-
-    btnGuardar.addEventListener("click", async () => {
-      const nombre = nombreRutina.value.trim();
-      if (!nombre) {
-        saveMsg.textContent = "Pon un nombre a la rutina";
-        return;
-      }
-
-      try {
-        const res = await fetch("/guardar_rutina", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nombre, rutina }),
-        });
-
-        if (res.ok) {
-          const rutinas = leerRutinasGuardadas();
-          rutinas.unshift({ nombre, rutina });
-          guardarRutinas(rutinas);
-          guardarEnStorage();
-          renderRutinasGuardadas();
-          saveMsg.textContent = "✓ Rutina guardada";
-          saveMsg.classList.add("ok");
-          setTimeout(() => {
-            saveMsg.textContent = "";
-            saveMsg.classList.remove("ok");
-          }, 3000);
-        }
-      } catch {
-        saveMsg.textContent = "Error al guardar";
-      }
-    });
-
-    btnLimpiar.addEventListener("click", () => {
-      if (!confirm("¿Seguro que quieres limpiar toda la rutina?")) return;
-      DIAS.forEach(d => { rutina[d] = []; });
-      localStorage.removeItem(STORAGE_KEY);
-      renderTodo();
-      saveMsg.textContent = "Rutina eliminada";
-      saveMsg.classList.add("ok");
-      setTimeout(() => {
-        saveMsg.textContent = "";
-        saveMsg.classList.remove("ok");
-      }, 2000);
-    });
-
-    stars.querySelectorAll(".star-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        ratingActual = parseInt(btn.dataset.value);
-        stars.querySelectorAll(".star-btn").forEach(star => {
-          star.classList.toggle("active", parseInt(star.dataset.value) <= ratingActual);
-        });
-      });
-    });
-
-    btnEnviarReseña.addEventListener("click", () => {
-      const nombre = reviewNombre.value.trim();
-      const texto = reviewTexto.value.trim();
-      if (!nombre || !texto || !ratingActual) return;
-
-      const reseñas = leerReseñas();
-      reseñas.unshift({
-        id: uid(),
-        nombre,
-        texto,
-        puntuacion: ratingActual
-      });
-      guardarReseñas(reseñas);
-      renderReseñas();
-
-      reviewNombre.value = "";
-      reviewTexto.value = "";
-      ratingActual = 0;
-      stars.querySelectorAll(".star-btn").forEach(star => star.classList.remove("active"));
-    });
-
-    cargarDesdeStorage();
-    renderTodo();
-    renderRutinasGuardadas();
-    renderReseñas();
-  </script>
-</body>
-</html>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #0f0f0d;
+  --bg-panel: #111110;
+  --bg-panel-2: #151514;
+  --border: #262622;
+  --border-soft: #ffffff0d;
+  --white: #ffffff;
+  --muted: #6f6f66;
+  --accent: #d4f700;
+  --accent-2: #d4f700;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --shadow: 0 18px 36px rgba(0,0,0,0.35);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* HEADER */
+header.site-header,
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 66px;
+  padding: 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #090909;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: fit-content;
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: grayscale(1) brightness(0.9);
+}
+
+.logo-iron,
+.logo-path {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.logo-iron {
+  color: var(--accent);
+}
+
+.logo-path {
+  color: var(--white);
+}
+
+.site-nav,
+nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.site-nav a,
+nav a {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  color: rgba(247,247,240,0.8);
+  transition: color 0.15s, opacity 0.15s;
+}
+
+.site-nav a:hover,
+nav a:hover,
+.site-nav a.nav-active,
+nav a.nav-active {
+  color: var(--accent);
+}
+
+.btn-cta {
+  background: var(--accent);
+  color: #0f0f0d;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.25) inset;
+  transition: transform 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.btn-cta:hover {
+  background: var(--accent-2);
+  transform: translateY(-1px);
+}
+
+/* TOP HERO */
+.semana-section {
+  padding: 18px 36px 56px;
+}
+
+.semana-header,
+.page-hero {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  margin: 0 0 14px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  color: rgba(247,247,240,0.35);
+  text-transform: uppercase;
+}
+
+.section-title,
+.page-title {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.section-sub,
+.page-sub {
+  margin: 0;
+  max-width: 760px;
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  color: rgba(247,247,240,0.38);
+}
+
+/* RUTINA NAME */
+.rutina-name-box {
+  margin-top: 22px;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rutina-name-label {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.rutina-name-input {
+  width: 100%;
+  background: #1a1a18;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  caret-color: var(--white);
+  opacity: 1;
+}
+
+.rutina-name-input::placeholder,
+.rutina-name-input::-webkit-input-placeholder,
+.rutina-name-input::-moz-placeholder,
+.rutina-name-input:-ms-input-placeholder,
+.rutina-name-input::-ms-input-placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.rutina-name-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(212,247,0,0.12);
+}
+
+/* SEMANA GRID */
+.semana {
+  max-width: 100%;
+  margin: 22px auto 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+}
+
+.dia {
+  background: linear-gradient(180deg, var(--bg-panel), #10100f);
+  border: 1px solid var(--border);
+  min-height: 190px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dia:hover {
+  border-color: rgba(216,239,67,0.28);
+  background: linear-gradient(180deg, var(--bg-panel-2), #10100f);
+}
+
+.dia-inner {
+  padding: 10px 12px 12px;
+}
+
+.dia-num {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: #d4f700;
+}
+
+.titulo {
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 0.92;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.ejercicios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ejercicios li {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 4px 0;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: rgba(247,247,240,0.92);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ejercicios li:last-child {
+  border-bottom: none;
+}
+
+.ejercicios li::before {
+  content: "—";
+  color: #d4f700;
+  flex: 0 0 auto;
+}
+
+/* BUILDER HERO */
+.page-hero {
+  padding: 56px 36px 40px;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+/* BUILDER */
+.builder {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  min-height: calc(100vh - 56px);
+  align-items: start;
+}
+
+/* LEFT PANEL */
+.catalogo-panel {
+  background: #0e0e0c;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 66px;
+  height: calc(100vh - 66px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.catalogo-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.catalogo-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.panel-header {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: #0e0e0c;
+  z-index: 1;
+}
+
+.panel-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  letter-spacing: 0.12em;
+  color: var(--white);
+}
+
+.buscador {
+  width: 100%;
+  background: #1a1a18;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.buscador:focus {
+  border-color: var(--accent);
+}
+
+.buscador::placeholder {
+  color: var(--muted);
+}
+
+.grupo {
+  border-bottom: 1px solid var(--border);
+}
+
+.grupo-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  opacity: 0.72;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.grupo-toggle:hover,
+.grupo.open .grupo-toggle {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.chevron {
+  font-size: 0.72rem;
+  transition: transform 0.2s;
+}
+
+.grupo.open .chevron {
+  transform: rotate(180deg);
+}
+
+.grupo-lista {
+  list-style: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.grupo.open .grupo-lista {
+  max-height: 600px;
+}
+
+.ej-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 10px 28px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-top: 1px solid #0f0f0d;
+}
+
+.ej-item:hover {
+  background: #1a1a18;
+}
+
+.ej-item:hover .ej-add-hint {
+  opacity: 1;
+}
+
+.ej-nombre {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.78);
+}
+
+.ej-add-hint {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+
+/* RIGHT PANEL */
+.dias-panel {
+  padding: 32px 32px 80px;
+}
+
+.dias-acciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.btn-guardar,
+.btn-limpiar {
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  padding: 10px 22px;
+  transition: background 0.15s, color 0.15s, transform 0.1s, border-color 0.15s;
+}
+
+.btn-guardar {
+  background: var(--accent);
+  color: #0c0c0a;
+}
+
+.btn-guardar:hover {
+  background: var(--accent-2);
+  transform: translateY(-1px);
+}
+
+.btn-limpiar {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.btn-limpiar:hover {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.save-msg {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.save-msg.ok {
+  color: var(--accent);
+}
+
+.dias-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.dia-builder {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  min-height: 260px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.dia-builder:hover {
+  background: var(--bg-panel-2);
+  border-color: #d4f700;
+}
+
+.dia-builder-header {
+  padding: 20px 22px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dia-builder .dia-num {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  color: #d4f700;
+}
+
+.dia-builder .titulo {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 0.92;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+
+.ejercicios-asignados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ej-asignado {
+  padding: 10px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ej-asignado-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.ej-asignado-nombre {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.btn-eliminar:hover {
+  color: #ff4444;
+  background: rgba(255,68,68,0.1);
+}
+
+.ej-controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ej-controles label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ej-controles label span {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.input-series,
+.input-reps {
+  width: 58px;
+  background: #0f0f0d;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  padding: 5px 8px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input-series:focus,
+.input-reps:focus {
+  border-color: var(--accent);
+}
+
+.input-series::-webkit-inner-spin-button,
+.input-reps::-webkit-inner-spin-button {
+  display: none;
+}
+
+.x-sep {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+.dia-empty-msg {
+  padding: 20px 22px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* RUTINAS GUARDADAS */
+.rutinas-guardadas-section,
+.reseñas-section {
+  padding: 40px 36px 70px;
+}
+
+.rutinas-guardadas-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+.rutinas-guardadas-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.rutina-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+}
+
+.rutina-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.rutina-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+}
+
+.btn-eliminar-rutina {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.btn-eliminar-rutina:hover {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.08);
+}
+
+.rutina-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.rutina-card li {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(247,247,240,0.88);
+}
+
+/* RESEÑAS */
+.review-form-box {
+  max-width: 760px;
+  margin: 0 auto 24px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.review-input,
+.review-textarea {
+  width: 100%;
+  background: #1a1a18;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 12px 14px;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.review-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.review-input::placeholder,
+.review-textarea::placeholder {
+  color: var(--muted);
+}
+
+.rating-box {
+  margin-bottom: 14px;
+}
+
+.rating-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--muted);
+  padding: 0;
+}
+
+.star-btn.active {
+  color: var(--accent);
+}
+
+.lista-reseñas {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+.review-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-top strong {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+}
+
+.review-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-stars {
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.btn-eliminar-reseña {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.btn-eliminar-reseña:hover {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.08);
+}
+
+.review-card p {
+  margin: 0;
+  color: rgba(247,247,240,0.88);
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.modal-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: #0f0f0d;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 32px;
+  width: min(480px, 90vw);
+  text-align: center;
+  transform: translateY(8px);
+  transition: transform 0.2s;
+  box-shadow: var(--shadow);
+}
+
+.modal-overlay.visible .modal {
+  transform: translateY(0);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.modal-ej-nombre {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.modal-dias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.modal-dia-btn {
+  background: #1a1a18;
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  padding: 12px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.modal-dia-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0c0c0a;
+}
+
+.modal-cerrar {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color 0.15s;
+}
+
+.modal-cerrar:hover {
+  color: var(--white);
+}
+
+/* FOOTER */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .semana,
+  .dias-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  header.site-header,
+  header {
+    padding: 0 24px;
+  }
+
+  nav,
+  .site-nav {
+    display: none;
+  }
+
+  .semana-section,
+  .page-hero,
+  .rutinas-guardadas-section,
+  .reseñas-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .builder {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogo-panel {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dias-panel {
+    padding: 24px 16px 60px;
+  }
+
+  footer {
+    padding: 24px 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 650px) {
+  .semana,
+  .dias-grid,
+  .rutinas-guardadas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title,
+  .page-title {
+    font-size: clamp(2.6rem, 10vw, 4rem);
+  }
+
+  .titulo {
+    font-size: 2rem;
+  }
+
+  .btn-cta {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+}
