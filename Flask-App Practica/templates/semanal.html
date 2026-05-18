@@ -11,8 +11,8 @@
 
     <header class="site-header">
         <a href="/" class="logo">
-            <img src="{{ url_for('static', filename='Titan-Lab-Logo.png') }}" alt="Titan Lab" class="logo-img"/>
-            <span class="logo-iron">Titan</span><span class="logo-path">Lab</span>
+            <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img"/>
+            <span>Titan</span>Lab
         </a>
 
         <nav>
@@ -24,7 +24,10 @@
             <a href="/planes">Planes</a>
         </nav>
 
-        <a href="#" class="btn-cta">EMPIEZA YA</a>
+        <div class="auth-buttons">
+            <button class="btn-secondary">Login</button>
+            <button class="btn-primary">Registrarse</button>
+        </div>
     </header>
 
     {% set orden_dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
