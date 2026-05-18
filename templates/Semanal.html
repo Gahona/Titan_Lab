@@ -6,7 +6,6 @@
   <title>Rutina Semanal — TitanLab</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='crear_rutina.css') }}"/>
 </head>
 <body>
 
@@ -203,6 +202,8 @@
     let ejercicioSeleccionado = null;
     let ratingActual = 0;
 
+    const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
     const cargarDesdeStorage = () => {
       const guardado = localStorage.getItem(STORAGE_KEY);
       if (!guardado) return;
@@ -234,7 +235,19 @@
 
     const leerReseñas = () => {
       try {
-        return JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
+        const reseñas = JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
+        let changed = false;
+
+        const actualizadas = reseñas.map(r => {
+          if (!r.id) {
+            changed = true;
+            return { id: uid(), ...r };
+          }
+          return r;
+        });
+
+        if (changed) localStorage.setItem(REVIEWS_KEY, JSON.stringify(actualizadas));
+        return actualizadas;
       } catch {
         return [];
       }
@@ -344,15 +357,33 @@
 
     function renderReseñas() {
       const reseñas = leerReseñas();
-      listaReseñas.innerHTML = reseñas.length ? reseñas.map(r => `
+
+      if (!reseñas.length) {
+        listaReseñas.innerHTML = `<p class="dia-empty-msg">Todavía no hay reseñas.</p>`;
+        return;
+      }
+
+      listaReseñas.innerHTML = reseñas.map((r) => `
         <article class="review-card">
           <div class="review-top">
             <strong>${r.nombre}</strong>
-            <span class="review-stars">${"★".repeat(r.puntuacion)}${"☆".repeat(5 - r.puntuacion)}</span>
+            <div class="review-actions">
+              <span class="review-stars">${"★".repeat(r.puntuacion)}${"☆".repeat(5 - r.puntuacion)}</span>
+              <button type="button" class="btn-eliminar-reseña" data-id="${r.id}">✕</button>
+            </div>
           </div>
           <p>${r.texto}</p>
         </article>
-      `).join("") : `<p class="dia-empty-msg">Todavía no hay reseñas.</p>`;
+      `).join("");
+
+      document.querySelectorAll(".btn-eliminar-reseña").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const reseñasActuales = leerReseñas();
+          const nuevas = reseñasActuales.filter(r => r.id !== btn.dataset.id);
+          guardarReseñas(nuevas);
+          renderReseñas();
+        });
+      });
     }
 
     document.querySelectorAll(".grupo-toggle").forEach(btn => {
@@ -455,7 +486,12 @@
       if (!nombre || !texto || !ratingActual) return;
 
       const reseñas = leerReseñas();
-      reseñas.unshift({ nombre, texto, puntuacion: ratingActual });
+      reseñas.unshift({
+        id: uid(),
+        nombre,
+        texto,
+        puntuacion: ratingActual
+      });
       guardarReseñas(reseñas);
       renderReseñas();
 
