@@ -7,178 +7,181 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='mainvilla.css') }}"/>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo_Titan_Lab.png') }}">
-    <style>        .registro-section {
-        min-height: calc(100vh - 62px);
-        display: flex;
-        align-items: center;            justify-content: center;            padding: 60px 20px;
-    }
+    <style>
+        .registro-section {
+            min-height: calc(100vh - 62px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
 
-    .registro-box {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        padding: 48px 40px;
-        width: 100%;
-        max-width: 460px;
-    }
+        .registro-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 460px;
+        }
 
-    .registro-box .section-tag {
-        font-family: var(--font-ui);
-        font-size: .72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .16em;
-        color: var(--lime);
-        display: block;
-        margin-bottom: 10px;
-    }
+        .registro-box .section-tag {
+            font-family: var(--font-ui);
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            color: var(--lime);
+            display: block;
+            margin-bottom: 10px;
+        }
 
-    .registro-box h2 {
-        font-family: var(--font-display);
-        font-size: 2.4rem;
-        text-transform: uppercase;
-        letter-spacing: .04em;
-        line-height: 1;
-        margin-bottom: 8px;
-        color: var(--white);
-    }
+        .registro-box h2 {
+            font-family: var(--font-display);
+            font-size: 2.4rem;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            line-height: 1;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
 
-    .registro-box h2 em {
-        font-style: normal;
-        color: var(--lime);
-    }
+        .registro-box h2 em {
+            font-style: normal;
+            color: var(--lime);
+        }
 
-    .registro-box .subtitle {
-        color: var(--gray);
-        font-size: .88rem;
-        margin-bottom: 32px;
-    }
+        .registro-box .subtitle {
+            color: var(--gray);
+            font-size: .88rem;
+            margin-bottom: 32px;
+        }
 
-    .flash-error {
-        background: #2a0a0a;
-        border: 1px solid #7a1a1a;
-        color: #ff6b6b;
-        padding: 12px 16px;
-        font-size: .85rem;
-        margin-bottom: 20px;
-        border-radius: 2px;
-    }
+        .flash-error {
+            background: #2a0a0a;
+            border: 1px solid #7a1a1a;
+            color: #ff6b6b;
+            padding: 12px 16px;
+            font-size: .85rem;
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
 
-    .flash-success {
-        background: #0a1a0a;
-        border: 1px solid #1a5a1a;
-        color: var(--lime);
-        padding: 12px 16px;
-        font-size: .85rem;
-        margin-bottom: 20px;
-        border-radius: 2px;
-    }
+        .flash-success {
+            background: #0a1a0a;
+            border: 1px solid #1a5a1a;
+            color: var(--lime);
+            padding: 12px 16px;
+            font-size: .85rem;
+            margin-bottom: 20px;
+            border-radius: 2px;
+        }
 
-    .form-group {
-        margin-bottom: 16px;
-    }
+        .form-group {
+            margin-bottom: 16px;
+        }
 
-    .form-group label {
-        display: block;
-        font-family: var(--font-ui);
-        font-size: .72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .12em;
-        color: var(--gray);
-        margin-bottom: 6px;
-    }
+        .form-group label {
+            display: block;
+            font-family: var(--font-ui);
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--gray);
+            margin-bottom: 6px;
+        }
 
-    .form-group input,
-    .form-group select {
-        width: 100%;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        color: var(--white);
-        padding: 12px 14px;
-        font-family: var(--font-body);
-        font-size: .92rem;
-        outline: none;
-        transition: border-color .2s;
-        appearance: none;
-    }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            padding: 12px 14px;
+            font-family: var(--font-body);
+            font-size: .92rem;
+            outline: none;
+            transition: border-color .2s;
+            appearance: none;
+        }
 
-    .form-group input:focus,
-    .form-group select:focus {
-        border-color: var(--lime);
-    }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--lime);
+        }
 
-    .form-group input::placeholder {
-        color: var(--gray-dim);
-    }
+        .form-group input::placeholder {
+            color: var(--gray-dim);
+        }
 
-    .form-group select option {
-        background: var(--card-bg);
-    }
+        .form-group select option {
+            background: var(--card-bg);
+        }
 
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
 
-    .btn-submit {
-        width: 100%;
-        margin-top: 8px;
-        padding: .75rem 1.4rem;
-        font-family: var(--font-ui);
-        font-size: .82rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .14em;
-        cursor: pointer;
-        border: none;
-        background: var(--lime);
-        color: var(--bg);
-        transition: background .2s;
-    }
+        .btn-submit {
+            width: 100%;
+            margin-top: 8px;
+            padding: .75rem 1.4rem;
+            font-family: var(--font-ui);
+            font-size: .82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            cursor: pointer;
+            border: none;
+            background: var(--lime);
+            color: var(--bg);
+            transition: background .2s;
+        }
 
-    .btn-submit:hover { background: var(--lime-hover); }
+        .btn-submit:hover { background: var(--lime-hover); }
 
-    .form-footer {
-        text-align: center;
-        margin-top: 20px;
-        color: var(--gray);
-        font-size: .85rem;
-    }
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: .85rem;
+        }
 
-    .form-footer a {
-        color: var(--lime);
-        text-decoration: none;
-        font-weight: 600;
-    }
+        .form-footer a {
+            color: var(--lime);
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-    .form-footer a:hover { text-decoration: underline; }
+        .form-footer a:hover { text-decoration: underline; }
 
-    .divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 24px 0;
-    }
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 24px 0;
+        }
 
-    .section-label {
-        font-family: var(--font-ui);
-        font-size: .7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .14em;
-        color: var(--gray-dim);
-        margin-bottom: 16px;
-    }
+        .section-label {
+            font-family: var(--font-ui);
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: var(--gray-dim);
+            margin-bottom: 16px;
+        }
 
-    @media (max-width: 480px) {
-        .registro-box { padding: 32px 24px; }
-        .form-row { grid-template-columns: 1fr; }
-    }
-</style>
+        @media (max-width: 480px) {
+            .registro-box { padding: 32px 24px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- ── HEADER ── -->
 <header>
     <a href="/" class="logo">
         <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img">
@@ -192,97 +195,113 @@
         <a href="/dieta">Dieta</a>
         <a href="/planes">Planes</a>
     </nav>
-        <div class="auth-buttons">
+    <!-- Botones de autenticación en el header -->
+    <div class="auth-buttons">
+        <!-- Comprueba si hay una sesión activa (usuario logueado) -->
+        {% if session.get('id_usuario') %}
+            <!-- Si está logueado: muestra su nombre -->
+            <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
+                {{ session['nombre'] }}
+            </span>
+            <!-- Botón para cerrar sesión — llama a la ruta /logout del app.py -->
+            <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+        {% else %}
+            <!-- Si NO está logueado: muestra Login y Registrarse -->
             <a href="/login"><button class="btn-secondary">Login</button></a>
             <a href="/registro"><button class="btn-primary">Registrarse</button></a>
-        </div>
-    </header>
+        {% endif %}
+    </div>
+</header>
+<!-- ── FIN HEADER ── -->
 
-    <!-- Registro -->
-    <section class="registro-section">
+
+<!-- ── SECCIÓN REGISTRO ── -->
+<section class="registro-section">
     <div class="registro-box">
 
         <span class="section-tag">Nueva cuenta</span>
         <h2>Crear <em>cuenta</em></h2>
         <p class="subtitle">Únete a Titan Labs y empieza hoy.</p>
 
-    <!-- Mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-        <div class="flash-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
-    {% endfor %}
-    {% endwith %}
+        <!-- Mensajes flash (errores o confirmaciones) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
 
-    <!-- Formulario -->
-    <form action="/registro" method="POST">
+        <!-- Formulario de registro -->
+        <form action="/registro" method="POST">
 
-        <!-- Datos obligatorios -->
-        <div class="form-group">
-            <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required/>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="tu@email.com" required/>
-        </div>
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6"/>
-        </div>
-
-        <hr class="divider">
-        <p class="section-label">Datos opcionales (para tu perfil)</p>
-
-        <!-- Datos opcionales -->
-        <div class="form-row">
+            <!-- Datos obligatorios -->
             <div class="form-group">
-            <label for="edad">Edad</label>
-            <input type="number" id="edad" name="edad" placeholder="25" min="10" max="100"/>
-        </div>
-        <div class="form-group">
-            <label for="sexo">Sexo</label>
-            <select id="sexo" name="sexo">
-                <option value="" disabled selected>Seleccionar</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-                <option value="otro">Otro</option>
-            </select>
-        </div>
-    </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="altura_cm">Altura (cm)</label>
-                <input type="number" id="altura_cm" name="altura_cm" placeholder="175" min="100" max="250"/>
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required/>
             </div>
             <div class="form-group">
-                <label for="peso_kg">Peso (kg)</label>
-                <input type="number" id="peso_kg" name="peso_kg" placeholder="70" min="30" max="300"/>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="tu@email.com" required/>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="objetivo_principal">Objetivo principal</label>
-            <select id="objetivo_principal" name="objetivo_principal">
-                <option value="" disabled selected>Seleccionar</option>
-                <option value="ganar masa muscular">Ganar masa muscular</option>
-                <option value="perder grasa">Perder grasa</option>
-                <option value="mantenimiento">Mantenimiento</option>
-                <option value="mejorar rendimiento">Mejorar rendimiento</option>
-                <option value="salud general">Salud general</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6"/>
+            </div>
 
-        <button type="submit" class="btn-submit">Crear cuenta</button>
+            <hr class="divider">
+            <p class="section-label">Datos opcionales (para tu perfil)</p>
+
+            <!-- Datos opcionales -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="edad">Edad</label>
+                    <input type="number" id="edad" name="edad" placeholder="25" min="10" max="100"/>
+                </div>
+                <div class="form-group">
+                    <label for="sexo">Sexo</label>
+                    <select id="sexo" name="sexo">
+                        <option value="" disabled selected>Seleccionar</option>
+                        <option value="hombre">Hombre</option>
+                        <option value="mujer">Mujer</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="altura_cm">Altura (cm)</label>
+                    <input type="number" id="altura_cm" name="altura_cm" placeholder="175" min="100" max="250"/>
+                </div>
+                <div class="form-group">
+                    <label for="peso_kg">Peso (kg)</label>
+                    <input type="number" id="peso_kg" name="peso_kg" placeholder="70" min="30" max="300"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="objetivo_principal">Objetivo principal</label>
+                <select id="objetivo_principal" name="objetivo_principal">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="ganar masa muscular">Ganar masa muscular</option>
+                    <option value="perder grasa">Perder grasa</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="mejorar rendimiento">Mejorar rendimiento</option>
+                    <option value="salud general">Salud general</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Crear cuenta</button>
         </form>
 
         <p class="form-footer">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
 
     </div>
-    </section>
+</section>
+<!-- ── FIN SECCIÓN REGISTRO ── -->
 
-<!-- Footer -->
-    <footer>
-        <p>© 2026 Titan Lab.</p>
-    </footer>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <p>© 2026 Titan Lab.</p>
+</footer>
 
 </body>
 </html>

@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Titan Lab — Calculadora de Macros</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='macros.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="logo">
+        <img
+          src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
+          alt="Titan Lab"
+          class="logo-img"
+        />
+        <span class="logo-text">
+          <span class="logo-titan">TITAN</span>
+          <span class="logo-lab">LAB</span>
+        </span>
+      </a>
+
+      <nav>
+        <a href="/">Inicio</a>
+        <a href="#">Suplementos</a>
+        <a href="#">Ejercicios</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/dieta" class="active">Dieta</a>
+        <a href="/planes">Planes</a>
+      </nav>
+
+      <div class="auth-buttons">
+        {% if session.get('id_usuario') %}
+        <span class="user-name">{{ session['nombre'] }}</span>
+        <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+        {% else %}
+        <a href="/login" class="btn-secondary">Login</a>
+        <a href="/registro" class="btn-primary">Registrarse</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <section class="page-header">
+      <p class="header-tag">Calcula tus necesidades</p>
+      <h1>CALCULA TUS <span>MACROS</span> AHORA</h1>
+      <p class="header-sub">
+        Introduce tus datos y obtén al instante tus calorías, proteínas,
+        carbohidratos y grasas diarias según tu objetivo.
+      </p>
+    </section>
+
+    <main class="calculator-wrap">
+      <section class="panel panel-input">
+        <p class="panel-label">Paso 01</p>
+        <h2 class="panel-title">Tus Datos</h2>
+
+        <form id="macroForm" class="form-grid" onsubmit="return false;">
+          <div class="form-group">
+            <label for="age">Edad</label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="age"
+                placeholder="25"
+                min="10"
+                max="100"
+              />
+              <span class="input-unit">años</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="weight">Peso</label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="weight"
+                placeholder="75"
+                min="30"
+                max="300"
+              />
+              <span class="input-unit">kg</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="height">Altura</label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="height"
+                placeholder="175"
+                min="100"
+                max="250"
+              />
+              <span class="input-unit">cm</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Sexo</label>
+            <div class="segment cols-2" id="sexoGroup">
+              <button type="button" class="seg-btn active" data-value="male">
+                Hombre
+              </button>
+              <button type="button" class="seg-btn" data-value="female">
+                Mujer
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Nivel de Actividad</label>
+            <div class="activity-grid" id="activityGroup">
+              <button type="button" class="act-btn active" data-value="1.2">
+                <span class="act-name">Sedentario</span>
+                <span class="act-desc">Poco o nada de ejercicio</span>
+              </button>
+              <button type="button" class="act-btn" data-value="1.375">
+                <span class="act-name">Ligero</span>
+                <span class="act-desc">1–3 días/semana</span>
+              </button>
+              <button type="button" class="act-btn" data-value="1.55">
+                <span class="act-name">Moderado</span>
+                <span class="act-desc">3–5 días/semana</span>
+              </button>
+              <button type="button" class="act-btn" data-value="1.725">
+                <span class="act-name">Intenso</span>
+                <span class="act-desc">6–7 días/semana</span>
+              </button>
+              <button type="button" class="act-btn" data-value="1.9">
+                <span class="act-name">Atleta</span>
+                <span class="act-desc">Doble sesión diaria</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Objetivo</label>
+            <div class="segment cols-3" id="objetivoGroup">
+              <button type="button" class="seg-btn" data-value="-500">
+                Perder grasa
+              </button>
+              <button type="button" class="seg-btn active" data-value="0">
+                Mantener peso
+              </button>
+              <button type="button" class="seg-btn" data-value="300">
+                Ganar músculo
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <button
+              type="button"
+              class="calc-btn"
+              id="calcBtn"
+              onclick="calcularMacros()"
+            >
+              Calcular macros
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel panel-results" id="resultsPanel">
+        <p class="panel-label">Paso 02</p>
+        <h2 class="panel-title">Tus Resultados</h2>
+
+        <div class="empty-state" id="emptyState">
+          <p class="empty-title">Introduce tus datos</p>
+          <p class="empty-sub">
+            Completa el formulario y pulsa <strong>Calcular macros</strong>.
+          </p>
+        </div>
+
+        <div class="results-content hidden" id="resultsContent">
+          <div class="kcal-block">
+            <span class="kcal-label">Calorías totales / día</span>
+            <div class="kcal-value">
+              <span id="resKcal">0</span>
+              <span class="kcal-unit">kcal</span>
+            </div>
+            <div class="kcal-bar">
+              <div class="kcal-fill" id="kcalFill"></div>
+            </div>
+          </div>
+
+          <div class="macros-grid">
+            <div class="macro-card">
+              <div class="macro-top">
+                <span class="macro-name">Proteína</span>
+                <span class="macro-badge">4 kcal/g</span>
+              </div>
+              <div class="macro-amount">
+                <span id="resProtein">0</span><span class="macro-unit">g</span>
+              </div>
+              <div class="macro-kcal" id="resProteinKcal">0 kcal</div>
+              <div class="macro-bar-wrap">
+                <div class="macro-bar macro-bar-protein" id="barProtein"></div>
+              </div>
+              <p class="macro-tip">
+                Fuentes: pollo, huevos, atún, proteína whey.
+              </p>
+            </div>
+
+            <div class="macro-card">
+              <div class="macro-top">
+                <span class="macro-name">Carbohidratos</span>
+                <span class="macro-badge">4 kcal/g</span>
+              </div>
+              <div class="macro-amount">
+                <span id="resCarbs">0</span><span class="macro-unit">g</span>
+              </div>
+              <div class="macro-kcal" id="resCarbsKcal">0 kcal</div>
+              <div class="macro-bar-wrap">
+                <div class="macro-bar macro-bar-carbs" id="barCarbs"></div>
+              </div>
+              <p class="macro-tip">Fuentes: arroz, avena, patata, fruta.</p>
+            </div>
+
+            <div class="macro-card">
+              <div class="macro-top">
+                <span class="macro-name">Grasas</span>
+                <span class="macro-badge">9 kcal/g</span>
+              </div>
+              <div class="macro-amount">
+                <span id="resFat">0</span><span class="macro-unit">g</span>
+              </div>
+              <div class="macro-kcal" id="resFatKcal">0 kcal</div>
+              <div class="macro-bar-wrap">
+                <div class="macro-bar macro-bar-fat" id="barFat"></div>
+              </div>
+              <p class="macro-tip">
+                Fuentes: aguacate, aceite de oliva, frutos secos.
+              </p>
+            </div>
+          </div>
+
+          <p class="disclaimer">
+            * Valores calculados con la fórmula Mifflin-St Jeor. Consulta a un
+            profesional de la nutrición para un plan personalizado.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <section class="section colaboradores">
+      <h2>Colaboradores de confianza</h2>
+      <div class="colab-list">
+        <a
+          href="https://tienda.iogenixnutrition.com/"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            src="{{ url_for('static', filename='fotos_main/iogenix.logo-removebg-preview.png') }}"
+            alt="Io.Genix"
+            width="150"
+            height="80"
+          />
+        </a>
+        <a href="https://www.paypal.com" target="_blank" rel="noopener">
+          <img
+            src="{{ url_for('static', filename='fotos_main/logopaypal-removebg-preview.png') }}"
+            alt="Paypal"
+            width="150"
+            height="80"
+          />
+        </a>
+        <a
+          href="https://www.panattasport.com/es/"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            src="{{ url_for('static', filename='fotos_main/pannattaaa-removebg-preview.png') }}"
+            alt="Panatta"
+            width="150"
+            height="80"
+          />
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 Titan Lab.</p>
+    </footer>
+
+    <script>
+      function initGroup(groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        group.querySelectorAll("button").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            group
+              .querySelectorAll("button")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+          });
+        });
+      }
+
+      ["sexoGroup", "activityGroup", "objetivoGroup"].forEach(initGroup);
+
+        function getActive(groupId) {
+            const group = document.getElementById(groupId);
+            const btn = group.querySelector(".active");
+            return btn ? btn.dataset.value : null;
+        }
+
+        function calcularMacros() {
+            const age = parseFloat(document.getElementById("age").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const sex = getActive("sexoGroup");
+            const activity = parseFloat(getActive("activityGroup"));
+            const goalDelta = parseFloat(getActive("objetivoGroup"));
+
+        if (!age || !weight || !height) {
+            shakeForm();
+            return;
+        }
+
+        let bmr;
+        if (sex === "male") {
+          bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+        } else {
+          bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+        }
+
+        const tdee = bmr * activity;
+        const kcal = Math.round(tdee + goalDelta);
+
+        const proteinG = Math.round(weight * 2.0);
+        const fatG = Math.round(weight * 0.9);
+        const proteinKcal = proteinG * 4;
+        const fatKcal = fatG * 9;
+        const carbsKcal = kcal - proteinKcal - fatKcal;
+        const carbsG = Math.round(carbsKcal / 4);
+
+            document.getElementById("resKcal").textContent =
+            kcal.toLocaleString("es-ES");
+            document.getElementById("resProtein").textContent = proteinG;
+            document.getElementById("resCarbs").textContent =
+            carbsG > 0 ? carbsG : 0;
+            document.getElementById("resFat").textContent = fatG;
+            document.getElementById("resProteinKcal").textContent =
+            proteinKcal + " kcal";
+            document.getElementById("resCarbsKcal").textContent =
+            (carbsG > 0 ? carbsKcal : 0) + " kcal";
+            document.getElementById("resFatKcal").textContent = fatKcal + " kcal";
+
+        const total = proteinKcal + (carbsG > 0 ? carbsKcal : 0) + fatKcal;
+            document.getElementById("barProtein").style.width =
+            (proteinKcal / total) * 100 + "%";
+            document.getElementById("barCarbs").style.width =
+            (carbsG > 0 ? (carbsKcal / total) * 100 : 0) + "%";
+            document.getElementById("barFat").style.width =
+            (fatKcal / total) * 100 + "%";
+            document.getElementById("kcalFill").style.width = "100%";
+
+            document.getElementById("emptyState").classList.add("hidden");
+            document.getElementById("resultsContent").classList.remove("hidden");
+        }
+
+        function shakeForm() {
+            const form = document.getElementById("macroForm");
+            form.classList.add("shake");
+            setTimeout(() => form.classList.remove("shake"), 600);
+        }
+        </script>
+    </body>
+</html>

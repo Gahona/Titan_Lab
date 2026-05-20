@@ -27,7 +27,7 @@ def login_required(f):
 
 def rol_required(*roles):
     def decorator(f):
-        @wraps(f)          
+        @wraps(f)
         def decorated(*args, **kwargs):
             if 'rol' not in session or session['rol'] not in roles:
                 flash('No tienes permiso para acceder a esta sección.', 'danger')
@@ -103,11 +103,20 @@ def registro():
         password = generate_password_hash(request.form['password'])
         rol      = 'cliente'  # Siempre cliente al registrarse; el admin asigna otros roles
 
+        # Campos opcionales — None si vienen vacíos
+        edad     = request.form.get('edad') or None
+        sexo     = request.form.get('sexo') or None
+        altura   = request.form.get('altura_cm') or None
+        peso     = request.form.get('peso_kg') or None
+        objetivo = request.form.get('objetivo_principal') or None
+
         try:
             cur = mysql.connection.cursor()
             cur.execute(
-                "INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES (%s, %s, %s, %s)",
-                (nombre, email, password, rol)
+                """INSERT INTO usuarios
+                   (nombre, email, password_hash, rol, edad, sexo, altura_cm, peso_kg, objetivo_principal)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (nombre, email, password, rol, edad, sexo, altura, peso, objetivo)
             )
             mysql.connection.commit()
             cur.close()
@@ -255,7 +264,7 @@ def pago_exitoso():
 
 
 # ─────────────────────────────────────────
-#  RUTINAS (requiere login)
+#  RUTINAS
 # ─────────────────────────────────────────
 @app.route('/rutina')
 def rutina():

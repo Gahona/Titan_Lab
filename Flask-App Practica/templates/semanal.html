@@ -23,10 +23,23 @@
             <a href="/dieta">Dieta</a>
             <a href="/planes">Planes</a>
         </nav>
-
+        <!-- Botones de autenticación en el header -->
         <div class="auth-buttons">
-            <button class="btn-secondary">Login</button>
-            <button class="btn-primary">Registrarse</button>
+            <!-- Comprueba si hay una sesión activa (usuario logueado) -->
+            {% if session.get('id_usuario') %}
+                <!-- Si está logueado: muestra su nombre -->
+                <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
+                {{ session['nombre'] }}
+                </span>
+                <!-- Botón para cerrar sesión — llama a la ruta /logout del app.py -->
+                <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+            <!-- Si NO está logueado: muestra Login y Registrarse -->
+            {% else %}
+                <!-- Redirige a la página de login -->
+                <a href="/login"><button class="btn-secondary">Login</button></a>
+                <!-- Redirige a la página de registro -->
+                <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+            {% endif %}
         </div>
     </header>
 
