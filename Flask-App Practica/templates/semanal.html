@@ -94,7 +94,11 @@
 
     <main class="dias-panel">
         <div class="dias-acciones">
-        <button class="btn-guardar" id="btnGuardar" type="button">GUARDAR RUTINA</button>
+        {% if session.get('id_usuario') %}
+            <button class="btn-guardar" id="btnGuardar" type="button">GUARDAR RUTINA</button>
+        {% else %}
+            <a href="/login" class="btn-guardar">INICIA SESIÓN PARA GUARDAR</a>
+        {% endif %}
         <button class="btn-limpiar" id="btnLimpiar" type="button">LIMPIAR TODO</button>
         <span class="save-msg" id="saveMsg"></span>
         </div>
