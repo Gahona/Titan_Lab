@@ -4,40 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Titan Labs</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainvilla.css') }}" />
   </head>
   <body>
 
     <!-- Header -->
     <header>
-           <a href="/" class="logo">
-        <img src="{{ url_for('static', filename='Titan-Lab-Logo.png') }}" alt="TitanLab" class="logo-img">
+      <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img">
         <span>Titan</span>Lab
-        </a>
+      </a>
 
+      <!-- Botón hamburguesa  -->
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-      
-      <nav>
+      <!-- Overlay oscuro detrás del menú -->
+      <div class="nav-overlay" id="nav-overlay"></div>
+
+      <!-- Menú lateral -->
+      <div class="nav-drawer" id="nav-drawer">
+
+        <!-- Cabecera del drawer con usuario -->
+        <div class="drawer-header">
+          {% if session.get('id_usuario') %}
+            <span class="drawer-user">{{ session['nombre'] }}</span>
+          {% else %}
+            <span class="drawer-user">Bienvenido</span>
+          {% endif %}
+          <button class="drawer-close" id="drawer-close" aria-label="Cerrar menú">✕</button>
+        </div>
+
+        <!-- Links de navegación -->
+        <nav class="drawer-nav">
+          <a href="/">Inicio</a>
+          <a href="#">Suplementos</a>
+          <a href="#">Ejercicios</a>
+          <a href="/rutina">Rutina</a>
+          <a href="/dieta">Dieta</a>
+          <a href="/planes">Planes</a>
+        </nav>
+
+        <!-- Auth dentro del drawer -->
+        <div class="drawer-auth">
+          {% if session.get('id_usuario') %}
+            <a href="/logout"><button class="btn-secondary" style="width:100%;">Cerrar sesión</button></a>
+          {% else %}
+            <a href="/login"><button class="btn-secondary" style="width:100%;">Login</button></a>
+            <a href="/registro"><button class="btn-primary" style="width:100%;">Registrarse</button></a>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Nav desktop -->
+      <nav class="nav-desktop">
+        <a href="/">Inicio</a>
         <a href="#">Suplementos</a>
         <a href="#">Ejercicios</a>
-        <a href="#">Rutina</a>
-        <a href="#">Dieta</a>
-        <a href="#">Planes</a>
-       
+        <a href="/rutina">Rutina</a>
+        <a href="/dieta">Dieta</a>
+        <a href="/planes">Planes</a>
       </nav>
+
+      <!-- Botones auth desktop -->
       <div class="auth-buttons">
-        <button class="btn-secondary">Login</button>
-        <button class="btn-primary">Registrarse</button>
+        {% if session.get('id_usuario') %}
+          <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
+            {{ session['nombre'] }}
+          </span>
+          <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+        {% else %}
+          <a href="/login"><button class="btn-secondary">Login</button></a>
+          <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+        {% endif %}
       </div>
     </header>
 
     <!-- Hero -->
     <section class="hero">
-      <h1>Tu mejor versión empieza aquí</h1>
+      <h1>TU MEJOR VERSIÓN EMPIEZA AQUÍ</h1>
       <div class="hero-buttons">
-        <button class="btn-primary">Unirse</button>
-        <button class="btn-outline">Ejercicios</button>
+        <button class="btn-primary" onclick="window.location.href='/registro'">UNIRSE</button>
+        <button class="btn-light" onclick="window.location.href='#'">Ejercicios</button>
       </div>
     </section>
 
@@ -57,62 +109,98 @@
       </div>
     </section>
 
-   <!-- Suplementación -->
-<section class="section">
-  <h2>Suplementación</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Proteína</h3>
-      <img src="{{ url_for('static', filename='proteina.png') }}" alt="Proteína whey">
-      <p>Aumenta tu recuperación muscular y acelera tus resultados con proteína de alta calidad.
-      Ideal para ganar masa muscular, mantener tus músculos y recuperarte después de entrenamientos intensos.</p>
-    </div>
-    <div class="card">
-      <h3>Creatina</h3>
-      <img src="{{ url_for('static', filename='creatina.png') }}" alt="Creatina">
-      <p>Mejora tu fuerza, potencia y rendimiento en cada entrenamiento.
-      La creatina es uno de los suplementos más eficaces para aumentar masa muscular y superar tus límites físicos.</p>
-    </div>
-    <div class="card">
-      <h3>Pre-entreno</h3>
-      <img src="{{ url_for('static', filename='prewornk.png') }}" alt="Pre-entreno">
-      <p>Activa tu energía y concentración antes de entrenar.
-      Consigue más intensidad, motivación y resistencia para rendir al máximo en cada sesión.</p>
-    </div>
-    <div class="card">
-      <h3>BCAAs / EAAs</h3>
-      <img src="{{ url_for('static', filename='intrawork.png') }}" alt="BCAAs / EAAs">
-      <p>Protege tu masa muscular y mejora la recuperación durante y después del entrenamiento.
-      Perfectos para reducir la fatiga y mantener el rendimiento incluso en rutinas exigentes.</p>
-    </div>
-    <div class="card">
-      <h3>Omega 3</h3>
-      <img src="{{ url_for('static', filename='omega3.png') }}" alt="Omega 3">
-      <p>Cuida tu corazón, articulaciones y bienestar general con ácidos grasos esenciales.
-      Un suplemento clave para mejorar la salud y favorecer una recuperación más eficiente.</p>
-    </div>
-    <div class="card">
-      <h3>Zinc / Magnesio</h3>
-      <img src="{{ url_for('static', filename='zmzinc copy.png') }}" alt="Zinc y Magnesio">
-      <p>Mejora tu descanso, recuperación muscular y niveles de energía.
-      Una combinación perfecta para optimizar el rendimiento físico y apoyar tu sistema inmunológico.</p>
-    </div>
-  </div>
-</section>
+    <!-- Suplementación -->
+    <section class="section">
+      <h2>Suplementación</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Proteína</h3>
+          <img src="{{ url_for('static', filename='fotos_main/proteina.png') }}" alt="Proteína whey">
+          <p>Aumenta tu recuperación muscular y acelera tus resultados con proteína de alta calidad.</p>
+        </div>
+        <div class="card">
+          <h3>Creatina</h3>
+          <img src="{{ url_for('static', filename='fotos_main/creatina.png') }}" alt="Creatina">
+          <p>Mejora tu fuerza, potencia y rendimiento en cada entrenamiento.</p>
+        </div>
+        <div class="card">
+          <h3>Pre-entreno</h3>
+          <img src="{{ url_for('static', filename='fotos_main/prewornk.png') }}" alt="Pre-entreno">
+          <p>Activa tu energía y concentración antes de entrenar.</p>
+        </div>
+        <div class="card">
+          <h3>BCAAs / EAAs</h3>
+          <img src="{{ url_for('static', filename='fotos_main/intrawork.png') }}" alt="BCAAs / EAAs">
+          <p>Protege tu masa muscular y mejora la recuperación durante el entrenamiento.</p>
+        </div>
+        <div class="card">
+          <h3>Omega 3</h3>
+          <img src="{{ url_for('static', filename='fotos_main/omega3.png') }}" alt="Omega 3">
+          <p>Cuida tu corazón, articulaciones y bienestar general.</p>
+        </div>
+        <div class="card">
+          <h3>Zinc / Magnesio</h3>
+          <img src="{{ url_for('static', filename='fotos_main/zmzinc copy.png') }}" alt="Zinc y Magnesio">
+          <p>Mejora tu descanso, recuperación muscular y niveles de energía.</p>
+        </div>
+      </div>
+    </section>
 
     <!-- Colaboradores -->
     <section class="section colaboradores">
       <h2>Colaboradores de confianza</h2>
       <div class="colab-list">
-        <span></span><img src="{{ url_for('static', filename='iogenix.logo-removebg-preview.png') }}" alt="Io.Genix" width="150" height="80">
-        <span></span><img src="{{ url_for('static', filename='logopaypal-removebg-preview.png') }}" alt="Paypal" width="150" height="80">
-       <span></span><img src="{{ url_for('static', filename='pannattaaa-removebg-preview.png') }}" alt="Panatta" width="150" height="80">
+        <a href="https://tienda.iogenixnutrition.com/" target="_blank" rel="noopener">
+          <img src="{{ url_for('static', filename='fotos_main/iogenix.logo-removebg-preview.png') }}" alt="Io.Genix" width="150" height="80">
+        </a>
+        <a href="https://www.paypal.com" target="_blank" rel="noopener">
+          <img src="{{ url_for('static', filename='fotos_main/logopaypal-removebg-preview.png') }}" alt="Paypal" width="150" height="80">
+        </a>
+        <a href="https://www.panattasport.com/es/" target="_blank" rel="noopener">
+          <img src="{{ url_for('static', filename='fotos_main/pannattaaa-removebg-preview.png') }}" alt="Panatta" width="150" height="80">
+        </a>
       </div>
     </section>
 
-    <!-- Footer -->
+    <! Footer >
     <footer>
-      <p>&copy; 2026 Titan Labs</p>
+      <p>© 2026 Titan Lab.</p>
     </footer>
 
- 
+    <script>
+      const hamburger   = document.getElementById('hamburger');
+      const drawer      = document.getElementById('nav-drawer');
+      const overlay     = document.getElementById('nav-overlay');
+      const closeBtn    = document.getElementById('drawer-close');
+
+      function openMenu() {
+        drawer.classList.add('open');
+        overlay.classList.add('show');
+        hamburger.classList.add('active');
+        hamburger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        drawer.classList.remove('open');
+        overlay.classList.remove('show');
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', () => {
+        drawer.classList.contains('open') ? closeMenu() : openMenu();
+      });
+
+      closeBtn.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+
+      // Cerrar 
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeMenu();
+      });
+    </script>
+
+  </body>
+</html>
