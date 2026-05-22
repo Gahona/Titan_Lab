@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suplementación – Titan Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='suplementos.css') }}" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <a href="/" class="logo">
+        <img
+          src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
+          alt="Titan Lab"
+          class="logo-img"
+        />
+        <span>Titan</span>Lab
+      </a>
+
+      <nav>
+        <a href="/">Inicio</a>
+        <a href="/suplementacion" class="active">Suplementos</a>        
+        <a href="#">Ejercicios</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/dieta">Dieta</a>
+        <a href="/planes">Planes</a>
+      </nav>
+
+      <div class="auth-buttons">
+        {% if session.get('id_usuario') %}
+          <span class="user-name">{{ session['nombre'] }}</span>
+          <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+        {% else %}
+          <a href="/login" class="btn-secondary">Login</a>
+          <a href="/registro" class="btn-primary">Registrarse</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <h1>TODO SOBRE LA <span>SUPLEMENTACIÓN</span> DEPORTIVA</h1>
+      <p class="hero-desc">
+        Conoce qué son, para qué sirven y cómo usar correctamente los
+        suplementos más importantes para alcanzar tus objetivos físicos.
+      </p>
+    </section>
+
+
+    <!-- Aviso -->
+    <section class="section section-tight">
+      <div class="info-banner">
+        <div class="info-banner-icon">!</div>
+        <p>
+          <strong>Importante:</strong> Los suplementos complementan una dieta
+          equilibrada, nunca la sustituyen.
+        </p>
+      </div>
+    </section>
+
+    <!-- Suplementos esenciales -->
+    <section class="section">
+      <h2>Suplementos esenciales</h2>
+      <div class="supp-grid">
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Proteína Whey</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            La proteína de suero de leche (whey) es el suplemento más popular y
+            estudiado en el mundo del fitness. Se obtiene como subproducto de la
+            fabricación del queso y se caracteriza por su rápida absorción y
+            perfil completo de aminoácidos esenciales.
+          </p>
+          <ul class="benefits-list">
+            <li>Estimula la síntesis de proteína muscular (MPS).</li>
+            <li>Acelera la recuperación post-entrenamiento.</li>
+            <li>Ayuda a alcanzar los requerimientos diarios de proteína.</li>
+            <li>Disponible en versión concentrada, aislada e hidrolizada.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">20–40 g por toma · 1–2 veces al día</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Creatina Monohidrato</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            La creatina es el suplemento ergogénico con mayor respaldo
+            científico. Se almacena en los músculos como fosfocreatina y sirve
+            como fuente rápida de energía durante esfuerzos explosivos de alta
+            intensidad.
+          </p>
+          <ul class="benefits-list">
+            <li>Aumenta la fuerza y potencia muscular.</li>
+            <li>Mejora el rendimiento en series de alta intensidad.</li>
+            <li>Promueve la hidratación intramuscular.</li>
+            <li>Segura para uso a largo plazo.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">3–5 g diarios · sin necesidad de carga</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Cafeína</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            La cafeína es uno de los potenciadores del rendimiento deportivo más
+            eficaces. Actúa bloqueando los receptores de adenosina, reduciendo
+            la percepción de fatiga y aumentando el estado de alerta.
+          </p>
+          <ul class="benefits-list">
+            <li>Reduce la percepción del esfuerzo y la fatiga.</li>
+            <li>Mejora el rendimiento en deportes de resistencia.</li>
+            <li>Aumenta la concentración y la motivación.</li>
+            <li>Puede favorecer la quema de grasa junto al ejercicio.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">3–6 mg/kg de peso · 30–60 min antes</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Proteína Caseína</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            La caseína es la proteína láctea de digestión lenta por excelencia.
+            Libera aminoácidos de forma progresiva durante varias horas y ayuda
+            a proteger la masa muscular en periodos largos sin ingesta.
+          </p>
+          <ul class="benefits-list">
+            <li>Libera aminoácidos de forma lenta y continua.</li>
+            <li>Ideal para tomar antes de dormir.</li>
+            <li>Reduce el catabolismo nocturno.</li>
+            <li>Mayor saciedad que otras proteínas.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">25–40 g · antes de dormir</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Beta-Alanina</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            La beta-alanina eleva los niveles musculares de carnosina, ayudando
+            a tamponar la acidez acumulada durante ejercicios intensos. Es muy
+            útil en esfuerzos de entre 1 y 4 minutos.
+          </p>
+          <ul class="benefits-list">
+            <li>Retrasa la fatiga muscular.</li>
+            <li>Aumenta el volumen total de entrenamiento.</li>
+            <li>Mejora el rendimiento de alta intensidad.</li>
+            <li>Requiere uso continuado para notar su máximo efecto.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">3.2–6.4 g diarios · dosis divididas</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Recuperación y bienestar -->
+    <section class="section">
+      <h2>Recuperación y bienestar</h2>
+      <div class="supp-grid">
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>BCAAs / EAAs</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            Los aminoácidos esenciales pueden ser útiles en personas que
+            entrenan en ayunas o no alcanzan su ingesta diaria de proteína.
+          </p>
+          <ul class="benefits-list">
+            <li>Reducen el catabolismo muscular.</li>
+            <li>La leucina activa la síntesis proteica.</li>
+            <li>Mejoran la recuperación.</li>
+            <li>Útiles como bebida intra-entreno.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">5–10 g antes o durante el entreno</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Zinc & Magnesio (ZMA)</h3>
+            <span class="supp-tag esencial">Esencial</span>
+          </div>
+          <p class="definition">
+            El magnesio y el zinc participan en recuperación, sueño, función
+            inmune y equilibrio hormonal, especialmente en deportistas.
+          </p>
+          <ul class="benefits-list">
+            <li>Mejora la calidad del sueño.</li>
+            <li>Reduce calambres y tensión muscular.</li>
+            <li>Apoya la función hormonal natural.</li>
+            <li>Refuerza el sistema inmune.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">300–400 mg Mg · 10–15 mg Zn · noche</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Omega-3 (EPA/DHA)</h3>
+            <span class="supp-tag essential">Esencial</span>
+          </div>
+          <p class="definition">
+            Los omega-3 tienen propiedades antiinflamatorias y son muy
+            interesantes para salud cardiovascular, cerebral y recuperación.
+          </p>
+          <ul class="benefits-list">
+            <li>Reduce la inflamación muscular post-entrenamiento.</li>
+            <li>Protege las articulaciones.</li>
+            <li>Mejora la salud cardiovascular.</li>
+            <li>Apoya la función cerebral y el ánimo.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">2–3 g EPA+DHA diarios · con comidas</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>L-Carnitina</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            La L-carnitina participa en el transporte de ácidos grasos y puede
+            ser interesante como apoyo a la recuperación y en fases de déficit.
+          </p>
+          <ul class="benefits-list">
+            <li>Favorece el uso de grasa como energía.</li>
+            <li>Reduce daño muscular y agujetas.</li>
+            <li>Mejora la recuperación.</li>
+            <li>Apoya la salud cardiovascular.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">1.5–3 g diarios · antes del ejercicio</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Colágeno Hidrolizado</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            El colágeno puede ser útil para el tejido conectivo, articulaciones,
+            tendones y ligamentos, especialmente en personas activas.
+          </p>
+          <ul class="benefits-list">
+            <li>Fortalece tendones y ligamentos.</li>
+            <li>Reduce molestias articulares.</li>
+            <li>Ayuda en recuperación de tejido conectivo.</li>
+            <li>Mejora la salud de la piel.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">10–15 g · 30–60 min antes del ejercicio</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Ashwagandha (KSM-66)</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            La ashwagandha es un adaptógeno usado para ayudar con estrés,
+            descanso y rendimiento en contextos de alta carga física o mental.
+          </p>
+          <ul class="benefits-list">
+            <li>Reduce el cortisol y el estrés.</li>
+            <li>Puede favorecer el rendimiento.</li>
+            <li>Ayuda al descanso.</li>
+            <li>Mejora el estado de ánimo.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">300–600 mg · con comidas</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Suplementos avanzados -->
+    <section class="section">
+      <h2>Suplementos avanzados</h2>
+      <div class="supp-grid">
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Pre-entreno</h3>
+            <span class="supp-tag avanzado">Avanzado</span>
+          </div>
+          <p class="definition">
+            Los pre-entrenos combinan varios ingredientes para mejorar energía,
+            enfoque, congestión y rendimiento antes de entrenar.
+          </p>
+          <ul class="benefits-list">
+            <li>Aumentan energía y concentración.</li>
+            <li>Mejoran el pump muscular.</li>
+            <li>La citrulina favorece el flujo sanguíneo.</li>
+            <li>La beta-alanina ayuda frente a la fatiga.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">Según producto · 20–30 min antes</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Vitamina D3 + K2</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            La vitamina D y la K2 son relevantes para salud ósea, función inmune
+            y correcta gestión del calcio.
+          </p>
+          <ul class="benefits-list">
+            <li>Optimiza la salud ósea.</li>
+            <li>Apoya la función inmune.</li>
+            <li>Interesante con poca exposición solar.</li>
+            <li>Complementa otras estrategias de salud general.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">2000–4000 UI D3 · 100–200 mcg K2</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>L-Glutamina</h3>
+            <span class="supp-tag avanzado">Avanzado</span>
+          </div>
+          <p class="definition">
+            La glutamina puede ser útil en contextos de mucho volumen de
+            entrenamiento, estrés físico o recuperación elevada.
+          </p>
+          <ul class="benefits-list">
+            <li>Favorece la recuperación en alto volumen.</li>
+            <li>Apoya la salud intestinal.</li>
+            <li>Puede ayudar en periodos de mucho estrés físico.</li>
+            <li>Refuerza el soporte inmune.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">5–10 g post-entreno o antes de dormir</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Citrulina Malato</h3>
+            <span class="supp-tag avanzado">Avanzado</span>
+          </div>
+          <p class="definition">
+            La citrulina malato se usa para mejorar flujo sanguíneo, congestión
+            y resistencia en sesiones exigentes.
+          </p>
+          <ul class="benefits-list">
+            <li>Aumenta el pump y la vascularización.</li>
+            <li>Mejora resistencia muscular.</li>
+            <li>Reduce molestias tras el ejercicio.</li>
+            <li>Compatible con creatina y pre-entrenos.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">6–8 g · 30–60 min antes del entreno</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>HMB</h3>
+            <span class="supp-tag avanzado">Avanzado</span>
+          </div>
+          <p class="definition">
+            El HMB se usa sobre todo en etapas de déficit, vuelta al
+            entrenamiento o contextos donde interesa preservar masa muscular.
+          </p>
+          <ul class="benefits-list">
+            <li>Ayuda a preservar masa muscular.</li>
+            <li>Reduce daño muscular.</li>
+            <li>Puede acelerar ganancias iniciales de fuerza.</li>
+            <li>Útil en situaciones concretas.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">3 g diarios · dosis divididas</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Complejo Vitamínico B</h3>
+            <span class="supp-tag opcional">Opcional</span>
+          </div>
+          <p class="definition">
+            Las vitaminas del grupo B participan en metabolismo energético,
+            sistema nervioso y formación de glóbulos rojos.
+          </p>
+          <ul class="benefits-list">
+            <li>Optimiza el metabolismo energético.</li>
+            <li>Apoya sistema nervioso y función cognitiva.</li>
+            <li>Útil en personas con déficits.</li>
+            <li>Especial interés en dietas restrictivas.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">Según IDR · con el desayuno</div>
+          </div>
+        </article>
+
+        <article class="supp-card">
+          <div class="card-top">
+            <h3>Electrolitos</h3>
+            <span class="supp-tag avanzado">Avanzado</span>
+          </div>
+          <p class="definition">
+            Los electrolitos ayudan a mantener hidratación, contracción
+            muscular y rendimiento en sesiones largas o con mucho sudor.
+          </p>
+          <ul class="benefits-list">
+            <li>Previene deshidratación y calambres.</li>
+            <li>Mantiene el rendimiento en entrenamientos largos.</li>
+            <li>Ayuda al equilibrio hídrico.</li>
+            <li>Mejora la reposición durante el ejercicio.</li>
+          </ul>
+          <div class="dosage-block">
+            <div class="dosage-label">Dosis recomendada</div>
+            <div class="dosage-value">Según sudoración · durante el ejercicio</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Objetivos -->
+    <section class="section objetivos">
+      <h2>¿Qué tomar según tu objetivo?</h2>
+      <div class="goal-grid">
+        <article class="goal-card">
+          <div class="goal-title">Ganar músculo</div>
+          <ul class="goal-items">
+            <li><span class="goal-rank">1</span> Proteína Whey</li>
+            <li><span class="goal-rank">2</span> Creatina Monohidrato</li>
+            <li><span class="goal-rank">3</span> Zinc & Magnesio</li>
+            <li><span class="goal-rank">4</span> BCAAs / EAAs</li>
+            <li><span class="goal-rank">5</span> Caseína</li>
+          </ul>
+        </article>
+
+        <article class="goal-card">
+          <div class="goal-title">Perder grasa</div>
+          <ul class="goal-items">
+            <li><span class="goal-rank">1</span> Proteína Whey</li>
+            <li><span class="goal-rank">2</span> Cafeína</li>
+            <li><span class="goal-rank">3</span> Omega-3</li>
+            <li><span class="goal-rank">4</span> Creatina</li>
+            <li><span class="goal-rank">5</span> L-Carnitina</li>
+          </ul>
+        </article>
+
+        <article class="goal-card">
+          <div class="goal-title">Más rendimiento</div>
+          <ul class="goal-items">
+            <li><span class="goal-rank">1</span> Creatina Monohidrato</li>
+            <li><span class="goal-rank">2</span> Pre-entreno</li>
+            <li><span class="goal-rank">3</span> Cafeína</li>
+            <li><span class="goal-rank">4</span> Citrulina Malato</li>
+            <li><span class="goal-rank">5</span> Beta-Alanina</li>
+          </ul>
+        </article>
+
+        <article class="goal-card">
+          <div class="goal-title">Mejor recuperación</div>
+          <ul class="goal-items">
+            <li><span class="goal-rank">1</span> Zinc & Magnesio</li>
+            <li><span class="goal-rank">2</span> Proteína Whey</li>
+            <li><span class="goal-rank">3</span> Omega-3</li>
+            <li><span class="goal-rank">4</span> L-Glutamina</li>
+            <li><span class="goal-rank">5</span> Colágeno Hidrolizado</li>
+          </ul>
+        </article>
+
+        <article class="goal-card">
+          <div class="goal-title">Salud hormonal</div>
+          <ul class="goal-items">
+            <li><span class="goal-rank">1</span> Vitamina D3 + K2</li>
+            <li><span class="goal-rank">2</span> Zinc & Magnesio</li>
+            <li><span class="goal-rank">3</span> Ashwagandha KSM-66</li>
+            <li><span class="goal-rank">4</span> Omega-3</li>
+            <li><span class="goal-rank">5</span> Complejo Vitamínico B</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 Titan Lab.</p>
+    </footer>
+
+    <script>
+      const filterBtns = document.querySelectorAll(".filter-btn");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html> 

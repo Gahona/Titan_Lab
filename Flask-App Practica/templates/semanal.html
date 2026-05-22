@@ -14,15 +14,14 @@
             <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img"/>
             <span>Titan</span>Lab
         </a>
-
-        <nav>
-            <a href="/">Inicio</a>
-            <a href="#">Suplementos</a>
-            <a href="#">Ejercicios</a>
-            <a href="/rutina">Rutina</a>
-            <a href="/dieta">Dieta</a>
-            <a href="/planes">Planes</a>
-        </nav>
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/suplementacion">Suplementos</a>
+        <a href="#">Ejercicios</a>
+        <a href="/rutina" class="active">Rutina</a>
+        <a href="/dieta">Dieta</a>
+        <a href="/planes">Planes</a>
+    </nav>
         <!-- Botones de autenticación en el header -->
         <div class="auth-buttons">
             <!-- Comprueba si hay una sesión activa (usuario logueado) -->
@@ -47,7 +46,6 @@
 
     <section class="semana-section" id="rutina-semanal">
     <div class="semana-header">
-        <p class="section-label">// TU PLAN SEMANAL</p>
         <h2 class="section-title">RUTINA SEMANAL <span class="accent">DE GIMNASIO</span></h2>
         <p class="section-sub">Plan de entrenamiento dividido por días de la semana.</p>
 
@@ -75,7 +73,6 @@
     </section>
 
     <section class="page-hero" id="crear-rutina">
-    <p class="section-label">// PERSONALIZA TU ENTRENAMIENTO</p>
     <h1 class="page-title">CREA TU <span class="accent">RUTINA</span></h1>
     <p class="page-sub">Elige ejercicios del catálogo, asigna series y repeticiones a cada día.</p>
     </section>
@@ -137,7 +134,6 @@
 
     <section class="rutinas-guardadas-section">
     <div class="rutinas-guardadas-header">
-        <p class="section-label">// RUTINAS GUARDADAS</p>
         <h2 class="section-title">RUTINAS <span class="accent">CON NOMBRE</span></h2>
         <p class="section-sub">Aquí puedes ver las rutinas guardadas y las reseñas de otras personas con su puntuación.</p>
     </div>
@@ -147,7 +143,6 @@
 
     <section class="reseñas-section">
     <div class="rutinas-guardadas-header">
-        <p class="section-label">// DEJA TU OPINIÓN</p>
         <h2 class="section-title">RESEÑAS <span class="accent">Y PUNTUACIONES</span></h2>
         <p class="section-sub">Escribe una reseña y valora la rutina de 1 a 5 estrellas.</p>
     </div>

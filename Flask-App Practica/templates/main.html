@@ -15,8 +15,8 @@
       <span>Titan</span>Lab
     </a>
       <nav>
-        <a href="/">Inicio</a>
-        <a href="#">Suplementos</a>
+        <a href="/" class="active">Inicio</a>
+        <a href="/suplementacion">Suplementos</a>
         <a href="#">Ejercicios</a>
         <a href="/rutina">Rutina</a>
         <a href="/dieta">Dieta</a>
@@ -47,8 +47,8 @@
       <h1>TU MEJOR VERSIÓN EMPIEZA AQUÍ</h1>
 
       <div class="hero-buttons">
-        <button class="btn-primary" onclick="window.location.href='registro.html'">UNIRSE</button>        
-        <button class="btn-light" onclick="window.location.href='ejercicios.html'">Ejercicios</button>
+        <a href="{{ url_for('registro') }}" class="btn-primary">UNIRSE</a>              
+        <button class="btn-light" onclick="window.location.href='templates/ejercicios.html'">Ejercicios</button>
       </div>
     </section>
 

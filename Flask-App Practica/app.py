@@ -284,7 +284,6 @@ def rutina():
 
     return render_template('semanal.html', catalogo=catalogo, semanal=semanal)
 
-
 @app.route('/guardar_rutina', methods=['POST'])
 @login_required
 def guardar_rutina():
@@ -292,6 +291,10 @@ def guardar_rutina():
     # Aquí puedes insertar en la tabla `rutinas` de MySQL si quieres persistencia real
     return {'ok': True}, 200
 
+
+@app.route("/suplementacion")
+def suplementacion():
+    return render_template("suplementos.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
