@@ -1,175 +1,199 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rutina Semanal — TitanLab</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rutina Semanal — TitanLab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
 </head>
 <body>
 
-  <header class="site-header">
-    <a href="/" class="logo">
-      <img src="{{ url_for('static', filename='Titan-Lab-Logo.png') }}" alt="Titan Lab" class="logo-img"/>
-      <span class="logo-iron">Titan</span><span class="logo-path">Lab</span>
-    </a>
+    <header class="site-header">
+        <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img"/>
+            <span>Titan</span>Lab
+        </a>
+        <nav>
+            <a href="/" class="active">Inicio</a>
+            <a href="/suplementacion">Suplementos</a>
+            <a href="#">Ejercicios</a>
+            <a href="/rutina">Rutina</a>
+            <a href="/dieta">Dieta</a>
+            <a href="/planes">Planes</a>
+            {% if session.get('rol') == 'admin' %}
+            <a href="{{ url_for('panel_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
+            {% endif %}
+        </nav>
 
-    <nav class="site-nav">
-      <a href="#">Suplementos</a>
-      <a href="#">Ejercicios</a>
-      <a href="#rutina-semanal" class="nav-active">Rutina</a>
-      <a href="#">Dieta</a>
-      <a href="#">Planes</a>
-    </nav>
+        <div class="auth-buttons">
+            {% if session.get('id_usuario') %}
+                <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
+                    {{ session['nombre'] }}
+                </span>
+                <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+            {% else %}
+                <a href="/login"><button class="btn-secondary">Login</button></a>
+                <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+            {% endif %}
+        </div>
+    </header>
 
-    <a href="#" class="btn-cta">EMPIEZA YA</a>
-  </header>
 
-  {% set orden_dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
+    {% set orden_dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] %}
 
-  <section class="semana-section" id="rutina-semanal">
-    <div class="semana-header">
-      <p class="section-label">// TU PLAN SEMANAL</p>
-      <h2 class="section-title">RUTINA SEMANAL <span class="accent">DE GIMNASIO</span></h2>
-      <p class="section-sub">Plan de entrenamiento dividido por días de la semana.</p>
+    <section class="semana-section">
+        <div class="semana-header">
+            <h2 class="section-title">RUTINA SEMANAL <span class="accent">DE GIMNASIO</span></h2>
+            <p class="section-sub">Plan de entrenamiento dividido por días de la semana.</p>
 
-      <div class="rutina-name-box">
-        <label for="nombreRutina" class="rutina-name-label">Nombre de la rutina</label>
-        <input type="text" id="nombreRutina" class="rutina-name-input" placeholder="Ej: Fuerza, Hipertrofia, Push Pull Legs...">
-      </div>
-    </div>
+            <div class="rutina-name-box">
+                <label for="nombreRutina" class="rutina-name-label">Nombre de la rutina</label>
+                <input type="text" id="nombreRutina" class="rutina-name-input" placeholder="Ej: Fuerza, Hipertrofia, Push Pull Legs...">
+            </div>
 
-    <div class="semana">
-      {% for dia in orden_dias %}
-      <div class="dia">
-        <div class="dia-inner">
-          <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
-          <h3 class="titulo">{{ dia | upper }}</h3>
-          <ul class="ejercicios">
-            {% for ejercicio in semanal[dia] %}
-              <li>{{ ejercicio.nombre }} — {{ ejercicio.series }}×{{ ejercicio.reps }}</li>
+            <div class="rutina-name-box">
+                <label for="nivelRutina" class="rutina-name-label">Nivel</label>
+                <select id="nivelRutina" class="rutina-name-input">
+                    <option value="principiante">Principiante</option>
+                    <option value="intermedio" selected>Intermedio</option>
+                    <option value="avanzado">Avanzado</option>
+                </select>
+            </div>
+
+            <div class="rutina-name-box">
+                <label for="descRutina" class="rutina-name-label">Descripción (opcional)</label>
+                <input type="text" id="descRutina" class="rutina-name-input" placeholder="Breve descripción de tu rutina...">
+            </div>
+        </div>
+
+        <div class="semana">
+            {% for dia in orden_dias %}
+            <div class="dia">
+                <div class="dia-inner">
+                    <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
+                    <h3 class="titulo">{{ dia | upper }}</h3>
+                    <ul class="ejercicios">
+                        {% for ejercicio in semanal[dia] %}
+                            <li>{{ ejercicio.nombre }} — {{ ejercicio.series }}×{{ ejercicio.reps }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
             {% endfor %}
-          </ul>
         </div>
-      </div>
-      {% endfor %}
+    </section>
+
+    <section class="page-hero">
+        <h1 class="page-title">CREA TU <span class="accent">RUTINA</span></h1>
+        <p class="page-sub">Elige ejercicios del catálogo, asigna series y repeticiones a cada día.</p>
+    </section>
+
+    <div class="builder">
+        <aside class="catalogo-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">EJERCICIOS</h2>
+                <input type="text" id="buscador" class="buscador" placeholder="Buscar ejercicio..."/>
+            </div>
+
+            {% for grupo, ejercicios in catalogo.items() %}
+            <div class="grupo" data-grupo="{{ grupo }}">
+                <button class="grupo-toggle" type="button">
+                    <span>{{ grupo | upper }}</span>
+                    <span class="chevron">▾</span>
+                </button>
+                <ul class="grupo-lista">
+                    {% for ej in ejercicios %}
+                    <li class="ej-item" data-nombre="{{ ej }}">
+                        <span class="ej-nombre">{{ ej }}</span>
+                        <span class="ej-add-hint">+ añadir</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </aside>
+
+        <main class="dias-panel">
+            <div class="dias-acciones">
+                <button class="btn-guardar" id="btnGuardar" type="button">GUARDAR RUTINA</button>
+                <button class="btn-limpiar" id="btnLimpiar" type="button">LIMPIAR TODO</button>
+                <span class="save-msg" id="saveMsg"></span>
+            </div>
+
+            <div class="dias-grid">
+                {% for dia in orden_dias %}
+                <div class="dia-builder" data-dia="{{ dia }}">
+                    <div class="dia-builder-header">
+                        <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
+                        <h3 class="titulo">{{ dia | upper }}</h3>
+                    </div>
+
+                    <ul class="ejercicios-asignados" id="lista-{{ dia }}"></ul>
+
+                    <div class="dia-empty-msg" id="empty-{{ dia }}">
+                        Pulsa un ejercicio del catálogo para añadirlo aquí
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
     </div>
-  </section>
 
-  <section class="page-hero" id="crear-rutina">
-    <p class="section-label">// PERSONALIZA TU ENTRENAMIENTO</p>
-    <h1 class="page-title">CREA TU <span class="accent">RUTINA</span></h1>
-    <p class="page-sub">Elige ejercicios del catálogo, asigna series y repeticiones a cada día.</p>
-  </section>
-
-  <div class="builder">
-    <aside class="catalogo-panel">
-      <div class="panel-header">
-        <h2 class="panel-title">EJERCICIOS</h2>
-        <input type="text" id="buscador" class="buscador" placeholder="Buscar ejercicio..."/>
-      </div>
-
-      {% for grupo, ejercicios in catalogo.items() %}
-      <div class="grupo" data-grupo="{{ grupo }}">
-        <button class="grupo-toggle" type="button">
-          <span>{{ grupo | upper }}</span>
-          <span class="chevron">▾</span>
-        </button>
-        <ul class="grupo-lista">
-          {% for ej in ejercicios %}
-          <li class="ej-item" data-nombre="{{ ej }}">
-            <span class="ej-nombre">{{ ej }}</span>
-            <span class="ej-add-hint">+ añadir</span>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endfor %}
-    </aside>
-
-    <main class="dias-panel">
-      <div class="dias-acciones">
-        <button class="btn-guardar" id="btnGuardar" type="button">GUARDAR RUTINA</button>
-        <button class="btn-limpiar" id="btnLimpiar" type="button">LIMPIAR TODO</button>
-        <span class="save-msg" id="saveMsg"></span>
-      </div>
-
-      <div class="dias-grid">
-        {% for dia in orden_dias %}
-        <div class="dia-builder" data-dia="{{ dia }}">
-          <div class="dia-builder-header">
-            <span class="dia-num">{{ "%02d"|format(loop.index) }}</span>
-            <h3 class="titulo">{{ dia | upper }}</h3>
-          </div>
-
-          <ul class="ejercicios-asignados" id="lista-{{ dia }}"></ul>
-
-          <div class="dia-empty-msg" id="empty-{{ dia }}">
-            Pulsa un ejercicio del catálogo para añadirlo aquí
-          </div>
+    <section class="rutinas-guardadas-section">
+        <div class="rutinas-guardadas-header">
+            <h2 class="section-title">RUTINAS <span class="accent">GUARDADAS</span></h2>
+            <p class="section-sub">Aquí puedes ver las rutinas guardadas con sus ejercicios por día.</p>
         </div>
-        {% endfor %}
-      </div>
-    </main>
-  </div>
 
-  <section class="rutinas-guardadas-section">
-    <div class="rutinas-guardadas-header">
-      <p class="section-label">// RUTINAS GUARDADAS</p>
-      <h2 class="section-title">RUTINAS <span class="accent">CON NOMBRE</span></h2>
-      <p class="section-sub">Aquí puedes ver las rutinas guardadas y las reseñas de otras personas con su puntuación.</p>
-    </div>
+        <div id="rutinasGuardadas" class="rutinas-guardadas-grid"></div>
+    </section>
 
-    <div id="rutinasGuardadas" class="rutinas-guardadas-grid"></div>
-  </section>
-
-  <section class="reseñas-section">
-    <div class="rutinas-guardadas-header">
-      <p class="section-label">// DEJA TU OPINIÓN</p>
-      <h2 class="section-title">RESEÑAS <span class="accent">Y PUNTUACIONES</span></h2>
-      <p class="section-sub">Escribe una reseña y valora la rutina de 1 a 5 estrellas.</p>
-    </div>
-
-    <div class="review-form-box">
-      <input type="text" id="reviewNombre" class="review-input" placeholder="Tu nombre">
-      <textarea id="reviewTexto" class="review-textarea" placeholder="Escribe tu reseña..."></textarea>
-
-      <div class="rating-box">
-        <span class="rating-label">Puntuación</span>
-        <div class="stars" id="stars">
-          <button type="button" class="star-btn" data-value="1">★</button>
-          <button type="button" class="star-btn" data-value="2">★</button>
-          <button type="button" class="star-btn" data-value="3">★</button>
-          <button type="button" class="star-btn" data-value="4">★</button>
-          <button type="button" class="star-btn" data-value="5">★</button>
+    <section class="reseñas-section">
+        <div class="rutinas-guardadas-header">
+            <h2 class="section-title">RESEÑAS <span class="accent">Y PUNTUACIONES</span></h2>
+            <p class="section-sub">Escribe una reseña y valora la rutina de 1 a 5 estrellas.</p>
         </div>
-      </div>
 
-      <button type="button" id="btnEnviarReseña" class="btn-guardar">ENVIAR RESEÑA</button>
+        <div class="review-form-box">
+            <input type="text" id="reviewNombre" class="review-input" placeholder="Tu nombre">
+            <textarea id="reviewTexto" class="review-textarea" placeholder="Escribe tu reseña..."></textarea>
+
+            <div class="rating-box">
+                <span class="rating-label">Puntuación</span>
+                <div class="stars" id="stars">
+                    <button type="button" class="star-btn" data-value="1">★</button>
+                    <button type="button" class="star-btn" data-value="2">★</button>
+                    <button type="button" class="star-btn" data-value="3">★</button>
+                    <button type="button" class="star-btn" data-value="4">★</button>
+                    <button type="button" class="star-btn" data-value="5">★</button>
+                </div>
+            </div>
+
+            <button type="button" id="btnEnviarReseña" class="btn-guardar">ENVIAR RESEÑA</button>
+        </div>
+
+        <div id="listaReseñas" class="lista-reseñas"></div>
+    </section>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3 class="modal-title">¿A qué día añadir?</h3>
+            <p class="modal-ej-nombre" id="modalEjNombre"></p>
+            <div class="modal-dias" id="modalDias">
+                {% for dia in orden_dias %}
+                <button class="modal-dia-btn" type="button" data-dia="{{ dia }}">{{ dia | upper }}</button>
+                {% endfor %}
+            </div>
+            <button class="modal-cerrar" id="modalCerrar" type="button">CANCELAR</button>
+        </div>
     </div>
 
-    <div id="listaReseñas" class="lista-reseñas"></div>
-  </section>
+    <footer>
+        <p>&copy; 2026 Titan Labs</p>
+    </footer>
 
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <h3 class="modal-title">¿A qué día añadir?</h3>
-      <p class="modal-ej-nombre" id="modalEjNombre"></p>
-      <div class="modal-dias" id="modalDias">
-        {% for dia in orden_dias %}
-        <button class="modal-dia-btn" type="button" data-dia="{{ dia }}">{{ dia | upper }}</button>
-        {% endfor %}
-      </div>
-      <button class="modal-cerrar" id="modalCerrar" type="button">CANCELAR</button>
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2026 Titan Labs</p>
-  </footer>
-
-  <script>
+    <script>
     const DIAS = {{ orden_dias | tojson }};
     const STORAGE_KEY = "rutina_semanal_titanlab";
     const ROUTINES_KEY = "rutinas_con_nombre_titanlab";
@@ -180,7 +204,7 @@
 
     const serverData = {{ semanal | tojson }};
     DIAS.forEach(d => {
-      if (Array.isArray(serverData[d])) rutina[d] = serverData[d];
+        if (Array.isArray(serverData[d])) rutina[d] = serverData[d];
     });
 
     const modalOverlay = document.getElementById("modalOverlay");
@@ -192,6 +216,8 @@
     const btnLimpiar = document.getElementById("btnLimpiar");
     const saveMsg = document.getElementById("saveMsg");
     const nombreRutina = document.getElementById("nombreRutina");
+    const nivelRutina = document.getElementById("nivelRutina");
+    const descRutina = document.getElementById("descRutina");
     const rutinasGuardadas = document.getElementById("rutinasGuardadas");
     const reviewNombre = document.getElementById("reviewNombre");
     const reviewTexto = document.getElementById("reviewTexto");
@@ -202,309 +228,325 @@
     let ejercicioSeleccionado = null;
     let ratingActual = 0;
 
-    const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
     const cargarDesdeStorage = () => {
-      const guardado = localStorage.getItem(STORAGE_KEY);
-      if (!guardado) return;
-      try {
-        const data = JSON.parse(guardado);
-        DIAS.forEach(d => {
-          rutina[d] = Array.isArray(data[d]) ? data[d] : [];
-        });
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+        const guardado = localStorage.getItem(STORAGE_KEY);
+        if (!guardado) return;
+        try {
+            const data = JSON.parse(guardado);
+            DIAS.forEach(d => {
+                rutina[d] = Array.isArray(data[d]) ? data[d] : [];
+            });
+        } catch {
+            localStorage.removeItem(STORAGE_KEY);
+        }
     };
 
     const guardarEnStorage = () => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(rutina));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(rutina));
     };
 
     const leerRutinasGuardadas = () => {
-      try {
-        return JSON.parse(localStorage.getItem(ROUTINES_KEY) || "[]");
-      } catch {
-        return [];
-      }
+        try {
+            return JSON.parse(localStorage.getItem(ROUTINES_KEY) || "[]");
+        } catch {
+            return [];
+        }
     };
 
     const guardarRutinas = (arr) => {
-      localStorage.setItem(ROUTINES_KEY, JSON.stringify(arr));
+        localStorage.setItem(ROUTINES_KEY, JSON.stringify(arr));
     };
 
     const leerReseñas = () => {
-      try {
-        const reseñas = JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
-        let changed = false;
-
-        const actualizadas = reseñas.map(r => {
-          if (!r.id) {
-            changed = true;
-            return { id: uid(), ...r };
-          }
-          return r;
-        });
-
-        if (changed) localStorage.setItem(REVIEWS_KEY, JSON.stringify(actualizadas));
-        return actualizadas;
-      } catch {
-        return [];
-      }
+        try {
+            return JSON.parse(localStorage.getItem(REVIEWS_KEY) || "[]");
+        } catch {
+            return [];
+        }
     };
 
     const guardarReseñas = (arr) => {
-      localStorage.setItem(REVIEWS_KEY, JSON.stringify(arr));
+        localStorage.setItem(REVIEWS_KEY, JSON.stringify(arr));
     };
 
     function renderDia(dia) {
-      const lista = document.getElementById("lista-" + dia);
-      const emptyMsg = document.getElementById("empty-" + dia);
-      lista.innerHTML = "";
+        const lista = document.getElementById("lista-" + dia);
+        const emptyMsg = document.getElementById("empty-" + dia);
+        lista.innerHTML = "";
 
-      rutina[dia].forEach((e, idx) => {
-        const li = document.createElement("li");
-        li.className = "ej-asignado";
-        li.innerHTML = `
-          <div class="ej-asignado-top">
-            <span class="ej-asignado-nombre">${e.nombre}</span>
-            <button class="btn-eliminar" type="button" data-dia="${dia}" data-idx="${idx}" title="Eliminar">✕</button>
-          </div>
-          <div class="ej-controles">
-            <label>
-              <span>Series</span>
-              <input type="number" class="input-series" min="1" max="20" value="${e.series}" data-dia="${dia}" data-idx="${idx}"/>
-            </label>
-            <span class="x-sep">×</span>
-            <label>
-              <span>Reps</span>
-              <input type="number" class="input-reps" min="1" max="100" value="${e.reps}" data-dia="${dia}" data-idx="${idx}"/>
-            </label>
-          </div>
-        `;
-        lista.appendChild(li);
-      });
-
-      emptyMsg.style.display = rutina[dia].length === 0 ? "" : "none";
-
-      lista.querySelectorAll(".input-series").forEach(input => {
-        input.addEventListener("input", () => {
-          rutina[input.dataset.dia][input.dataset.idx].series = parseInt(input.value) || 1;
-          guardarEnStorage();
+        rutina[dia].forEach((e, idx) => {
+            const li = document.createElement("li");
+            li.className = "ej-asignado";
+            li.innerHTML = `
+                <div class="ej-asignado-top">
+                    <span class="ej-asignado-nombre">${e.nombre}</span>
+                    <button class="btn-eliminar" type="button" data-dia="${dia}" data-idx="${idx}" title="Eliminar">✕</button>
+                </div>
+                <div class="ej-controles">
+                    <label>
+                        <span>Series</span>
+                        <input type="number" class="input-series" min="1" max="20" value="${e.series}" data-dia="${dia}" data-idx="${idx}"/>
+                    </label>
+                    <span class="x-sep">×</span>
+                    <label>
+                        <span>Reps</span>
+                        <input type="number" class="input-reps" min="1" max="100" value="${e.reps}" data-dia="${dia}" data-idx="${idx}"/>
+                    </label>
+                </div>
+            `;
+            lista.appendChild(li);
         });
-      });
 
-      lista.querySelectorAll(".input-reps").forEach(input => {
-        input.addEventListener("input", () => {
-          rutina[input.dataset.dia][input.dataset.idx].reps = parseInt(input.value) || 1;
-          guardarEnStorage();
-        });
-      });
+        emptyMsg.style.display = rutina[dia].length === 0 ? "" : "none";
 
-      lista.querySelectorAll(".btn-eliminar").forEach(btn => {
-        btn.addEventListener("click", () => {
-          rutina[btn.dataset.dia].splice(parseInt(btn.dataset.idx), 1);
-          renderDia(btn.dataset.dia);
-          guardarEnStorage();
+        lista.querySelectorAll(".input-series").forEach(input => {
+            input.addEventListener("input", () => {
+                rutina[input.dataset.dia][input.dataset.idx].series = parseInt(input.value) || 1;
+                guardarEnStorage();
+            });
         });
-      });
+
+        lista.querySelectorAll(".input-reps").forEach(input => {
+            input.addEventListener("input", () => {
+                rutina[input.dataset.dia][input.dataset.idx].reps = parseInt(input.value) || 1;
+                guardarEnStorage();
+            });
+        });
+
+        lista.querySelectorAll(".btn-eliminar").forEach(btn => {
+            btn.addEventListener("click", () => {
+                rutina[btn.dataset.dia].splice(parseInt(btn.dataset.idx), 1);
+                renderDia(btn.dataset.dia);
+                guardarEnStorage();
+            });
+        });
     }
 
     function renderTodo() {
-      DIAS.forEach(d => renderDia(d));
+        DIAS.forEach(d => renderDia(d));
     }
 
     function cerrarModal() {
-      modalOverlay.classList.remove("visible");
-      ejercicioSeleccionado = null;
+        modalOverlay.classList.remove("visible");
+        ejercicioSeleccionado = null;
     }
 
     function añadirEjercicio(dia, nombre) {
-      rutina[dia].push({ nombre, series: 3, reps: 10 });
-      renderDia(dia);
-      guardarEnStorage();
+        rutina[dia].push({ nombre, series: 3, reps: 10 });
+        renderDia(dia);
+        guardarEnStorage();
     }
 
     function renderRutinasGuardadas() {
-      const rutinas = leerRutinasGuardadas();
+        const rutinas = leerRutinasGuardadas();
 
-      if (!rutinas.length) {
-        rutinasGuardadas.innerHTML = `<p class="dia-empty-msg">Todavía no hay rutinas guardadas.</p>`;
-        return;
-      }
+        if (!rutinas.length) {
+            rutinasGuardadas.innerHTML = `<p class="dia-empty-msg">Todavía no hay rutinas guardadas.</p>`;
+            return;
+        }
 
-      rutinasGuardadas.innerHTML = rutinas.map((r, index) => `
-        <article class="rutina-card">
-          <div class="rutina-card-top">
-            <h3>${r.nombre}</h3>
-            <button class="btn-eliminar-rutina" type="button" data-index="${index}">✕</button>
-          </div>
-          <ul>
-            ${DIAS.map(d => `<li><strong>${d}:</strong> ${(r.rutina[d] || []).length} ejercicios</li>`).join("")}
-          </ul>
-        </article>
-      `).join("");
+        rutinasGuardadas.innerHTML = rutinas.map((r, index) => `
+            <article class="rutina-card">
+                <div class="rutina-card-top">
+                    <h3>${r.nombre}</h3>
+                    <button class="btn-eliminar-rutina" type="button" data-index="${index}">✕</button>
+                </div>
 
-      document.querySelectorAll(".btn-eliminar-rutina").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const rutinasActuales = leerRutinasGuardadas();
-          rutinasActuales.splice(parseInt(btn.dataset.index), 1);
-          guardarRutinas(rutinasActuales);
-          renderRutinasGuardadas();
+                ${r.descripcion ? `<p><strong>Descripción:</strong> ${r.descripcion}</p>` : ""}
+                ${r.nivel ? `<p><strong>Nivel:</strong> ${r.nivel}</p>` : ""}
+
+                <div class="rutina-dias">
+                    ${DIAS.map(d => `
+                        <div class="rutina-dia">
+                            <h4>${d}</h4>
+                            ${
+                                (r.rutina[d] || []).length
+                                    ? `<ul class="rutina-dia-lista">
+                                        ${(r.rutina[d] || []).map(e => `<li>${e.nombre} — ${e.series}×${e.reps}</li>`).join("")}
+                                       </ul>`
+                                    : `<p class="dia-empty-msg">Sin ejercicios</p>`
+                            }
+                        </div>
+                    `).join("")}
+                </div>
+            </article>
+        `).join("");
+
+        document.querySelectorAll(".btn-eliminar-rutina").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const rutinasActuales = leerRutinasGuardadas();
+                rutinasActuales.splice(parseInt(btn.dataset.index), 1);
+                guardarRutinas(rutinasActuales);
+                renderRutinasGuardadas();
+            });
         });
-      });
     }
 
     function renderReseñas() {
-      const reseñas = leerReseñas();
-
-      if (!reseñas.length) {
-        listaReseñas.innerHTML = `<p class="dia-empty-msg">Todavía no hay reseñas.</p>`;
-        return;
-      }
-
-      listaReseñas.innerHTML = reseñas.map((r) => `
-        <article class="review-card">
-          <div class="review-top">
-            <strong>${r.nombre}</strong>
-            <div class="review-actions">
-              <span class="review-stars">${"★".repeat(r.puntuacion)}${"☆".repeat(5 - r.puntuacion)}</span>
-              <button type="button" class="btn-eliminar-reseña" data-id="${r.id}">✕</button>
-            </div>
-          </div>
-          <p>${r.texto}</p>
-        </article>
-      `).join("");
-
-      document.querySelectorAll(".btn-eliminar-reseña").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const reseñasActuales = leerReseñas();
-          const nuevas = reseñasActuales.filter(r => r.id !== btn.dataset.id);
-          guardarReseñas(nuevas);
-          renderReseñas();
-        });
-      });
+        const reseñas = leerReseñas();
+        listaReseñas.innerHTML = reseñas.length ? reseñas.map(r => `
+            <article class="review-card">
+                <div class="review-top">
+                    <strong>${r.nombre}</strong>
+                    <span class="review-stars">${"★".repeat(r.puntuacion)}${"☆".repeat(5 - r.puntuacion)}</span>
+                </div>
+                <p>${r.texto}</p>
+            </article>
+        `).join("") : `<p class="dia-empty-msg">Todavía no hay reseñas.</p>`;
     }
 
     document.querySelectorAll(".grupo-toggle").forEach(btn => {
-      btn.addEventListener("click", () => btn.closest(".grupo").classList.toggle("open"));
+        btn.addEventListener("click", () => btn.closest(".grupo").classList.toggle("open"));
     });
 
     document.querySelector(".grupo")?.classList.add("open");
 
     buscador.addEventListener("input", () => {
-      const q = buscador.value.toLowerCase().trim();
-      document.querySelectorAll(".grupo").forEach(grupo => {
-        let visible = 0;
-        grupo.querySelectorAll(".ej-item").forEach(item => {
-          const match = item.dataset.nombre.toLowerCase().includes(q);
-          item.style.display = match ? "" : "none";
-          if (match) visible++;
+        const q = buscador.value.toLowerCase().trim();
+        document.querySelectorAll(".grupo").forEach(grupo => {
+            let visible = 0;
+            grupo.querySelectorAll(".ej-item").forEach(item => {
+                const match = item.dataset.nombre.toLowerCase().includes(q);
+                item.style.display = match ? "" : "none";
+                if (match) visible++;
+            });
+            grupo.style.display = visible === 0 && q ? "none" : "";
+            if (q) grupo.classList.add("open");
         });
-        grupo.style.display = visible === 0 && q ? "none" : "";
-        if (q) grupo.classList.add("open");
-      });
     });
 
     document.querySelectorAll(".ej-item").forEach(item => {
-      item.addEventListener("click", () => {
-        ejercicioSeleccionado = item.dataset.nombre;
-        modalEjNombre.textContent = ejercicioSeleccionado;
-        modalOverlay.classList.add("visible");
-      });
+        item.addEventListener("click", () => {
+            ejercicioSeleccionado = item.dataset.nombre;
+            modalEjNombre.textContent = ejercicioSeleccionado;
+            modalOverlay.classList.add("visible");
+        });
     });
 
     modalDias.querySelectorAll(".modal-dia-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (ejercicioSeleccionado) añadirEjercicio(btn.dataset.dia, ejercicioSeleccionado);
-        cerrarModal();
-      });
+        btn.addEventListener("click", () => {
+            if (ejercicioSeleccionado) añadirEjercicio(btn.dataset.dia, ejercicioSeleccionado);
+            cerrarModal();
+        });
     });
 
     modalCerrar.addEventListener("click", cerrarModal);
     modalOverlay.addEventListener("click", e => {
-      if (e.target === modalOverlay) cerrarModal();
+        if (e.target === modalOverlay) cerrarModal();
     });
 
     btnGuardar.addEventListener("click", async () => {
-      const nombre = nombreRutina.value.trim();
-      if (!nombre) {
-        saveMsg.textContent = "Pon un nombre a la rutina";
-        return;
-      }
+        const nombre = nombreRutina.value.trim();
+        const nivel = nivelRutina.value;
+        const descripcion = descRutina.value.trim();
 
-      try {
-        const res = await fetch("/guardar_rutina", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nombre, rutina }),
+        if (!nombre) {
+            saveMsg.textContent = "Pon un nombre a la rutina";
+            saveMsg.classList.remove("ok");
+            return;
+        }
+
+        let totalEjercicios = 0;
+        DIAS.forEach(dia => {
+            totalEjercicios += rutina[dia].length;
         });
 
-        if (res.ok) {
-          const rutinas = leerRutinasGuardadas();
-          rutinas.unshift({ nombre, rutina });
-          guardarRutinas(rutinas);
-          guardarEnStorage();
-          renderRutinasGuardadas();
-          saveMsg.textContent = "✓ Rutina guardada";
-          saveMsg.classList.add("ok");
-          setTimeout(() => {
-            saveMsg.textContent = "";
+        if (totalEjercicios === 0) {
+            saveMsg.textContent = "Añade al menos un ejercicio";
             saveMsg.classList.remove("ok");
-          }, 3000);
+            return;
         }
-      } catch {
-        saveMsg.textContent = "Error al guardar";
-      }
+
+        try {
+            const res = await fetch("/guardar_rutina", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    titulo: nombre,
+                    descripcion: descripcion,
+                    nivel: nivel,
+                    publica: true,
+                    rutina: rutina
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                const rutinas = leerRutinasGuardadas();
+                rutinas.unshift({
+                    nombre,
+                    nivel,
+                    descripcion,
+                    rutina: JSON.parse(JSON.stringify(rutina))
+                });
+                guardarRutinas(rutinas);
+                guardarEnStorage();
+                renderRutinasGuardadas();
+
+                saveMsg.textContent = data.mensaje || "✓ Rutina enviada para revisión";
+                saveMsg.classList.add("ok");
+
+                nombreRutina.value = "";
+                descRutina.value = "";
+                nivelRutina.value = "intermedio";
+
+                setTimeout(() => {
+                    saveMsg.textContent = "";
+                    saveMsg.classList.remove("ok");
+                }, 4000);
+            } else {
+                saveMsg.textContent = data.mensaje || "Error al guardar";
+                saveMsg.classList.remove("ok");
+            }
+        } catch {
+            saveMsg.textContent = "Error de conexión";
+            saveMsg.classList.remove("ok");
+        }
     });
 
     btnLimpiar.addEventListener("click", () => {
-      if (!confirm("¿Seguro que quieres limpiar toda la rutina?")) return;
-      DIAS.forEach(d => { rutina[d] = []; });
-      localStorage.removeItem(STORAGE_KEY);
-      renderTodo();
-      saveMsg.textContent = "Rutina eliminada";
-      saveMsg.classList.add("ok");
-      setTimeout(() => {
-        saveMsg.textContent = "";
-        saveMsg.classList.remove("ok");
-      }, 2000);
+        if (!confirm("¿Seguro que quieres limpiar toda la rutina?")) return;
+        DIAS.forEach(d => { rutina[d] = []; });
+        localStorage.removeItem(STORAGE_KEY);
+        renderTodo();
+        saveMsg.textContent = "Rutina eliminada";
+        saveMsg.classList.add("ok");
+        setTimeout(() => {
+            saveMsg.textContent = "";
+            saveMsg.classList.remove("ok");
+        }, 2000);
     });
 
     stars.querySelectorAll(".star-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        ratingActual = parseInt(btn.dataset.value);
-        stars.querySelectorAll(".star-btn").forEach(star => {
-          star.classList.toggle("active", parseInt(star.dataset.value) <= ratingActual);
+        btn.addEventListener("click", () => {
+            ratingActual = parseInt(btn.dataset.value);
+            stars.querySelectorAll(".star-btn").forEach(star => {
+                star.classList.toggle("active", parseInt(star.dataset.value) <= ratingActual);
+            });
         });
-      });
     });
 
     btnEnviarReseña.addEventListener("click", () => {
-      const nombre = reviewNombre.value.trim();
-      const texto = reviewTexto.value.trim();
-      if (!nombre || !texto || !ratingActual) return;
+        const nombre = reviewNombre.value.trim();
+        const texto = reviewTexto.value.trim();
+        if (!nombre || !texto || !ratingActual) return;
 
-      const reseñas = leerReseñas();
-      reseñas.unshift({
-        id: uid(),
-        nombre,
-        texto,
-        puntuacion: ratingActual
-      });
-      guardarReseñas(reseñas);
-      renderReseñas();
+        const reseñas = leerReseñas();
+        reseñas.unshift({ nombre, texto, puntuacion: ratingActual });
+        guardarReseñas(reseñas);
+        renderReseñas();
 
-      reviewNombre.value = "";
-      reviewTexto.value = "";
-      ratingActual = 0;
-      stars.querySelectorAll(".star-btn").forEach(star => star.classList.remove("active"));
+        reviewNombre.value = "";
+        reviewTexto.value = "";
+        ratingActual = 0;
+        stars.querySelectorAll(".star-btn").forEach(star => star.classList.remove("active"));
     });
 
     cargarDesdeStorage();
     renderTodo();
     renderRutinasGuardadas();
     renderReseñas();
-  </script>
+    </script>
 </body>
 </html>
