@@ -395,12 +395,13 @@ def pago_exitoso():
 @app.route('/rutina')
 def rutina():
     catalogo = {
-        "Pecho": ["Press banca", "Press inclinado", "Aperturas", "Fondos"],
-        "Espalda": ["Dominadas", "Remo con barra", "Jalón al pecho", "Remo en polea"],
+        "Pecho": ["Press banca", "Press inclinado", "Aperturas"],
+        "Espalda": ["Dominadas", "Remo con barra" ],
         "Hombro": ["Press militar", "Elevaciones laterales", "Pájaros"],
-        "Pierna": ["Sentadilla", "Prensa", "Extensiones", "Curl femoral", "Gemelos"],
-        "Bíceps": ["Curl con barra", "Curl alterno", "Curl martillo"],
+        "Pierna": ["Sentadilla", "Prensa", "Extensiones"],
+        "Bíceps": ["Curl con barra","Curl martillo"],
         "Tríceps": ["Fondos en polea", "Press francés", "Extensión overhead"],
+        "Abdomen": ["Rueda abdominal", "Plancha"]
     }
 
     semanal = {
