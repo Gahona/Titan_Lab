@@ -38,15 +38,13 @@
       </div>
 
       <div class="s-sec">Panel</div>
-      <a href="{{ url_for('dashboard_admin') }}" class="nav-link active"
-        >Dashboard</a
-      >
+      <a href="{{ url_for('panel_admin') }}" class="nav-link active">Dashboard</a>
       <a href="#usuarios" class="nav-link">Usuarios</a>
       <a href="#moderacion" class="nav-link">Moderación</a>
       <a href="#actividad" class="nav-link">Actividad</a>
 
       <div class="s-sec">Gestión</div>
-      <a href="{{ url_for('main') }}" class="nav-link">Ir a la web</a>
+      <a href="{{ url_for('index') }}" class="nav-link">Ir a la web</a>
 
       <div class="s-foot">
         <div class="u-info">
@@ -60,19 +58,8 @@
             <div class="u-badge">Admin</div>
           </div>
         </div>
-        <a
-          href="{{ url_for('logout') }}"
-          class="icon-btn"
-          title="Cerrar sesión"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+        <a href="{{ url_for('logout') }}" class="icon-btn" title="Cerrar sesión">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
             <polyline points="16 17 21 12 16 7" />
             <line x1="21" y1="12" x2="9" y2="12" />
@@ -144,8 +131,7 @@
                     <td>{{ r.nombre_usuario }}</td>
                     <td>
                       <strong>{{ r.titulo }}</strong><br />
-                      {{ r.descripcion[:80] if r.descripcion else 'Sin
-                      descripción' }}...
+                      {{ r.descripcion[:80] if r.descripcion else 'Sin descripción' }}...
                     </td>
                     <td>{{ r.fecha_creacion }}</td>
                     <td>
@@ -153,12 +139,21 @@
                     </td>
                     <td>
                       <div class="acciones">
+                        <a
+                          href="{{ url_for('ver_rutina_admin', id_rutina=r.id_rutina) }}"
+                          class="btn-sm"
+                          style="text-decoration: none; display: inline-block; text-align: center;"
+                        >
+                          Ver detalle
+                        </a>
+
                         <form
                           method="POST"
                           action="{{ url_for('aprobar_rutina', id_rutina=r.id_rutina) }}"
                         >
                           <button class="btn-sm" type="submit">Aprobar</button>
                         </form>
+
                         <form
                           method="POST"
                           action="{{ url_for('rechazar_rutina', id_rutina=r.id_rutina) }}"
@@ -170,7 +165,9 @@
                       </div>
                     </td>
                   </tr>
-                  {% endfor %} {% for c in comentarios_pendientes %}
+                  {% endfor %}
+
+                  {% for c in comentarios_pendientes %}
                   <tr>
                     <td>Comentario</td>
                     <td>{{ c.nombre_usuario }}</td>
@@ -198,7 +195,9 @@
                       </div>
                     </td>
                   </tr>
-                  {% endfor %} {% for re in resenas_pendientes %}
+                  {% endfor %}
+
+                  {% for re in resenas_pendientes %}
                   <tr>
                     <td>Reseña</td>
                     <td>{{ re.nombre_usuario }}</td>
@@ -228,8 +227,9 @@
                       </div>
                     </td>
                   </tr>
-                  {% endfor %} {% if not rutinas_pendientes and not
-                  comentarios_pendientes and not resenas_pendientes %}
+                  {% endfor %}
+
+                  {% if not rutinas_pendientes and not comentarios_pendientes and not resenas_pendientes %}
                   <tr>
                     <td
                       colspan="6"

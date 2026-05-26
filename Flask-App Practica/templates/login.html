@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Iniciar sesión — Titan Labs</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='mainvilla.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='Logo_Titan_Lab.png') }}">
   <style>
@@ -158,13 +158,16 @@
       <span>Titan</span>Lab
     </a>
       <nav>
-        <a href="/">Inicio</a>
+        <a href="/" class="active">Inicio</a>
         <a href="/suplementacion">Suplementos</a>
         <a href="#">Ejercicios</a>
         <a href="/rutina">Rutina</a>
         <a href="/dieta">Dieta</a>
         <a href="/planes">Planes</a>
-      </nav>>
+        {% if session.get('rol') == 'admin' %}
+        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
+        {% endif %}
+      </nav>
       <!-- Botones de autenticación en el header -->
   <div class="auth-buttons">
   <!-- Comprueba si hay una sesión activa (usuario logueado) -->

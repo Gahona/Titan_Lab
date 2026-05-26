@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de rutina - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        .meta p {
+            margin: 6px 0;
+        }
+
+        .dias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dia-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .ejercicio {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .ejercicio:last-child {
+            border-bottom: none;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-volver {
+            background: #ddd;
+            color: #222;
+        }
+
+        .btn-aprobar {
+            background: #198754;
+            color: white;
+        }
+
+        .btn-rechazar {
+            background: #dc3545;
+            color: white;
+        }
+
+        .vacio {
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="card">
+            <h1>Detalle de rutina</h1>
+
+            <div class="meta">
+                <p><strong>Título:</strong> {{ rutina.titulo }}</p>
+                <p><strong>Usuario:</strong> {{ rutina.nombre_usuario }}</p>
+                <p><strong>Nivel:</strong> {{ rutina.nivel }}</p>
+                <p><strong>Estado:</strong> {{ rutina.estado }}</p>
+                <p><strong>Pública:</strong> {{ 'Sí' if rutina.publica else 'No' }}</p>
+                <p><strong>Fecha:</strong> {{ rutina.fecha_creacion }}</p>
+                <p><strong>Descripción:</strong> {{ rutina.descripcion or 'Sin descripción' }}</p>
+            </div>
+
+            <div class="acciones">
+                <a href="{{ url_for('panel_admin') }}" class="btn btn-volver">Volver</a>
+
+                <form method="POST" action="{{ url_for('aprobar_rutina', id_rutina=rutina.id_rutina) }}">
+                    <button type="submit" class="btn btn-aprobar">Aprobar rutina</button>
+                </form>
+
+                <form method="POST" action="{{ url_for('rechazar_rutina', id_rutina=rutina.id_rutina) }}">
+                    <button type="submit" class="btn btn-rechazar">Rechazar rutina</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="dias-grid">
+            {% for dia, ejercicios in rutina_por_dias.items() %}
+            <div class="dia-card">
+                <h3>{{ dia|capitalize }}</h3>
+
+                {% if ejercicios %}
+                    {% for ej in ejercicios %}
+                    <div class="ejercicio">
+                        <p><strong>{{ ej.nombre_ejercicio }}</strong></p>
+                        <p>Grupo muscular: {{ ej.grupo_muscular or 'No especificado' }}</p>
+                        <p>Series: {{ ej.series }} | Repeticiones: {{ ej.repeticiones }}</p>
+                        <p>Orden: {{ ej.orden_ejercicio }}</p>
+                        <p>Descanso: {{ ej.descanso_seg if ej.descanso_seg else 'No indicado' }}</p>
+                        <p>Notas: {{ ej.notas if ej.notas else 'Sin notas' }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="vacio">No hay ejercicios este día.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</body>
+</html>
