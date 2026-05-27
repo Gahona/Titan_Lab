@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
   </head>
   <body>
-    <!-- Header -->
     <header>
       <a href="{{ url_for('index') }}" class="logo">
         <img
@@ -27,7 +26,7 @@
         <a href="{{ url_for('planes') }}">Planes</a>
 
         {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">
+        <a href="{{ url_for('panel_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">
           Panel Admin
         </a>
         {% endif %}
@@ -56,7 +55,6 @@
       </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero">
       <h1>TU MEJOR VERSIÓN EMPIEZA AQUÍ</h1>
       <div class="hero-buttons">
@@ -67,84 +65,38 @@
       </div>
     </section>
 
-    <!-- Stats -->
     <section class="stats">
+      {% for item in stats %}
       <div class="stat-item">
-        <h2>+3,000</h2>
-        <p>Miembros activos</p>
+        <h2>{{ item.valor }}</h2>
+        <p>{{ item.label }}</p>
       </div>
-      <div class="stat-item">
-        <h2>180+</h2>
-        <p>Ejercicios</p>
-      </div>
-      <div class="stat-item">
-        <h2>99%</h2>
-        <p>Satisfacción</p>
-      </div>
+      {% endfor %}
     </section>
 
-    <!-- Suplementación -->
     <section class="section">
       <h2>Suplementación</h2>
       <div class="grid">
+        {% for suplemento in suplementos %}
         <div class="card">
-          <h3>Proteína</h3>
-          <img src="{{ url_for('static', filename='fotos_main/proteina.png') }}" alt="Proteína whey" />
-          <p>
-            Aumenta tu recuperación muscular y acelera tus resultados con proteína de alta calidad.
-          </p>
+          <h3>{{ suplemento.nombre }}</h3>
+          <img
+            src="{{ url_for('static', filename='fotos_main/' ~ suplemento.imagen) }}"
+            alt="{{ suplemento.alt }}"
+          />
+          <p>{{ suplemento.descripcion }}</p>
         </div>
-
-        <div class="card">
-          <h3>Creatina</h3>
-          <img src="{{ url_for('static', filename='fotos_main/creatina.png') }}" alt="Creatina" />
-          <p>
-            Mejora tu fuerza, potencia y rendimiento en cada entrenamiento.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Pre-entreno</h3>
-          <img src="{{ url_for('static', filename='fotos_main/prewornk.png') }}" alt="Pre-entreno" />
-          <p>
-            Activa tu energía y concentración antes de entrenar.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>BCAAs / EAAs</h3>
-          <img src="{{ url_for('static', filename='fotos_main/intrawork.png') }}" alt="BCAAs / EAAs" />
-          <p>
-            Protege tu masa muscular y mejora la recuperación.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Omega 3</h3>
-          <img src="{{ url_for('static', filename='fotos_main/omega3.png') }}" alt="Omega 3" />
-          <p>
-            Cuida tu corazón, articulaciones y bienestar general.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Zinc / Magnesio</h3>
-          <img src="{{ url_for('static', filename='fotos_main/zmzinc copy.png') }}" alt="Zinc y Magnesio" />
-          <p>
-            Mejora tu descanso, recuperación muscular y niveles de energía.
-          </p>
-        </div>
+        {% endfor %}
       </div>
     </section>
 
-    <!-- Colaboradores -->
     <section class="section colaboradores">
       <h2>Colaboradores de confianza</h2>
       <div class="colab-list">
         <a href="https://tienda.iogenixnutrition.com/" target="_blank" rel="noopener">
           <img
-            src="{{ url_for('static', filename='fotos_main/iogenix.logo-removebg-preview.png') }}"
-            alt="Io.Genix"
+            src="{{ url_for('static', filename='fotos_main/' ~ colaboradores[0].imagen) }}"
+            alt="{{ colaboradores[0].alt }}"
             width="150"
             height="80"
           />
@@ -152,8 +104,8 @@
 
         <a href="https://www.paypal.com" target="_blank" rel="noopener">
           <img
-            src="{{ url_for('static', filename='fotos_main/logopaypal-removebg-preview.png') }}"
-            alt="Paypal"
+            src="{{ url_for('static', filename='fotos_main/' ~ colaboradores[1].imagen) }}"
+            alt="{{ colaboradores[1].alt }}"
             width="150"
             height="80"
           />
@@ -161,8 +113,8 @@
 
         <a href="https://www.panattasport.com/es/" target="_blank" rel="noopener">
           <img
-            src="{{ url_for('static', filename='fotos_main/pannattaaa-removebg-preview.png') }}"
-            alt="Panatta"
+            src="{{ url_for('static', filename='fotos_main/' ~ colaboradores[2].imagen) }}"
+            alt="{{ colaboradores[2].alt }}"
             width="150"
             height="80"
           />
@@ -170,7 +122,6 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer>
       <p>© 2026 Titan Lab.</p>
     </footer>
