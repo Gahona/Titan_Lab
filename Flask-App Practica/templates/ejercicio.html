@@ -26,15 +26,15 @@
     </a>
 
     <nav>
-      <a href="/">Inicio</a>
-      <a href="/suplementacion">Suplementos</a>
-      <a href="/ejercicios" class="active">Ejercicios</a>
-      <a href="/rutina">Rutina</a>
-      <a href="/dieta">Dieta</a>
-      <a href="/planes">Planes</a>
-      {% if session.get('rol') == 'admin' %}
-      <a href="{{ url_for('dashboard_admin') }}" class="admin-link">Panel Admin</a>
-      {% endif %}
+        <a href="/" class="active">Inicio</a>
+        <a href="/suplementacion">Suplementos</a>
+        <a href="/ejercicios">Ejercicios</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/dieta">Dieta</a>
+        <a href="/planes">Planes</a>
+        {% if session.get('rol') == 'admin' %}
+        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
+        {% endif %}
     </nav>
 
     <div class="auth-buttons">
@@ -788,7 +788,7 @@
             <div class="gif-slot">
               <img src="{{ url_for('static', filename='gifs/plancha.gif') }}" alt="Plancha abdominal" />
             </div>
-            <span class="badge avanzado">Avanzado</span>
+            <span class="badge intermedio">Intermedio</span>
           </div>
           <div class="card-body">
             <h3 class="card-titulo">Plancha Abdominal</h3>
