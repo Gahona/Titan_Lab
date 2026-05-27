@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejercicios — Titan Lab</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='ejercicios.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">
+      <img
+        src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
+        alt="Titan Lab"
+        class="logo-img"
+      />
+      <span>Titan</span>Lab
+    </a>
+
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/suplementacion">Suplementos</a>
+      <a href="/ejercicios" class="active">Ejercicios</a>
+      <a href="/rutina">Rutina</a>
+      <a href="/dieta">Dieta</a>
+      <a href="/planes">Planes</a>
+      {% if session.get('rol') == 'admin' %}
+      <a href="{{ url_for('dashboard_admin') }}" class="admin-link">Panel Admin</a>
+      {% endif %}
+    </nav>
+
+    <div class="auth-buttons">
+      {% if session.get('id_usuario') %}
+      <span class="user-name">{{ session['nombre'] }}</span>
+      <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+      {% else %}
+      <a href="/login" class="btn-secondary">Login</a>
+      <a href="/registro" class="btn-primary">Registrarse</a>
+      {% endif %}
+    </div>
+
+    <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero-title">
+      DOMINA CADA<br />
+      <span class="accent">MÚSCULO</span><br />
+      DE TU CUERPO
+    </h1>
+    <p class="hero-sub">
+      Más de 180 ejercicios con instrucciones detalladas, vídeo guía y técnica perfecta.
+    </p>
+  </section>
+
+  <div class="filtros-bar">
+    <button class="filtro active" data-grupo="todos" type="button">Todos</button>
+    <button class="filtro" data-grupo="pecho" type="button">Pecho</button>
+    <button class="filtro" data-grupo="espalda" type="button">Espalda</button>
+    <button class="filtro" data-grupo="hombros" type="button">Hombros</button>
+    <button class="filtro" data-grupo="biceps" type="button">Bíceps</button>
+    <button class="filtro" data-grupo="triceps" type="button">Tríceps</button>
+    <button class="filtro" data-grupo="piernas" type="button">Piernas</button>
+    <button class="filtro" data-grupo="abdomen" type="button">Abdomen</button>
+  </div>
+
+  <main class="content">
+
+<!-- PECHO -->
+<section class="grupo" data-grupo="pecho">
+  <div class="grupo-header">
+    <h2 class="grupo-titulo">PECHO</h2>
+    <span class="grupo-count">3 ejercicios</span>
+  </div>
+
+  <div class="ejercicios-grid">
+    <article class="ejercicio-card">
+      <div class="card-media">
+        <div class="gif-slot">
+          <img src="{{ url_for('static', filename='gifs/press_banca.gif') }}" alt="Press de banca" />
+        </div>
+        <span class="badge basico">Básico</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-titulo">Press de Banca</h3>
+        <div class="card-tags">
+          <span class="tag">Barra</span>
+          <span class="tag">Pectoral mayor</span>
+          <span class="tag">Tríceps</span>
+        </div>
+        <p class="card-desc">
+          El ejercicio rey del pecho. Desarrolla masa y fuerza en el pectoral mayor, deltoides anterior y tríceps de forma bilateral.
+        </p>
+        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+          Ver instrucciones
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="instrucciones-panel">
+        <div class="instrucciones-inner">
+          <h4>Ejecución</h4>
+          <ol>
+            <li>Túmbate en el banco con los pies apoyados en el suelo. Agarra la barra con un agarre ligeramente más ancho que los hombros.</li>
+            <li>Desrackea la barra y colócala sobre el pecho con los codos a 45–75°.</li>
+            <li>Baja la barra de forma controlada hasta rozar el pecho, en la línea media-baja del pectoral.</li>
+            <li>Empuja explosivamente hasta extender los codos sin bloquearlos.</li>
+            <li>Mantén los omóplatos retraídos y el arco lumbar natural durante todo el movimiento.</li>
+          </ol>
+          <div class="tip">
+            <strong>Consejo</strong>
+            Mantén las muñecas neutras y los pulgares rodeando la barra. No rebotes la barra en el pecho.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ejercicio-card">
+      <div class="card-media">
+        <div class="gif-slot">
+          <img src="{{ url_for('static', filename='gifs/press_inclinado.gif') }}" alt="Press inclinado con mancuernas" />
+        </div>
+        <span class="badge basico">Básico</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-titulo">Press Inclinado con Mancuernas</h3>
+        <div class="card-tags">
+          <span class="tag">Mancuernas</span>
+          <span class="tag">Pectoral superior</span>
+        </div>
+        <p class="card-desc">
+          Enfatiza la porción clavicular del pectoral, aportando volumen y definición en la zona alta del pecho.
+        </p>
+        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+          Ver instrucciones
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="instrucciones-panel">
+        <div class="instrucciones-inner">
+          <h4>Ejecución</h4>
+          <ol>
+            <li>Ajusta el banco entre 30° y 45°. Siéntate con una mancuerna en cada mano apoyada en los muslos.</li>
+            <li>Con un impulso de rodillas, lleva las mancuernas a la posición inicial a la altura del pecho.</li>
+            <li>Baja de forma controlada abriendo los codos hasta notar estiramiento en el pectoral.</li>
+          </ol>
+          <div class="tip">
+            <strong>Consejo</strong>
+            No superes los 45° de inclinación; ángulos mayores trasladarían el trabajo a los deltoides anteriores.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="ejercicio-card">
+      <div class="card-media">
+        <div class="gif-slot">
+          <img src="{{ url_for('static', filename='gifs/aperturas_peck_deck.gif') }}" alt="Aperturas en polea" />
+        </div>
+        <span class="badge intermedio">Intermedio</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-titulo">Aperturas en Polea</h3>
+        <div class="card-tags">
+          <span class="tag">Polea</span>
+          <span class="tag">Aislamiento</span>
+          <span class="tag">Pectoral</span>
+        </div>
+        <p class="card-desc">
+          Maximiza el estiramiento y la contracción del pectoral en todo el rango de movimiento con tensión constante.
+        </p>
+        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+          Ver instrucciones
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="instrucciones-panel">
+        <div class="instrucciones-inner">
+          <h4>Ejecución</h4>
+          <ol>
+            <li>Ajusta las poleas a la altura del pecho o superior. Toma un agarre en cada mano y sitúate en el centro.</li>
+            <li>Da un paso adelante, pies a la anchura de los hombros, ligera inclinación hacia delante.</li>
+            <li>Con leve flexión en los codos, lleva las asas al centro describiendo un arco.</li>
+          </ol>
+          <div class="tip">
+            <strong>Consejo</strong>
+            Imagina que rodeas un árbol con los brazos. Mantén el codo ligeramente flexionado durante todo el recorrido.
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+    <!-- ESPALDA -->
+    <section class="grupo" data-grupo="espalda">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">ESPALDA</h2>
+        <span class="grupo-count">2 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/dominada.gif') }}" alt="Dominadas" />
+            </div>
+            <span class="badge avanzado">Avanzado</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Dominadas</h3>
+            <div class="card-tags">
+              <span class="tag">Peso corporal</span>
+              <span class="tag">Dorsal</span>
+              <span class="tag">Bíceps</span>
+            </div>
+            <p class="card-desc">
+              El mejor ejercicio compuesto para construir una espalda ancha y fuerte. Desarrolla toda la cadena posterior superior.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Cuelga de la barra con agarre prono, manos separadas ligeramente más que los hombros.</li>
+                <li>Deprime y retrae las escápulas antes de iniciar el tirón.</li>
+                <li>Tira del cuerpo hacia arriba llevando el pecho hacia la barra, codos hacia las caderas.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Si no alcanzas la repetición completa, usa una banda de asistencia o practica negativas para ganar fuerza.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/remo_en_barra.gif') }}" alt="Remo con barra" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Remo con Barra</h3>
+            <div class="card-tags">
+              <span class="tag">Barra</span>
+              <span class="tag">Dorsal</span>
+              <span class="tag">Trapecio</span>
+            </div>
+            <p class="card-desc">
+              Ejercicio compuesto de tirón horizontal que desarrolla el grosor de la espalda, trapecio y romboides.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Colócate de pie con pies a la anchura de los hombros. Inclina el torso unos 45° con la espalda recta.</li>
+                <li>Toma la barra con agarre prono a la anchura de los hombros.</li>
+                <li>Tira de la barra hacia el abdomen bajo, llevando los codos cerca del cuerpo.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Mantén la espalda neutral durante todo el movimiento. Evita el impulso de caderas para levantar más peso.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PIERNAS -->
+    <section class="grupo" data-grupo="piernas">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">PIERNAS</h2>
+        <span class="grupo-count">3 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/sentadilla.gif') }}" alt="Sentadilla trasera" />
+            </div>
+            <span class="badge basico">Básico</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Sentadilla Trasera</h3>
+            <div class="card-tags">
+              <span class="tag">Barra</span>
+              <span class="tag">Cuádriceps</span>
+              <span class="tag">Glúteos</span>
+            </div>
+            <p class="card-desc">
+              La reina de los ejercicios. Desarrolla cuádriceps, isquiotibiales, glúteos y core en un solo movimiento.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Sitúa la barra en el trapecio. Pies a la anchura de los hombros, puntas hacia fuera 15–30°.</li>
+                <li>Inspira, bloquea el core y rompe por caderas y rodillas simultáneamente.</li>
+                <li>Desciende manteniendo el pecho alto y las rodillas alineadas con los pies hasta paralelo o más.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Domina la técnica con poco peso antes de cargar. Una buena sentadilla profunda es más efectiva que una cargada y parcial.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/peso_muerto_rumano.gif') }}" alt="Peso muerto rumano" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Peso Muerto Rumano</h3>
+            <div class="card-tags">
+              <span class="tag">Barra / Mancuernas</span>
+              <span class="tag">Isquiotibiales</span>
+              <span class="tag">Glúteos</span>
+            </div>
+            <p class="card-desc">
+              Ejercicio de bisagra de cadera que estira e hipertrofia isquiotibiales y glúteos con una carga elevada.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De pie con pies a la anchura de caderas, barra o mancuernas delante de los muslos.</li>
+                <li>Con las rodillas ligeramente flexionadas, empuja las caderas hacia atrás.</li>
+                <li>Desliza la barra por las piernas manteniendo la espalda neutra hasta sentir tensión en isquiotibiales.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                El movimiento es una bisagra de cadera, no una sentadilla. Mantén la barra lo más cerca del cuerpo posible.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/extension_de_cuadriceps.gif') }}" alt="Extensión de cuádriceps" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Extensión de Cuádriceps</h3>
+            <div class="card-tags">
+              <span class="tag">Máquina</span>
+              <span class="tag">Cuádriceps</span>
+              <span class="tag">Aislamiento</span>
+            </div>
+            <p class="card-desc">
+              Ejercicio de aislamiento ideal para rematar el trabajo de cuádriceps con mucha tensión localizada.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Siéntate en la máquina con la espalda apoyada y las piernas bajo los rodillos acolchados.</li>
+                <li>Ajusta el eje de la máquina a la altura de las rodillas.</li>
+                <li>Extiende las piernas de forma controlada hasta contraer completamente los cuádriceps.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Desciende lentamente sin dejar caer el peso y manteniendo la tensión muscular.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOMBROS -->
+    <section class="grupo" data-grupo="hombros">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">HOMBROS</h2>
+        <span class="grupo-count">3 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/press_militar.gif') }}" alt="Press militar" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Press Militar</h3>
+            <div class="card-tags">
+              <span class="tag">Barra</span>
+              <span class="tag">Deltoides anterior</span>
+              <span class="tag">Tríceps</span>
+            </div>
+            <p class="card-desc">
+              Ejercicio fundamental para desarrollar hombros anchos y fuertes. Implica el deltoides en su totalidad y el tríceps.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De pie o sentado, agarra la barra con agarre prono a la anchura de los hombros, a la altura de la clavícula.</li>
+                <li>Bloquea el core y empuja la barra verticalmente sobre la cabeza metiendo la cabeza hacia atrás al pasar.</li>
+                <li>Extiende los codos completamente en la cima sin hiperlordosis lumbar.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Aprieta el core como si fueras a recibir un golpe. Evita arquear la espalda baja al empujar.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/elevacion_lateral.gif') }}" alt="Elevaciones laterales" />
+            </div>
+            <span class="badge basico">Básico</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Elevaciones Laterales</h3>
+            <div class="card-tags">
+              <span class="tag">Mancuernas</span>
+              <span class="tag">Deltoides lateral</span>
+              <span class="tag">Aislamiento</span>
+            </div>
+            <p class="card-desc">
+              El ejercicio imprescindible para ensanchar los hombros y dar esa apariencia en V tan buscada.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De pie, mancuernas a los lados del cuerpo con las palmas mirando hacia dentro.</li>
+                <li>Con el codo ligeramente flexionado, eleva los brazos lateralmente hasta la altura de los hombros.</li>
+                <li>Inclina el meñique ligeramente hacia arriba, como si vaciases agua de un vaso, para mayor activación del deltoides lateral.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Usa menos peso del que crees necesario. La clave es el control y la contracción, no la carga.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/pajaro.gif') }}" alt="Pájaro con mancuernas" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Pájaro con Mancuernas</h3>
+            <div class="card-tags">
+              <span class="tag">Mancuernas</span>
+              <span class="tag">Deltoides posterior</span>
+              <span class="tag">Romboides</span>
+            </div>
+            <p class="card-desc">
+              Trabaja el deltoides posterior, el músculo más olvidado y vital para el equilibrio y la salud del hombro.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Inclínate hacia delante hasta que el torso quede casi paralelo al suelo, rodillas ligeramente flexionadas.</li>
+                <li>Toma las mancuernas con las palmas enfrentadas. Mantén una ligera flexión en los codos.</li>
+                <li>Eleva los brazos lateralmente hasta la altura de los hombros, llevando los codos hacia arriba y atrás.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                No uses el impulso del cuerpo. Concéntrate en sentir el trabajo en la parte trasera del hombro.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- BÍCEPS -->
+    <section class="grupo" data-grupo="biceps">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">BÍCEPS</h2>
+        <span class="grupo-count">2 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/curl_de_biceps.gif') }}" alt="Curl convencional" />
+            </div>
+            <span class="badge basico">Básico</span>
+          </div>
+        <div class="card-body">
+            <h3 class="card-titulo">Curl Convencional</h3>
+            <div class="card-tags">
+                <span class="tag">Mancuernas</span>
+                <span class="tag">Bíceps braquial</span>
+                <span class="tag">Braquial</span>
+            </div>
+            <p class="card-desc">
+                El ejercicio de bíceps por excelencia. Permite mayor carga que con barra y una activación bilateral máxima.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+                Ver instrucciones
+                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+        </div>
+        <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+                <h4>Ejecución</h4>
+                <ol>
+                    <li>De pie con las mancuernas a la altura de los muslos, agarre supino a la anchura de los hombros.</li>
+                    <li>Mantén los codos pegados a los costados y flexiona llevando las mancuernas hacia los hombros.</li>
+                    <li>Aprieta los bíceps en la cima y baja de forma controlada hasta extensión casi completa.</li>
+                </ol>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/curl_martillo.gif') }}" alt="Curl martillo" />
+            </div>
+            <span class="badge basico">Básico</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Curl Martillo</h3>
+            <div class="card-tags">
+              <span class="tag">Mancuernas</span>
+              <span class="tag">Braquial</span>
+              <span class="tag">Braquiorradial</span>
+            </div>
+            <p class="card-desc">
+              Agarre neutro que ataca el braquial y el braquiorradial, añadiendo grosor al brazo que el curl clásico no alcanza.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De pie, mancuernas a los costados con las palmas enfrentadas, agarre neutro.</li>
+                <li>Flexiona el codo llevando la mancuerna hacia el hombro sin rotar la muñeca.</li>
+                <li>Contrae en la cima y baja de forma controlada manteniendo el agarre neutro.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Mantén la posición del codo fija durante todo el movimiento. Si el codo se mueve hacia delante, el peso es demasiado alto.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TRÍCEPS -->
+    <section class="grupo" data-grupo="triceps">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">TRÍCEPS</h2>
+        <span class="grupo-count">2 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/curl_frances.gif') }}" alt="Press francés" />
+            </div>
+            <span class="badge intermedio">Intermedio</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Press Francés</h3>
+            <div class="card-tags">
+              <span class="tag">Barra EZ</span>
+              <span class="tag">Cabeza larga</span>
+              <span class="tag">Tríceps</span>
+            </div>
+            <p class="card-desc">
+              Aísla la cabeza larga del tríceps, la más voluminosa, en posición de máximo estiramiento, ideal para ganar masa.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Túmbate en un banco plano con la barra EZ sobre el pecho, agarre prono estrecho.</li>
+                <li>Extiende los brazos verticalmente sobre la cabeza. Esta es la posición inicial.</li>
+                <li>Flexiona solo los codos bajando la barra hacia la frente o detrás de la cabeza.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Mantén los codos apuntando al techo durante todo el movimiento. Si se abren, el peso es excesivo.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/polea_alta.gif') }}" alt="Extensión en polea alta" />
+            </div>
+            <span class="badge basico">Básico</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Extensión en Polea Alta</h3>
+            <div class="card-tags">
+              <span class="tag">Polea</span>
+              <span class="tag">Tríceps</span>
+              <span class="tag">Aislamiento</span>
+            </div>
+            <p class="card-desc">
+              Ejercicio de aislamiento clásico para el tríceps. Permite una contracción completa y un control preciso de la carga.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Colócate frente a la polea alta con el agarre, barra, cuerda o V-bar, a la altura del pecho.</li>
+                <li>Posiciona los codos pegados al cuerpo, ligeramente hacia delante.</li>
+                <li>Empuja el agarre hacia abajo extendiendo los codos hasta bloqueo completo.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Con la cuerda, separa las manos al final de la extensión para maximizar la contracción del tríceps.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABDOMEN -->
+    <section class="grupo" data-grupo="abdomen">
+      <div class="grupo-header">
+        <h2 class="grupo-titulo">ABDOMEN</h2>
+        <span class="grupo-count">2 ejercicios</span>
+      </div>
+
+      <div class="ejercicios-grid">
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/rueda_abdominal.gif') }}" alt="Rueda abdominal" />
+            </div>
+            <span class="badge avanzado">Avanzado</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Rueda Abdominal</h3>
+            <div class="card-tags">
+              <span class="tag">Rueda</span>
+              <span class="tag">Core completo</span>
+              <span class="tag">Dorsal</span>
+            </div>
+            <p class="card-desc">
+              Uno de los ejercicios de core más demandantes. Trabaja el recto abdominal en todo su rango bajo gran tensión.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De rodillas, toma la rueda con ambas manos. Colócala bajo los hombros.</li>
+                <li>Aprieta el core y rueda hacia delante extendiendo caderas y hombros de forma controlada.</li>
+                <li>Detente antes de perder la tensión abdominal; el umbral lo irás ampliando con la práctica.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Empieza con recorridos cortos. El error más común es ir demasiado lejos y compensar con la espalda baja.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ejercicio-card">
+          <div class="card-media">
+            <div class="gif-slot">
+              <img src="{{ url_for('static', filename='gifs/plancha.gif') }}" alt="Plancha abdominal" />
+            </div>
+            <span class="badge avanzado">Avanzado</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-titulo">Plancha Abdominal</h3>
+            <div class="card-tags">
+              <span class="tag">Core</span>
+              <span class="tag">Estabilidad</span>
+              <span class="tag">Peso corporal</span>
+            </div>
+            <p class="card-desc">
+              Uno de los ejercicios de core más demandantes. Trabaja el recto abdominal en todo su rango bajo gran tensión.
+            </p>
+            <button class="btn-toggle" type="button" aria-expanded="false">
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+          <div class="instrucciones-panel">
+            <div class="instrucciones-inner">
+              <h4>Ejecución</h4>
+              <ol>
+                <li>Apoya los antebrazos y las puntas de los pies en el suelo.</li>
+                <li>Mantén el cuerpo recto desde la cabeza hasta los talones.</li>
+                <li>Contrae el abdomen y evita hundir la cadera o elevar demasiado los glúteos.</li>
+              </ol>
+              <div class="tip">
+                <strong>Consejo</strong>
+                Prioriza una postura perfecta antes que aguantar más tiempo.
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 <span>TITAN</span>LAB</p>
+  </footer>
+
+  <script>
+    function togglePanel(btn) {
+      const card = btn.closest('.ejercicio-card');
+      const panel = card.querySelector('.instrucciones-panel');
+      const open = panel.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+      const textNode = [...btn.childNodes].find(n => n.nodeType === 3);
+      if (textNode) {
+        textNode.textContent = open ? 'Ocultar instrucciones ' : 'Ver instrucciones ';
+      }
+    }
+
+    const filtros = document.querySelectorAll('.filtro');
+    const grupos = document.querySelectorAll('.grupo');
+
+    filtros.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filtros.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.grupo;
+
+        grupos.forEach(g => {
+          g.style.display = (target === 'todos' || g.dataset.grupo === target) ? '' : 'none';
+        });
+      });
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.querySelector('nav');
+    const authButtons = document.querySelector('.auth-buttons');
+
+    if (hamburger) {
+      hamburger.addEventListener('click', function () {
+        this.classList.toggle('active');
+        nav.classList.toggle('mobile-open');
+        authButtons.classList.toggle('mobile-open');
+      });
+    }
+  </script>
+</body>
+</html>

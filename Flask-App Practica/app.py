@@ -625,6 +625,9 @@ def ver_rutina_admin(id_rutina):
 def suplementacion():
     return render_template("suplementos.html")
 
+@app.route("/ejercicios")
+def ejercicios():
+    return render_template("ejercicio.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
