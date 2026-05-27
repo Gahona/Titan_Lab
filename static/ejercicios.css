@@ -1,7 +1,7 @@
-/* =============================================
+/* 
    TITAN LAB — ejercicios.css
-   Estética: dark fitness / brutalist gym
-   ============================================= */
+
+    */
 
 /* ---- Variables ---- */
 :root {
@@ -20,7 +20,7 @@
   --font-body:    'Barlow', sans-serif;
 }
 
-/* ---- Reset ---- */
+/*  Reset  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -36,9 +36,9 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-/* =============================================
+/* 
    HEADER
-   ============================================= */
+    */
 .site-header {
   position: sticky;
   top: 0;
@@ -46,9 +46,10 @@ a { text-decoration: none; color: inherit; }
   background: #0a0a08;
   border-bottom: 1px solid var(--border);
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  /* FIX: columna separada para cada btn-cta */
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
   padding: 0 40px;
   height: 64px;
 }
@@ -79,14 +80,8 @@ a { text-decoration: none; color: inherit; }
   transition: color .2s;
 }
 
-.nav-desktop a:hover,
-.nav-desktop a.active {
-  color: var(--white);
-}
-
-.nav-desktop a.active {
-  color: var(--lime);
-}
+.nav-desktop a:hover { color: var(--white); }
+.nav-desktop a.active { color: var(--lime); }
 
 .btn-cta {
   font-family: var(--font-display);
@@ -101,9 +96,19 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
   transition: opacity .2s, transform .15s;
   white-space: nowrap;
+  /* FIX: asegura que actúe como  clicable */
+  display: inline-block;
 }
 
 .btn-cta:hover { opacity: .88; transform: translateY(-1px); }
+
+/* FIX: segundo botón con borde en lugar de fondo sólido para distinguirlos */
+.btn-cta:last-of-type {
+  background: transparent;
+  color: var(--lime);
+  border: 1px solid var(--lime);
+}
+.btn-cta:last-of-type:hover { background: var(--lime-dim); }
 
 .hamburger {
   display: none;
@@ -122,9 +127,20 @@ a { text-decoration: none; color: inherit; }
   transition: all .3s;
 }
 
-/* =============================================
+/* FIX: animación hamburguesa cuando está activa */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* 
    HERO
-   ============================================= */
+    */
 .hero {
   position: relative;
   padding: 80px 40px 70px;
@@ -178,9 +194,9 @@ a { text-decoration: none; color: inherit; }
   user-select: none;
 }
 
-/* =============================================
+/* 
    FILTROS
-   ============================================= */
+    */
 .filtros-bar {
   display: flex;
   flex-wrap: wrap;
@@ -216,18 +232,18 @@ a { text-decoration: none; color: inherit; }
   color: #0a0a08;
 }
 
-/* =============================================
+/* 
    MAIN CONTENT
-   ============================================= */
+    */
 .content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0;
 }
 
-/* =============================================
+/* 
    GRUPO MUSCULAR
-   ============================================= */
+    */
 .grupo {
   padding: 56px 40px;
   border-bottom: 1px solid var(--border);
@@ -264,18 +280,18 @@ a { text-decoration: none; color: inherit; }
   padding: 3px 10px;
 }
 
-/* =============================================
+/* 
    GRID DE EJERCICIOS
-   ============================================= */
+    */
 .ejercicios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
-/* =============================================
+/* 
    CARD DE EJERCICIO
-   ============================================= */
+    */
 .ejercicio-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -288,7 +304,7 @@ a { text-decoration: none; color: inherit; }
   transform: translateY(-4px);
 }
 
-/* --- Media (GIF / imagen) --- */
+/*  Media (GIF / imagen)  */
 .card-media {
   position: relative;
   width: 100%;
@@ -298,30 +314,47 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
 }
 
-/* Cuando hay un GIF real, reemplaza .gif-slot por <img> directamente:
-   .card-media img { width:100%; height:100%; object-fit:cover; display:block; } */
-.card-media img {
+/* FIX: imagen directa  card-media */
+.card-media > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Placeholder sin gif */
+/* FIX: gif-slot ocupa  card-media */
 .gif-slot {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  position: relative;
+}
+
+/* FIX: la imagen dentro del span dentro del gif-slot */
+.gif-slot span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gif-slot span img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* FIX: icono SVG placeholder solo visible si no hay imagen */
+.gif-slot > svg {
+  position: relative;
+  z-index: 1;
   color: var(--gray-dim);
-  font-family: var(--font-display);
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  /* Se ocultará visualmente cuando la imagen cargue por encima */
 }
 
 /* Badge dificultad */
@@ -329,6 +362,7 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 2;
   font-family: var(--font-display);
   font-size: .65rem;
   font-weight: 700;
@@ -410,17 +444,18 @@ a { text-decoration: none; color: inherit; }
   transform: rotate(180deg);
 }
 
-/* =============================================
+/* 
    PANEL DE INSTRUCCIONES (colapsable)
-   ============================================= */
+    */
 .instrucciones-panel {
   max-height: 0;
   overflow: hidden;
   transition: max-height .4s cubic-bezier(.4, 0, .2, 1);
 }
 
+/* FIX: 1200px  */
 .instrucciones-panel.open {
-  max-height: 700px;
+  max-height: 1200px;
 }
 
 .instrucciones-inner {
@@ -488,9 +523,9 @@ a { text-decoration: none; color: inherit; }
   margin-bottom: 5px;
 }
 
-/* =============================================
+/* 
    FOOTER
-   ============================================= */
+    */
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 28px 40px;
@@ -508,27 +543,19 @@ a { text-decoration: none; color: inherit; }
 
 .site-footer span { color: var(--lime); }
 
-/* =============================================
-   CÓMO AÑADIR UN GIF REAL
-   =============================================
-   Dentro de .card-media, reemplaza todo el .gif-slot
-   por una etiqueta <img>:
-
-   <img src="gifs/nombre_ejercicio.gif" alt="Nombre ejercicio">
-
-   El CSS de .card-media img se encargará del resto.
-   ============================================= */
-
-/* =============================================
+/* 
    RESPONSIVE
-   ============================================= */
+    */
 @media (max-width: 900px) {
   .site-header {
+    /* FIX: en móvil hamburguesa */
     grid-template-columns: 1fr auto;
     padding: 0 20px;
   }
 
-  .nav-desktop, .btn-cta { display: none; }
+  .nav-desktop,
+  .btn-cta { display: none; }
+
   .hamburger { display: flex; }
 
   .hero { padding: 56px 20px 50px; }
@@ -538,6 +565,7 @@ a { text-decoration: none; color: inherit; }
 
   .grupo { padding: 40px 20px; }
 
+  /* FIX: en móvil una sola columna */
   .ejercicios-grid { grid-template-columns: 1fr; }
 
   .site-footer { padding: 24px 20px; }
