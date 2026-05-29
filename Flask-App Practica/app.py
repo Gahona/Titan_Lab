@@ -4,10 +4,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from config import config_activa
 
+
 app = Flask(__name__)
 app.config.from_object(config_activa)
 
+
 mysql = MySQL(app)
+
 
 # ─────────────────────────────────────────
 #  DECORADORES DE AUTENTICACIÓN Y ROLES
@@ -42,6 +45,7 @@ stats = [
     {"valor": "180+", "label": "Ejercicios"},
     {"valor": "99%", "label": "Satisfacción"},
 ]
+
 
 suplementos = [
     {
@@ -82,11 +86,13 @@ suplementos = [
     },
 ]
 
+
 colaboradores = [
     {"imagen": "iogenix.logo-removebg-preview.jpg", "alt": "Io.Genix"},
     {"imagen": "logopaypal-removebg-preview.jpg", "alt": "PayPal"},
     {"imagen": "pannattaaa-removebg-preview.jpg", "alt": "Panatta"},
 ]
+
 
 # ─────────────────────────────────────────
 #  AUTENTICACIÓN
@@ -239,6 +245,20 @@ def panel_admin():
     )
 
 
+@app.route('/dashboard_admin')
+@login_required
+@rol_required('admin')
+def dashboard_admin():
+    return panel_admin()
+
+
+@app.route('/admin/usuarios')
+@login_required
+@rol_required('admin')
+def usuarios_admin():
+    return panel_admin()
+
+
 @app.route('/admin/usuario/<int:id>/cambiar_rol', methods=['POST'])
 @login_required
 @rol_required('admin')
@@ -261,6 +281,7 @@ def cambiar_rol(id):
 @rol_required('coach', 'admin')
 def panel_coach():
     return render_template('coach/panel.html')
+
 
 # ─────────────────────────────────────────
 #  MODERACIÓN DE CONTENIDO
@@ -396,10 +417,10 @@ def pago_exitoso():
 def rutina():
     catalogo = {
         "Pecho": ["Press banca", "Press inclinado", "Aperturas"],
-        "Espalda": ["Dominadas", "Remo con barra" ],
+        "Espalda": ["Dominadas", "Remo con barra"],
         "Hombro": ["Press militar", "Elevaciones laterales", "Pájaros"],
         "Pierna": ["Sentadilla", "Prensa", "Extensiones"],
-        "Bíceps": ["Curl con barra","Curl martillo"],
+        "Bíceps": ["Curl con barra", "Curl martillo"],
         "Tríceps": ["Fondos en polea", "Press francés", "Extensión overhead"],
         "Abdomen": ["Rueda abdominal", "Plancha"]
     }
@@ -565,6 +586,7 @@ def guardar_rutina():
         if cur:
             cur.close()
 
+
 @app.route('/admin/rutina/<int:id_rutina>')
 @login_required
 @rol_required('admin')
@@ -621,13 +643,16 @@ def ver_rutina_admin(id_rutina):
         rutina_por_dias=rutina_por_dias
     )
 
+
 @app.route("/suplementacion")
 def suplementacion():
     return render_template("suplementos.html")
 
+
 @app.route("/ejercicios")
 def ejercicios():
     return render_template("ejercicio.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

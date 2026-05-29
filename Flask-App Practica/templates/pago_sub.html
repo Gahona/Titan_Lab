@@ -22,12 +22,12 @@
         </a>
 
     <nav>
-        <a href="/" class="active">Inicio</a>
+        <a href="/" >Inicio</a>
         <a href="/suplementacion">Suplementos</a>
         <a href="/ejercicios">Ejercicios</a>
         <a href="/rutina">Rutina</a>
         <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
+        <a href="/planes" class="active">Planes</a>
         {% if session.get('rol') == 'admin' %}
         <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
         {% endif %}

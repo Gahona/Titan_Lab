@@ -25,7 +25,7 @@
         <a href="/dieta">Dieta</a>
         <a href="/planes">Planes</a>
         {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
+        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #8a8702); font-weight: 600">Panel Admin</a>
         {% endif %}
       </nav>
 
@@ -57,12 +57,7 @@
       <h1>TU MEJOR VERSIÓN EMPIEZA AQUÍ</h1>
       <div class="hero-buttons">
         <a href="{{ url_for('registro') }}" class="btn-primary">UNIRSE</a>
-        <button
-          class="btn-light"
-          onclick="window.location.href = 'templates/ejercicios.html'"
-        >
-          Ejercicios
-        </button>
+        <a href="{{ url_for('ejercicios') }}" class="btn-light">Ejercicios</a>
       </div>
     </section>
 

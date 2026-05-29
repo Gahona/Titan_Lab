@@ -1,301 +1,250 @@
 <!doctype html>
 <html lang="es" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel Admin — Gym Project</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard_admin.css') }}" />
-  </head>
-  <body>
-    <aside class="sidebar">
-      <div class="s-logo">
-        <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-          <rect
-            width="32"
-            height="32"
-            rx="8"
-            fill="currentColor"
-            opacity=".1"
-          />
-          <path
-            d="M8 16h4l2-5 4 10 2-5h4"
-            stroke="currentColor"
-            stroke-width="2.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <span class="s-logo-name">Gym Project</span>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin | Gym Project</title>
 
-      <div class="s-sec">Panel</div>
-      <a href="{{ url_for('panel_admin') }}" class="nav-link active">Dashboard</a>
-      <a href="#usuarios" class="nav-link">Usuarios</a>
-      <a href="#moderacion" class="nav-link">Moderación</a>
-      <a href="#actividad" class="nav-link">Actividad</a>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
 
-      <div class="s-sec">Gestión</div>
-      <a href="{{ url_for('index') }}" class="nav-link">Ir a la web</a>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard_admin.css') }}">
+</head>
+<body>
 
-      <div class="s-foot">
-        <div class="u-info">
-          <div class="u-av">
-            {{ session['nombre'][0].upper() if session.get('nombre') else 'A' }}
-          </div>
-          <div>
-            <div class="u-name">
-              {{ session['nombre'] if session.get('nombre') else 'Admin' }}
-            </div>
-            <div class="u-badge">Admin</div>
-          </div>
-        </div>
-        <a href="{{ url_for('logout') }}" class="icon-btn" title="Cerrar sesión">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-        </a>
-      </div>
-    </aside>
-
-    <div class="main">
-      <header class="topbar">
-        <span class="topbar-title">Panel de administración</span>
-        <div class="topbar-actions">
-          <button
-            class="icon-btn"
-            data-theme-toggle
-            aria-label="Cambiar tema"
-          ></button>
-        </div>
-      </header>
-
-      <div class="content">
-        <!-- KPIs -->
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">Usuarios totales</div>
-            <div class="kpi-val">{{ total_usuarios }}</div>
-            <div class="kpi-delta">Registrados en la plataforma</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Rutinas pendientes</div>
-            <div class="kpi-val">{{ rutinas_pendientes|length }}</div>
-            <div class="kpi-delta">Esperando moderación</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Comentarios pendientes</div>
-            <div class="kpi-val">{{ comentarios_pendientes|length }}</div>
-            <div class="kpi-delta">Revisar antes de publicar</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Reseñas pendientes</div>
-            <div class="kpi-val">{{ resenas_pendientes|length }}</div>
-            <div class="kpi-delta">Productos y rutinas</div>
-          </div>
-        </div>
-
-        <!-- Panel principal -->
-        <div class="panel-grid">
-          <!-- Tabla de moderación -->
-          <section class="card" id="moderacion">
-            <div class="sec-hdr">
-              <h2 class="sec-title">Moderación de contenido</h2>
-            </div>
-            <div class="tbl-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Tipo</th>
-                    <th>Autor</th>
-                    <th>Contenido</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for r in rutinas_pendientes %}
-                  <tr>
-                    <td>Rutina</td>
-                    <td>{{ r.nombre_usuario }}</td>
-                    <td>
-                      <strong>{{ r.titulo }}</strong><br />
-                      {{ r.descripcion[:80] if r.descripcion else 'Sin descripción' }}...
-                    </td>
-                    <td>{{ r.fecha_creacion }}</td>
-                    <td>
-                      <span class="badge badge-pendiente">Pendiente</span>
-                    </td>
-                    <td>
-                      <div class="acciones">
-                        <a
-                          href="{{ url_for('ver_rutina_admin', id_rutina=r.id_rutina) }}"
-                          class="btn-sm"
-                          style="text-decoration: none; display: inline-block; text-align: center;"
-                        >
-                          Ver detalle
-                        </a>
-
-                        <form
-                          method="POST"
-                          action="{{ url_for('aprobar_rutina', id_rutina=r.id_rutina) }}"
-                        >
-                          <button class="btn-sm" type="submit">Aprobar</button>
-                        </form>
-
-                        <form
-                          method="POST"
-                          action="{{ url_for('rechazar_rutina', id_rutina=r.id_rutina) }}"
-                        >
-                          <button class="btn-sm btn-danger" type="submit">
-                            Rechazar
-                          </button>
-                        </form>
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-
-                  {% for c in comentarios_pendientes %}
-                  <tr>
-                    <td>Comentario</td>
-                    <td>{{ c.nombre_usuario }}</td>
-                    <td>{{ c.comentario }}</td>
-                    <td>{{ c.fecha }}</td>
-                    <td>
-                      <span class="badge badge-pendiente">Pendiente</span>
-                    </td>
-                    <td>
-                      <div class="acciones">
-                        <form
-                          method="POST"
-                          action="{{ url_for('aprobar_comentario', id_comentario=c.id_comentario) }}"
-                        >
-                          <button class="btn-sm" type="submit">Aprobar</button>
-                        </form>
-                        <form
-                          method="POST"
-                          action="{{ url_for('rechazar_comentario', id_comentario=c.id_comentario) }}"
-                        >
-                          <button class="btn-sm btn-danger" type="submit">
-                            Rechazar
-                          </button>
-                        </form>
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-
-                  {% for re in resenas_pendientes %}
-                  <tr>
-                    <td>Reseña</td>
-                    <td>{{ re.nombre_usuario }}</td>
-                    <td>
-                      {{ re.comentario if re.comentario else 'Sin comentario' }}
-                    </td>
-                    <td>{{ re.fecha }}</td>
-                    <td>
-                      <span class="badge badge-pendiente">Pendiente</span>
-                    </td>
-                    <td>
-                      <div class="acciones">
-                        <form
-                          method="POST"
-                          action="{{ url_for('aprobar_resena', tipo=re.tipo, id_resena=re.id_resena) }}"
-                        >
-                          <button class="btn-sm" type="submit">Aprobar</button>
-                        </form>
-                        <form
-                          method="POST"
-                          action="{{ url_for('rechazar_resena', tipo=re.tipo, id_resena=re.id_resena) }}"
-                        >
-                          <button class="btn-sm btn-danger" type="submit">
-                            Rechazar
-                          </button>
-                        </form>
-                      </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-
-                  {% if not rutinas_pendientes and not comentarios_pendientes and not resenas_pendientes %}
-                  <tr>
-                    <td
-                      colspan="6"
-                      style="
-                        color: var(--muted);
-                        text-align: center;
-                        padding: var(--s8);
-                      "
-                    >
-                      ✅ No hay contenido pendiente de moderación.
-                    </td>
-                  </tr>
-                  {% endif %}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- Resumen rápido -->
-          <aside class="card" id="actividad">
-            <div class="sec-hdr">
-              <h2 class="sec-title">Resumen rápido</h2>
-            </div>
-            <div class="mini-list">
-              <div class="mini-item">
-                <div class="mini-top">
-                  <span class="mini-title">Admins</span>
-                  <span class="badge badge-admin">{{ total_admins }}</span>
-                </div>
-                <div class="mini-meta">Cuentas con privilegios altos.</div>
-              </div>
-              <div class="mini-item">
-                <div class="mini-top">
-                  <span class="mini-title">Clientes</span>
-                  <span class="badge badge-cliente">{{ total_clientes }}</span>
-                </div>
-                <div class="mini-meta">Usuarios estándar registrados.</div>
-              </div>
-              <div class="mini-item">
-                <div class="mini-top">
-                  <span class="mini-title">Coaches</span>
-                  <span class="badge badge-cliente">{{ total_coaches }}</span>
-                </div>
-                <div class="mini-meta">Usuarios con rol coach.</div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
+  <aside class="sidebar">
+    <div class="s-logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor" opacity=".1"/>
+        <path d="M8 16h4l2-5 4 10 2-5h4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="s-logo-name">Gym Project</span>
     </div>
 
-    <script>
-      (function () {
-        const t = document.querySelector("[data-theme-toggle]"),
-          r = document.documentElement;
-        let d = matchMedia("(prefers-color-scheme:dark)").matches
-          ? "dark"
-          : "light";
-        r.setAttribute("data-theme", d);
-        const sun =
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
-        const moon =
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-        if (t) {
-          t.innerHTML = d === "dark" ? sun : moon;
-          t.addEventListener("click", () => {
-            d = d === "dark" ? "light" : "dark";
-            r.setAttribute("data-theme", d);
-            t.innerHTML = d === "dark" ? sun : moon;
-          });
-        }
-      })();
-    </script>
-  </body>
+    <div class="s-sec">Panel</div>
+    <a href="{{ url_for('panel_admin') }}" class="nav-link active">Dashboard</a>
+    <a href="{{ url_for('usuarios_admin') }}" class="nav-link">Usuarios</a>
+    <a href="#moderacion" class="nav-link">Moderación</a>
+    <a href="#actividad" class="nav-link">Actividad</a>
+
+    <div class="s-sec">Gestión</div>
+    <a href="{{ url_for('index') }}" class="nav-link">Ir a la web</a>
+
+    <div class="s-foot">
+      <div class="u-info">
+        <div class="u-av">{{ session['nombre'][0].upper() if session.get('nombre') else 'A' }}</div>
+        <div>
+          <div class="u-name">{{ session['nombre'] if session.get('nombre') else 'Admin' }}</div>
+          <div class="u-badge">Admin</div>
+        </div>
+      </div>
+
+      <a href="{{ url_for('logout') }}" class="icon-btn" title="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="topbar-title">Panel de administración</span>
+      <div class="topbar-actions">
+        <button class="icon-btn" data-theme-toggle aria-label="Cambiar tema"></button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Usuarios totales</div>
+          <div class="kpi-val">{{ total_usuarios }}</div>
+          <div class="kpi-delta">Registrados en la plataforma</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Rutinas pendientes</div>
+          <div class="kpi-val">{{ rutinas_pendientes|length }}</div>
+          <div class="kpi-delta">Esperando moderación</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Comentarios pendientes</div>
+          <div class="kpi-val">{{ comentarios_pendientes|length }}</div>
+          <div class="kpi-delta">Revisar antes de publicar</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Reseñas pendientes</div>
+          <div class="kpi-val">{{ resenas_pendientes|length }}</div>
+          <div class="kpi-delta">Productos y rutinas</div>
+        </div>
+      </div>
+
+      <!-- Panel principal -->
+      <div class="panel-grid">
+        <!-- Tabla de moderación -->
+        <section class="card" id="moderacion">
+          <div class="sec-hdr">
+            <h2 class="sec-title">Moderación de contenido</h2>
+          </div>
+
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Autor</th>
+                  <th>Contenido</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in rutinas_pendientes %}
+                <tr>
+                  <td>Rutina</td>
+                  <td>{{ r.nombre_usuario }}</td>
+                  <td>
+                    <strong>{{ r.titulo }}</strong><br>
+                    {{ r.descripcion[:80] if r.descripcion else 'Sin descripción' }}...
+                  </td>
+                  <td>{{ r.fecha_creacion }}</td>
+                  <td><span class="badge badge-pendiente">Pendiente</span></td>
+                  <td>
+                    <div class="acciones">
+                      <a href="{{ url_for('ver_rutina_admin', id_rutina=r.id_rutina) }}" class="btn-sm" style="text-decoration:none; display:inline-block; text-align:center;">
+                        Ver detalle
+                      </a>
+
+                      <form method="POST" action="{{ url_for('aprobar_rutina', id_rutina=r.id_rutina) }}">
+                        <button class="btn-sm" type="submit">Aprobar</button>
+                      </form>
+
+                      <form method="POST" action="{{ url_for('rechazar_rutina', id_rutina=r.id_rutina) }}">
+                        <button class="btn-sm btn-danger" type="submit">Rechazar</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+
+                {% for c in comentarios_pendientes %}
+                <tr>
+                  <td>Comentario</td>
+                  <td>{{ c.nombre_usuario }}</td>
+                  <td>{{ c.comentario }}</td>
+                  <td>{{ c.fecha }}</td>
+                  <td><span class="badge badge-pendiente">Pendiente</span></td>
+                  <td>
+                    <div class="acciones">
+                      <form method="POST" action="{{ url_for('aprobar_comentario', id_comentario=c.id_comentario) }}">
+                        <button class="btn-sm" type="submit">Aprobar</button>
+                      </form>
+
+                      <form method="POST" action="{{ url_for('rechazar_comentario', id_comentario=c.id_comentario) }}">
+                        <button class="btn-sm btn-danger" type="submit">Rechazar</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+
+                {% for re in resenas_pendientes %}
+                <tr>
+                  <td>Reseña</td>
+                  <td>{{ re.nombre_usuario }}</td>
+                  <td>{{ re.comentario if re.comentario else 'Sin comentario' }}</td>
+                  <td>{{ re.fecha }}</td>
+                  <td><span class="badge badge-pendiente">Pendiente</span></td>
+                  <td>
+                    <div class="acciones">
+                      <form method="POST" action="{{ url_for('aprobar_resena', tipo=re.tipo, id_resena=re.id_resena) }}">
+                        <button class="btn-sm" type="submit">Aprobar</button>
+                      </form>
+
+                      <form method="POST" action="{{ url_for('rechazar_resena', tipo=re.tipo, id_resena=re.id_resena) }}">
+                        <button class="btn-sm btn-danger" type="submit">Rechazar</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+
+                {% if not rutinas_pendientes and not comentarios_pendientes and not resenas_pendientes %}
+                <tr>
+                  <td colspan="6" style="color: var(--muted); text-align: center; padding: var(--s8);">
+                    No hay contenido pendiente de moderación.
+                  </td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Resumen rápido -->
+        <aside class="card" id="actividad">
+          <div class="sec-hdr">
+            <h2 class="sec-title">Resumen rápido</h2>
+          </div>
+
+          <div class="mini-list">
+            <div class="mini-item">
+              <div class="mini-top">
+                <span class="mini-title">Admins</span>
+                <span class="badge badge-admin">{{ total_admins }}</span>
+              </div>
+              <div class="mini-meta">Cuentas con privilegios altos.</div>
+            </div>
+
+            <div class="mini-item">
+              <div class="mini-top">
+                <span class="mini-title">Clientes</span>
+                <span class="badge badge-cliente">{{ total_clientes }}</span>
+              </div>
+              <div class="mini-meta">Usuarios estándar registrados.</div>
+            </div>
+
+            <div class="mini-item">
+              <div class="mini-top">
+                <span class="mini-title">Coaches</span>
+                <span class="badge badge-cliente">{{ total_coaches }}</span>
+              </div>
+              <div class="mini-meta">Usuarios con rol coach.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const t = document.querySelector('[data-theme-toggle]');
+      const r = document.documentElement;
+      let d = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+      r.setAttribute('data-theme', d);
+
+      const sun = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+      const moon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+      if (t) {
+        t.innerHTML = d === 'dark' ? sun : moon;
+        t.addEventListener('click', () => {
+          d = d === 'dark' ? 'light' : 'dark';
+          r.setAttribute('data-theme', d);
+          t.innerHTML = d === 'dark' ? sun : moon;
+        });
+      }
+    })();
+  </script>
+</body>
 </html>
