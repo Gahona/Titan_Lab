@@ -4,203 +4,239 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle Rutina — Admin Titan Lab</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='dashboard_admin.css') }}">
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     SIDEBAR
-══════════════════════════════════════════ -->
-<aside class="sidebar">
-
-  <a href="{{ url_for('index') }}" class="s-logo">
-    <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="s-logo-img">
-    <span class="s-logo-name">Titan<span>Lab</span></span>
-  </a>
-
-  <div class="s-sec">Panel</div>
-  <a href="{{ url_for('panel_admin') }}" class="nav-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-    Dashboard
-  </a>
-  <a href="{{ url_for('usuarios_admin') }}" class="nav-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-    Usuarios
-  </a>
-  <a href="{{ url_for('panel_admin') }}#moderacion" class="nav-link active">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    Moderación
-  </a>
-  <a href="{{ url_for('panel_admin') }}#actividad" class="nav-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    Actividad
-  </a>
-
-  <div class="s-sec">Gestión</div>
-  <a href="{{ url_for('index') }}" class="nav-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Ir a la web
-  </a>
-
-  <div class="s-foot">
-    <div class="u-info">
-      <div class="u-av">{{ session.get('nombre', 'A')[0].upper() }}</div>
-      <div>
-        <div class="u-name">{{ session.get('nombre', 'Admin') }}</div>
-        <div class="u-badge">Admin</div>
-      </div>
-    </div>
-    <a href="{{ url_for('logout') }}" class="icon-btn" title="Cerrar sesión">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-        <polyline points="16 17 21 12 16 7"/>
-        <line x1="21" y1="12" x2="9" y2="12"/>
-      </svg>
+  <aside class="sidebar">
+    <a href="{{ url_for('index') }}" class="s-logo">
+      <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="s-logo-img">
+      <span class="s-logo-name">Titan<span>Lab</span></span>
     </a>
-  </div>
-</aside>
 
-<!-- ══════════════════════════════════════════
-     MAIN
-══════════════════════════════════════════ -->
-<div class="main">
+    <div class="s-sec">Panel</div>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div style="display:flex; align-items:center; gap:var(--s3);">
-      <a href="{{ url_for('panel_admin') }}" class="icon-btn" title="Volver al dashboard">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    <a href="{{ url_for('panel_admin') }}" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+
+    <a href="{{ url_for('usuarios_admin') }}" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+      Usuarios
+    </a>
+
+    <a href="{{ url_for('panel_admin') }}#moderacion" class="nav-link active">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 11l3 3L22 4"></path>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+      </svg>
+      Moderación
+    </a>
+
+    <a href="{{ url_for('panel_admin') }}#actividad" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      Actividad
+    </a>
+
+    <div class="s-sec">Gestión</div>
+
+    <a href="{{ url_for('index') }}" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      Ir a la web
+    </a>
+
+    <div class="s-foot">
+      <div class="u-info">
+        <div class="u-av">{{ session.get('nombre', 'A')[0].upper() }}</div>
+        <div>
+          <div class="u-name">{{ session.get('nombre', 'Admin') }}</div>
+          <div class="u-badge">Admin</div>
+        </div>
+      </div>
+
+      <a href="{{ url_for('logout') }}" class="icon-btn" title="Cerrar sesión">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
       </a>
-      <span class="topbar-title">Detalle de Rutina</span>
     </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" data-theme-toggle aria-label="Cambiar tema"></button>
-    </div>
-  </header>
+  </aside>
 
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- ── Info principal ─────────────────────── -->
-    <div class="card" style="margin-bottom:var(--s6);">
-      <div class="sec-hdr">
-        <h2 class="sec-title">{{ rutina.titulo }}</h2>
-        <span class="badge
-          {% if rutina.estado == 'aprobada' %}badge-ok
-          {% elif rutina.estado == 'rechazada' %}badge-rechazado
-          {% else %}badge-pendiente{% endif %}">
-          {{ rutina.estado | capitalize }}
-        </span>
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:var(--s3);">
+        <a href="{{ url_for('panel_admin') }}" class="icon-btn" title="Volver al dashboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </a>
+        <span class="topbar-title">Detalle de Rutina</span>
       </div>
 
-      <!-- Meta datos -->
-      <div class="meta-grid">
-        <div class="meta-item">
+      <div class="topbar-actions">
+        <button class="icon-btn" data-theme-toggle aria-label="Cambiar tema"></button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="kpi-grid" style="margin-bottom: var(--s6);">
+        <div class="kpi">
           <div class="kpi-label">Usuario</div>
-          <div class="meta-val">{{ rutina.nombre_usuario }}</div>
+          <div class="kpi-val" style="font-size:1.6rem;">{{ rutina.nombre_usuario }}</div>
+          <div class="kpi-delta">Propietario de la rutina</div>
         </div>
-        <div class="meta-item">
+
+        <div class="kpi">
           <div class="kpi-label">Nivel</div>
-          <div class="meta-val">{{ rutina.nivel | capitalize }}</div>
+          <div class="kpi-val">{{ rutina.nivel | capitalize }}</div>
+          <div class="kpi-delta">Nivel asignado</div>
         </div>
-        <div class="meta-item">
-          <div class="kpi-label">Pública</div>
-          <div class="meta-val">{{ 'Sí' if rutina.publica else 'No' }}</div>
+
+        <div class="kpi">
+          <div class="kpi-label">Visibilidad</div>
+          <div class="kpi-val">{{ 'Sí' if rutina.publica else 'No' }}</div>
+          <div class="kpi-delta">Rutina pública</div>
         </div>
-        <div class="meta-item">
-          <div class="kpi-label">Fecha</div>
-          <div class="meta-val">{{ rutina.fecha_creacion }}</div>
+
+        <div class="kpi">
+          <div class="kpi-label">Estado</div>
+          <div class="kpi-val">{{ rutina.estado | capitalize }}</div>
+          <div class="kpi-delta">Estado actual</div>
         </div>
       </div>
 
-      {% if rutina.descripcion %}
-      <p style="color:var(--muted); font-size:var(--sm); margin-top:var(--s4); padding-top:var(--s4); border-top:1px solid var(--div);">
-        {{ rutina.descripcion }}
-      </p>
-      {% endif %}
+      <div class="card" style="margin-bottom:var(--s6);">
+        <div class="sec-hdr">
+          <h2 class="sec-title">{{ rutina.titulo }}</h2>
+          <span class="badge
+            {% if rutina.estado == 'aprobada' %}badge-ok
+            {% elif rutina.estado == 'rechazada' %}badge-rechazado
+            {% else %}badge-pendiente{% endif %}">
+            {{ rutina.estado | capitalize }}
+          </span>
+        </div>
 
-      <!-- Acciones -->
-      {% if rutina.estado == 'pendiente' %}
-      <div class="acciones" style="margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--div);">
-        <a href="{{ url_for('panel_admin') }}" class="btn-sm btn-volver">← Volver</a>
-        <form method="POST" action="{{ url_for('aprobar_rutina', id_rutina=rutina.idrutina) }}">
-          <button type="submit" class="btn-sm">✓ Aprobar rutina</button>
-        </form>
-        <form method="POST" action="{{ url_for('rechazar_rutina', id_rutina=rutina.idrutina) }}">
-          <button type="submit" class="btn-sm btn-danger">✗ Rechazar rutina</button>
-        </form>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="kpi-label">Fecha</div>
+            <div class="meta-val">{{ rutina.fecha_creacion }}</div>
+          </div>
+          <div class="meta-item">
+            <div class="kpi-label">ID Rutina</div>
+            <div class="meta-val">{{ rutina.id_rutina }}</div>
+          </div>
+        </div>
+
+        {% if rutina.descripcion %}
+        <p style="color:var(--muted); font-size:var(--sm); margin-top:var(--s4); padding-top:var(--s4); border-top:1px solid var(--div);">
+          {{ rutina.descripcion }}
+        </p>
+        {% endif %}
+
+        {% if rutina.estado == 'pendiente' %}
+        <div class="acciones" style="margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--div);">
+          <a href="{{ url_for('panel_admin') }}" class="btn-sm btn-volver">← Volver</a>
+
+          <form method="POST" action="{{ url_for('aprobar_rutina', id_rutina=rutina.id_rutina) }}">
+            <button type="submit" class="btn-sm">✓ Aprobar rutina</button>
+          </form>
+
+          <form method="POST" action="{{ url_for('rechazar_rutina', id_rutina=rutina.id_rutina) }}">
+            <button type="submit" class="btn-sm btn-danger">✗ Rechazar rutina</button>
+          </form>
+        </div>
+        {% else %}
+        <div class="acciones" style="margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--div);">
+          <a href="{{ url_for('panel_admin') }}" class="btn-sm btn-volver">← Volver al panel</a>
+        </div>
+        {% endif %}
       </div>
-      {% else %}
-      <div class="acciones" style="margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--div);">
-        <a href="{{ url_for('panel_admin') }}" class="btn-sm btn-volver">← Volver al panel</a>
-      </div>
-      {% endif %}
-    </div>
 
-    <!-- ── Ejercicios por día ─────────────────── -->
-    <div class="card">
-      <div class="sec-hdr">
-        <h2 class="sec-title">Ejercicios por día</h2>
-      </div>
+      <div class="card">
+        <div class="sec-hdr">
+          <h2 class="sec-title">Ejercicios por día</h2>
+        </div>
 
-      <div class="dias-grid">
-        {% for dia, ejercicios in rutina_por_dias.items() %}
-        <div class="dia-card">
-          <h3 class="dia-titulo">{{ dia | capitalize }}</h3>
+        <div class="dias-grid">
+          {% for dia, ejercicios in rutina_por_dias.items() %}
+          <div class="dia-card">
+            <h3 class="dia-titulo">{{ dia | capitalize }}</h3>
 
-          {% if ejercicios %}
-            {% for ej in ejercicios %}
-            <div class="ejercicio-item">
-              <div class="ejercicio-nombre">{{ ej.nombre_ejercicio }}</div>
-              <div class="ejercicio-meta">
-                <span>{{ ej.grupo_muscular or 'Sin grupo' }}</span>
-                <span class="ej-sep">·</span>
-                <span>{{ ej.series }}×{{ ej.repeticiones }}</span>
-                {% if ej.descanso_seg %}
-                <span class="ej-sep">·</span>
-                <span>{{ ej.descanso_seg }}s descanso</span>
+            {% if ejercicios %}
+              {% for ej in ejercicios %}
+              <div class="ejercicio-item">
+                <div class="ejercicio-nombre">{{ ej.nombre_ejercicio }}</div>
+
+                <div class="ejercicio-meta">
+                  <span>{{ ej.grupo_muscular or 'Sin grupo' }}</span>
+                  <span class="ej-sep">·</span>
+                  <span>{{ ej.series }}×{{ ej.repeticiones }}</span>
+                  {% if ej.descanso_seg %}
+                  <span class="ej-sep">·</span>
+                  <span>{{ ej.descanso_seg }}s descanso</span>
+                  {% endif %}
+                </div>
+
+                {% if ej.notas %}
+                <div class="ejercicio-notas">{{ ej.notas }}</div>
                 {% endif %}
               </div>
-              {% if ej.notas %}
-              <div class="ejercicio-notas">{{ ej.notas }}</div>
-              {% endif %}
-            </div>
-            {% endfor %}
-          {% else %}
-            <p class="dia-vacio">Sin ejercicios este día.</p>
-          {% endif %}
+              {% endfor %}
+            {% else %}
+              <p class="dia-vacio">Sin ejercicios este día.</p>
+            {% endif %}
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
+  </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  <script>
+  (function(){
+    const btn  = document.querySelector('[data-theme-toggle]');
+    const root = document.documentElement;
 
-<script>
-(function(){
-  const btn  = document.querySelector('[data-theme-toggle]');
-  const root = document.documentElement;
-  let d = localStorage.getItem('tl-admin-theme') ||
-    (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  root.setAttribute('data-theme', d);
+    let d = localStorage.getItem('tl-admin-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-  const sun  = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
-  const moon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    root.setAttribute('data-theme', d);
 
-  if (btn) {
-    btn.innerHTML = d === 'dark' ? sun : moon;
-    btn.addEventListener('click', () => {
-      d = d === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', d);
-      localStorage.setItem('tl-admin-theme', d);
+    const sun  = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+    const moon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+    if (btn) {
       btn.innerHTML = d === 'dark' ? sun : moon;
-    });
-  }
-})();
-</script>
+
+      btn.addEventListener('click', () => {
+        d = d === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', d);
+        localStorage.setItem('tl-admin-theme', d);
+        btn.innerHTML = d === 'dark' ? sun : moon;
+      });
+    }
+  })();
+  </script>
 </body>
 </html>
