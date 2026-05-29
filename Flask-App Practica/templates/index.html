@@ -25,7 +25,7 @@
         <a href="/dieta">Dieta</a>
         <a href="/planes">Planes</a>
         {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #8a8702); font-weight: 600">Panel Admin</a>
+        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
         {% endif %}
       </nav>
 

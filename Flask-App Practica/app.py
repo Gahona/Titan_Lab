@@ -400,8 +400,51 @@ def pago_sub(plan_id):
         return redirect(url_for('planes'))
     return render_template(
         'pago_sub.html',
+        plan_id=plan_id,
         plan_nombre=plan["nombre"],
         precio=plan["precio"]
+    )
+
+
+@app.route('/procesar-paypal', methods=['POST'])
+@login_required
+def procesar_paypal():
+    paypal_email = request.form.get('paypal_email')
+    plan_id = request.form.get('plan_id')
+
+    if not paypal_email:
+        flash('Debes introducir un email de PayPal.', 'error')
+        return redirect(request.referrer or url_for('planes'))
+
+    plan = PLANES.get(plan_id)
+    if not plan:
+        return redirect(url_for('planes'))
+
+    return render_template(
+        'pago_exitoso.html',
+        plan_nombre=plan['nombre'],
+        precio=plan['precio']
+    )
+
+
+@app.route('/procesar-applepay', methods=['POST'])
+@login_required
+def procesar_applepay():
+    apple_email = request.form.get('apple_email')
+    plan_id = request.form.get('plan_id')
+
+    if not apple_email:
+        flash('Debes introducir un email de Apple Pay.', 'error')
+        return redirect(request.referrer or url_for('planes'))
+
+    plan = PLANES.get(plan_id)
+    if not plan:
+        return redirect(url_for('planes'))
+
+    return render_template(
+        'pago_exitoso.html',
+        plan_nombre=plan['nombre'],
+        precio=plan['precio']
     )
 
 
@@ -489,7 +532,6 @@ def guardar_rutina():
     try:
         cur = mysql.connection.cursor()
 
-        # 1. Guardar cabecera en rutinas
         cur.execute("""
             INSERT INTO rutinas (
                 id_usuario,
@@ -511,7 +553,6 @@ def guardar_rutina():
 
         id_rutina = cur.lastrowid
 
-        # 2. Guardar detalle de ejercicios
         for dia_front, ejercicios in rutina_json.items():
             if dia_front not in dias_validos:
                 continue

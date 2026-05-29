@@ -32,7 +32,7 @@
         <a href="/dieta">Dieta</a>
         <a href="/planes " class="active">Planes</a>
         {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
+        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
         {% endif %}
     </nav>
     <!-- Botones de autenticación en el header -->

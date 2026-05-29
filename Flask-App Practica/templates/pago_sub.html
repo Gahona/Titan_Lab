@@ -21,126 +21,109 @@
             <span>Titan</span>Lab
         </a>
 
-    <nav>
-        <a href="/" >Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes" class="active">Planes</a>
-        {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #01696f); font-weight: 600">Panel Admin</a>
-        {% endif %}
-    </nav>
-    <!-- Botones de autenticación en el header -->
-    <div class="auth-buttons">
-        <!-- Comprueba si hay una sesión activa (usuario logueado) -->
-        {% if session.get('id_usuario') %}
-        <!-- Si está logueado: muestra su nombre -->
-        <span
-        style="
-            color: var(--gray);
-            font-family: var(--font-ui);
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            "
-        >
-        {{ session['nombre'] }}
-        </span>
-        <!-- Botón para cerrar sesión — llama a la ruta /logout del app.py -->
-        <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
-        <!-- Si NO está logueado: muestra Login y Registrarse -->
-        {% else %}
-        <!-- Redirige a la página de login -->
-        <a href="/login"><button class="btn-secondary">Login</button></a>
-        <!-- Redirige a la página de registro -->
-        <a href="/registro"><button class="btn-primary">Registrarse</button></a>
-        {% endif %}
-    </div>
+        <nav>
+            <a href="/">Inicio</a>
+            <a href="/suplementacion">Suplementos</a>
+            <a href="/ejercicios">Ejercicios</a>
+            <a href="/rutina">Rutina</a>
+            <a href="/dieta">Dieta</a>
+            <a href="/planes" class="active">Planes</a>
+            {% if session.get('rol') == 'admin' %}
+            <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
+            {% endif %}
+        </nav>
+
+        <!-- Botones de autenticación en el header -->
+        <div class="auth-buttons">
+            {% if session.get('id_usuario') %}
+            <span
+                style="
+                    color: var(--gray);
+                    font-family: var(--font-ui);
+                    font-size: 0.78rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.12em;
+                "
+            >
+                {{ session['nombre'] }}
+            </span>
+            <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+            {% else %}
+            <a href="/login"><button class="btn-secondary">Login</button></a>
+            <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+            {% endif %}
+        </div>
     </header>
+
     <main class="page">
         <section class="payment-container">
             <a href="{{ url_for('planes') }}" class="back-btn">← Volver a planes</a>
 
-        <div class="plan-card">
-            <div class="plan-info">
-            <h1>{{ plan_nombre if plan_nombre else "Coach Premium" }}</h1>
-            <p>Suscripción mensual</p>
-        </div>
+            <div class="plan-card">
+                <div class="plan-info">
+                    <h1>{{ plan_nombre if plan_nombre else "Coach Premium" }}</h1>
+                    <p>Suscripción mensual</p>
+                </div>
 
-        <div class="price-box">
-            <div class="price">{{ precio if precio else "22,99€" }}</div>
-            <span>/mes</span>
-        </div>
-        </div>
-
-        <h2 class="section-title">Método de pago</h2>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('paypal', this)">
-                PayPal
-            </button>
-            <button class="tab-btn" onclick="showTab('applepay', this)">
-                Apple Pay
-            </button>
-        </div>
-
-        <div id="paypal" class="tab-content active">
-            <form class="payment-form" method="POST" action="/procesar-paypal">
-                <div class="form-group">
-                    <label for="paypal-email">Email de PayPal</label>
-                    <input
-                        type="email"
-                        id="paypal-email"
-                        name="paypal_email"
-                        placeholder="tu@email.com"
-                        required
-            />
+                <div class="price-box">
+                    <div class="price">{{ precio if precio else "22,99€" }}</div>
+                    <span>/mes</span>
+                </div>
             </div>
-            <button type="submit" class="pay-btn">
-                Pagar con PayPal
-            </button>
-        </form>
-        </div>
 
-        <div id="applepay" class="tab-content">
-            <form class="payment-form" method="POST" action="/procesar-applepay">
-                <div class="form-group">
-                    <label for="apple-email">Email de Apple Pay</label>
-                    <input
-                type="email"
-                id="apple-email"
-                name="apple_email"
-                placeholder="tu@email.com"
-                required
-            />
+            <h2 class="section-title">Método de pago</h2>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('paypal', this)">
+                    PayPal
+                </button>
+                <button class="tab-btn" onclick="showTab('applepay', this)">
+                    Apple Pay
+                </button>
             </div>
-            <button type="submit" class="pay-btn">
-                Pagar con Apple Pay
-            </button>
-        </form>
-        </div>
-            <p class="secure-text">🔒 Pago seguro con cifrado SSL</p>
+
+            <div id="paypal" class="tab-content active">
+                <form class="payment-form" method="POST" action="{{ url_for('procesar_paypal') }}">
+                    <input type="hidden" name="plan_id" value="{{ plan_id }}">
+                    <div class="form-group">
+                        <label for="paypal-email">Email de PayPal</label>
+                        <input type="email" id="paypal-email" name="paypal_email" placeholder="tu@email.com" required />
+                    </div>
+                    <button type="submit" class="pay-btn">Pagar con PayPal</button>
+                </form>
+            </div>
+
+            <div id="applepay" class="tab-content">
+                <form class="payment-form" method="POST" action="{{ url_for('procesar_applepay') }}">
+                    <input type="hidden" name="plan_id" value="{{ plan_id }}">
+                    <div class="form-group">
+                        <label for="apple-email">Email de Apple Pay</label>
+                        <input type="email" id="apple-email" name="apple_email" placeholder="tu@email.com" required />
+                    </div>
+                    <button type="submit" class="pay-btn">Pagar con Apple Pay</button>
+                </form>
+            </div>
+
+            <p class="secure-text"> Pago seguro con cifrado SSL</p>
         </section>
     </main>
 
     <!-- Footer -->
     <footer>
-      <p>© 2026 Titan Lab.</p>
+        <p>© 2026 Titan Lab.</p>
     </footer>
 
     <script>
-      function showTab(tabId, button) {
-        const tabs = document.querySelectorAll(".tab-content");
-        const buttons = document.querySelectorAll(".tab-btn");
+        function showTab(tabId, button) {
+            const tabs = document.querySelectorAll(".tab-content");
+            const buttons = document.querySelectorAll(".tab-btn");
 
-        tabs.forEach((tab) => tab.classList.remove("active"));
-        buttons.forEach((btn) => btn.classList.remove("active"));
+            tabs.forEach((tab) => tab.classList.remove("active"));
+            buttons.forEach((btn) => btn.classList.remove("active"));
 
-        document.getElementById(tabId).classList.add("active");
-        button.classList.add("active");
-      }
+            document.getElementById(tabId).classList.add("active");
+            button.classList.add("active");
+        }
     </script>
-  </body>
+</body>
 </html>
