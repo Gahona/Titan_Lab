@@ -6,6 +6,7 @@ from config import config_activa
 
 
 app = Flask(__name__)
+aplication = app
 app.config.from_object(config_activa)
 
 
