@@ -375,7 +375,7 @@ def index():
 
 @app.route("/planes")
 def planes():
-    return render_template("plan.html")
+    return render_template("Plan.html")
 
 
 @app.route("/dieta")
