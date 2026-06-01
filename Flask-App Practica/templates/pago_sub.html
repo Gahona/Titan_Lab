@@ -10,9 +10,8 @@
     />
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <a href="/" class="logo">
+        <a href="{{ url_for('index') }}" class="logo">
             <img
                 src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
                 alt="Titan Lab"
@@ -22,18 +21,17 @@
         </a>
 
         <nav>
-            <a href="/">Inicio</a>
-            <a href="/suplementacion">Suplementos</a>
-            <a href="/ejercicios">Ejercicios</a>
-            <a href="/rutina">Rutina</a>
-            <a href="/dieta">Dieta</a>
-            <a href="/planes" class="active">Planes</a>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+            <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+            <a href="{{ url_for('rutina') }}">Rutina</a>
+            <a href="{{ url_for('dieta') }}">Dieta</a>
+            <a href="{{ url_for('planes') }}" class="active">Planes</a>
             {% if session.get('rol') == 'admin' %}
             <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
             {% endif %}
         </nav>
 
-        <!-- Botones de autenticación en el header -->
         <div class="auth-buttons">
             {% if session.get('id_usuario') %}
             <span
@@ -47,10 +45,10 @@
             >
                 {{ session['nombre'] }}
             </span>
-            <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+            <a href="{{ url_for('logout') }}" class="btn-secondary">Cerrar sesión</a>
             {% else %}
-            <a href="/login"><button class="btn-secondary">Login</button></a>
-            <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+            <a href="{{ url_for('login') }}" class="btn-secondary">Login</a>
+            <a href="{{ url_for('registro') }}" class="btn-primary">Registrarse</a>
             {% endif %}
         </div>
     </header>
@@ -74,10 +72,10 @@
             <h2 class="section-title">Método de pago</h2>
 
             <div class="tabs">
-                <button class="tab-btn active" onclick="showTab('paypal', this)">
+                <button class="tab-btn active" type="button" onclick="showTab('paypal', this)">
                     PayPal
                 </button>
-                <button class="tab-btn" onclick="showTab('applepay', this)">
+                <button class="tab-btn" type="button" onclick="showTab('applepay', this)">
                     Apple Pay
                 </button>
             </div>
@@ -104,11 +102,10 @@
                 </form>
             </div>
 
-            <p class="secure-text"> Pago seguro con cifrado SSL</p>
+            <p class="secure-text">Pago seguro con cifrado SSL</p>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer>
         <p>© 2026 Titan Lab.</p>
     </footer>

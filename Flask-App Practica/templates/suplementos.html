@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='suplementos.css') }}" />
   </head>
   <body>
-    <!-- Header -->
     <header>
-      <a href="/" class="logo">
+      <a href="{{ url_for('index') }}" class="logo">
         <img
           src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
           alt="Titan Lab"
@@ -17,14 +16,14 @@
         />
         <span>Titan</span>Lab
       </a>
-      
+
       <nav>
-        <a href="/" >Inicio</a>
-        <a href="/suplementacion" class="active">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('suplementacion') }}" class="active">Suplementos</a>
+        <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+        <a href="{{ url_for('rutina') }}">Rutina</a>
+        <a href="{{ url_for('dieta') }}">Dieta</a>
+        <a href="{{ url_for('planes') }}">Planes</a>
         {% if session.get('rol') == 'admin' %}
         <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
         {% endif %}
@@ -33,15 +32,14 @@
       <div class="auth-buttons">
         {% if session.get('id_usuario') %}
           <span class="user-name">{{ session['nombre'] }}</span>
-          <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+          <a href="{{ url_for('logout') }}" class="btn-secondary">Cerrar sesión</a>
         {% else %}
-          <a href="/login" class="btn-secondary">Login</a>
-          <a href="/registro" class="btn-primary">Registrarse</a>
+          <a href="{{ url_for('login') }}" class="btn-secondary">Login</a>
+          <a href="{{ url_for('registro') }}" class="btn-primary">Registrarse</a>
         {% endif %}
       </div>
     </header>
 
-    <!-- Hero -->
     <section class="page-hero">
       <h1>TODO SOBRE LA <span>SUPLEMENTACIÓN</span> DEPORTIVA</h1>
       <p class="hero-desc">
@@ -50,8 +48,6 @@
       </p>
     </section>
 
-
-    <!-- Aviso -->
     <section class="section section-tight">
       <div class="info-banner">
         <div class="info-banner-icon">!</div>
@@ -62,7 +58,6 @@
       </div>
     </section>
 
-    <!-- Suplementos esenciales -->
     <section class="section">
       <h2>Suplementos esenciales</h2>
       <div class="supp-grid">
@@ -180,7 +175,6 @@
       </div>
     </section>
 
-    <!-- Recuperación y bienestar -->
     <section class="section">
       <h2>Recuperación y bienestar</h2>
       <div class="supp-grid">
@@ -312,7 +306,6 @@
       </div>
     </section>
 
-    <!-- Suplementos avanzados -->
     <section class="section">
       <h2>Suplementos avanzados</h2>
       <div class="supp-grid">
@@ -465,7 +458,6 @@
       </div>
     </section>
 
-    <!-- Objetivos -->
     <section class="section objetivos">
       <h2>¿Qué tomar según tu objetivo?</h2>
       <div class="goal-grid">
@@ -526,7 +518,6 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer>
       <p>© 2026 Titan Lab.</p>
     </footer>
@@ -542,4 +533,4 @@
       });
     </script>
   </body>
-</html> 
+</html>

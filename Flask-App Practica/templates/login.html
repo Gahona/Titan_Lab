@@ -151,44 +151,37 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
-    <a href="/" class="logo">
+    <a href="{{ url_for('index') }}" class="logo">
       <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img">
       <span>Titan</span>Lab
     </a>
-      <nav>
-        <a href="/" class="active">Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
-        {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
-        {% endif %}
-      </nav>
-      <!-- Botones de autenticación en el header -->
-  <div class="auth-buttons">
-  <!-- Comprueba si hay una sesión activa (usuario logueado) -->
-    {% if session.get('id_usuario') %}
-      <!-- Si está logueado: muestra su nombre -->
+
+    <nav>
+      <a href="{{ url_for('index') }}">Inicio</a>
+      <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+      <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+      <a href="{{ url_for('rutina') }}">Rutina</a>
+      <a href="{{ url_for('dieta') }}">Dieta</a>
+      <a href="{{ url_for('planes') }}">Planes</a>
+      {% if session.get('rol') == 'admin' %}
+      <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
+      {% endif %}
+    </nav>
+
+    <div class="auth-buttons">
+      {% if session.get('id_usuario') %}
       <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
         {{ session['nombre'] }}
       </span>
-      <!-- Botón para cerrar sesión — llama a la ruta /logout del app.py -->
-      <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
-      <!-- Si NO está logueado: muestra Login y Registrarse -->
-    {% else %}
-        <!-- Redirige a la página de login -->
-        <a href="/login"><button class="btn-secondary">Login</button></a>
-        <!-- Redirige a la página de registro -->
-        <a href="/registro"><button class="btn-primary">Registrarse</button></a>
-    {% endif %}
-  </div>
+      <a href="{{ url_for('logout') }}"><button class="btn-secondary">Cerrar sesión</button></a>
+      {% else %}
+      <a href="{{ url_for('login') }}"><button class="btn-secondary">Login</button></a>
+      <a href="{{ url_for('registro') }}"><button class="btn-primary">Registrarse</button></a>
+      {% endif %}
+    </div>
   </header>
 
-  <!-- Login -->
   <section class="login-section">
     <div class="login-box">
 
@@ -196,15 +189,13 @@
       <h2>Iniciar <em>sesión</em></h2>
       <p class="subtitle">Accede a tu cuenta de Titan Labs.</p>
 
-      <!-- Mensajes flash -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in messages %}
           <div class="flash-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
         {% endfor %}
       {% endwith %}
 
-      <!-- Formulario -->
-      <form action="/login" method="POST">
+      <form action="{{ url_for('login') }}" method="POST">
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" placeholder="tu@email.com" required/>
@@ -216,12 +207,11 @@
         <button type="submit" class="btn-submit">Iniciar sesión</button>
       </form>
 
-      <p class="form-footer">¿No tienes cuenta? <a href="/registro">Regístrate</a></p>
+      <p class="form-footer">¿No tienes cuenta? <a href="{{ url_for('registro') }}">Regístrate</a></p>
 
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <p>© 2026 Titan Lab.</p>
   </footer>

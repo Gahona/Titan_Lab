@@ -181,44 +181,36 @@
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
-    <a href="/" class="logo">
+    <a href="{{ url_for('index') }}" class="logo">
         <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img">
         <span>Titan</span>Lab
     </a>
     <nav>
-        <a href="/">Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+        <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+        <a href="{{ url_for('rutina') }}">Rutina</a>
+        <a href="{{ url_for('dieta') }}">Dieta</a>
+        <a href="{{ url_for('planes') }}">Planes</a>
         {% if session.get('rol') == 'admin' %}
         <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
         {% endif %}
     </nav>
-    <!-- Botones de autenticación en el header -->
+
     <div class="auth-buttons">
-        <!-- Comprueba si hay una sesión activa (usuario logueado) -->
         {% if session.get('id_usuario') %}
-            <!-- Si está logueado: muestra su nombre -->
             <span style="color: var(--gray); font-family: var(--font-ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em;">
                 {{ session['nombre'] }}
             </span>
-            <!-- Botón para cerrar sesión — llama a la ruta /logout del app.py -->
-            <a href="/logout"><button class="btn-secondary">Cerrar sesión</button></a>
+            <a href="{{ url_for('logout') }}"><button class="btn-secondary">Cerrar sesión</button></a>
         {% else %}
-            <!-- Si NO está logueado: muestra Login y Registrarse -->
-            <a href="/login"><button class="btn-secondary">Login</button></a>
-            <a href="/registro" ><button class="btn-primary">Registrarse</button></a>
+            <a href="{{ url_for('login') }}"><button class="btn-secondary">Login</button></a>
+            <a href="{{ url_for('registro') }}"><button class="btn-primary">Registrarse</button></a>
         {% endif %}
     </div>
 </header>
-<!-- ── FIN HEADER ── -->
 
-
-<!-- ── SECCIÓN REGISTRO ── -->
 <section class="registro-section">
     <div class="registro-box">
 
@@ -226,17 +218,13 @@
         <h2>Crear <em>cuenta</em></h2>
         <p class="subtitle">Únete a Titan Labs y empieza hoy.</p>
 
-        <!-- Mensajes flash (errores o confirmaciones) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
                 <div class="flash-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
             {% endfor %}
         {% endwith %}
 
-        <!-- Formulario de registro -->
-        <form action="/registro" method="POST">
-
-            <!-- Datos obligatorios -->
+        <form action="{{ url_for('registro') }}" method="POST">
             <div class="form-group">
                 <label for="nombre">Nombre completo</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required/>
@@ -253,7 +241,6 @@
             <hr class="divider">
             <p class="section-label">Datos opcionales (para tu perfil)</p>
 
-            <!-- Datos opcionales -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="edad">Edad</label>
@@ -269,6 +256,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="altura_cm">Altura (cm)</label>
@@ -279,6 +267,7 @@
                     <input type="number" id="peso_kg" name="peso_kg" placeholder="70" min="30" max="300"/>
                 </div>
             </div>
+
             <div class="form-group">
                 <label for="objetivo_principal">Objetivo principal</label>
                 <select id="objetivo_principal" name="objetivo_principal">
@@ -294,14 +283,11 @@
             <button type="submit" class="btn-submit">Crear cuenta</button>
         </form>
 
-        <p class="form-footer">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+        <p class="form-footer">¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
 
     </div>
 </section>
-<!-- ── FIN SECCIÓN REGISTRO ── -->
 
-
-<!-- ── FOOTER ── -->
 <footer>
     <p>© 2026 Titan Lab.</p>
 </footer>

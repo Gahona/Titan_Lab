@@ -16,7 +16,7 @@
 <body>
 
   <header>
-    <a href="/" class="logo">
+    <a href="{{ url_for('index') }}" class="logo">
       <img
         src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
         alt="Titan Lab"
@@ -26,24 +26,24 @@
     </a>
 
     <nav>
-        <a href="/">Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios" class="active">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
-        {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
-        {% endif %}
+      <a href="{{ url_for('index') }}">Inicio</a>
+      <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+      <a href="{{ url_for('ejercicios') }}" class="active">Ejercicios</a>
+      <a href="{{ url_for('rutina') }}">Rutina</a>
+      <a href="{{ url_for('dieta') }}">Dieta</a>
+      <a href="{{ url_for('planes') }}">Planes</a>
+      {% if session.get('rol') == 'admin' %}
+      <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
+      {% endif %}
     </nav>
 
     <div class="auth-buttons">
       {% if session.get('id_usuario') %}
       <span class="user-name">{{ session['nombre'] }}</span>
-      <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+      <a href="{{ url_for('logout') }}" class="btn-secondary">Cerrar sesión</a>
       {% else %}
-      <a href="/login" class="btn-secondary">Login</a>
-      <a href="/registro" class="btn-primary">Registrarse</a>
+      <a href="{{ url_for('login') }}" class="btn-secondary">Login</a>
+      <a href="{{ url_for('registro') }}" class="btn-primary">Registrarse</a>
       {% endif %}
     </div>
 
@@ -100,7 +100,7 @@
         <p class="card-desc">
           El ejercicio rey del pecho. Desarrolla masa y fuerza en el pectoral mayor, deltoides anterior y tríceps de forma bilateral.
         </p>
-        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+        <button class="btn-toggle" type="button" aria-expanded="false">
           Ver instrucciones
           <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -141,7 +141,7 @@
         <p class="card-desc">
           Enfatiza la porción clavicular del pectoral, aportando volumen y definición en la zona alta del pecho.
         </p>
-        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+        <button class="btn-toggle" type="button" aria-expanded="false">
           Ver instrucciones
           <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -181,7 +181,7 @@
         <p class="card-desc">
           Maximiza el estiramiento y la contracción del pectoral en todo el rango de movimiento con tensión constante.
         </p>
-        <button class="btn-toggle" type="button" aria-expanded="false" onclick="togglePanel(this)">
+        <button class="btn-toggle" type="button" aria-expanded="false">
           Ver instrucciones
           <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -571,31 +571,31 @@
             </div>
             <span class="badge basico">Básico</span>
           </div>
-        <div class="card-body">
+          <div class="card-body">
             <h3 class="card-titulo">Curl Convencional</h3>
             <div class="card-tags">
-                <span class="tag">Mancuernas</span>
-                <span class="tag">Bíceps braquial</span>
-                <span class="tag">Braquial</span>
+              <span class="tag">Mancuernas</span>
+              <span class="tag">Bíceps braquial</span>
+              <span class="tag">Braquial</span>
             </div>
             <p class="card-desc">
-                El ejercicio de bíceps por excelencia. Permite mayor carga que con barra y una activación bilateral máxima.
+              El ejercicio de bíceps por excelencia. Permite mayor carga que con barra y una activación bilateral máxima.
             </p>
             <button class="btn-toggle" type="button" aria-expanded="false">
-                Ver instrucciones
-                <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
+              Ver instrucciones
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
             </button>
-        </div>
-        <div class="instrucciones-panel">
+          </div>
+          <div class="instrucciones-panel">
             <div class="instrucciones-inner">
-                <h4>Ejecución</h4>
-                <ol>
-                    <li>De pie con las mancuernas a la altura de los muslos, agarre supino a la anchura de los hombros.</li>
-                    <li>Mantén los codos pegados a los costados y flexiona llevando las mancuernas hacia los hombros.</li>
-                    <li>Aprieta los bíceps en la cima y baja de forma controlada hasta extensión casi completa.</li>
-                </ol>
+              <h4>Ejecución</h4>
+              <ol>
+                <li>De pie con las mancuernas a la altura de los muslos, agarre supino a la anchura de los hombros.</li>
+                <li>Mantén los codos pegados a los costados y flexiona llevando las mancuernas hacia los hombros.</li>
+                <li>Aprieta los bíceps en la cima y baja de forma controlada hasta extensión casi completa.</li>
+              </ol>
             </div>
           </div>
         </article>
@@ -839,6 +839,10 @@
         textNode.textContent = open ? 'Ocultar instrucciones ' : 'Ver instrucciones ';
       }
     }
+
+    document.querySelectorAll('.btn-toggle').forEach(btn => {
+      btn.addEventListener('click', () => togglePanel(btn));
+    });
 
     const filtros = document.querySelectorAll('.filtro');
     const grupos = document.querySelectorAll('.grupo');

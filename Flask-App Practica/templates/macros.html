@@ -11,7 +11,7 @@
   </head>
   <body>
     <header>
-      <a href="/" class="logo">
+      <a href="{{ url_for('index') }}" class="logo">
         <img
           src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
           alt="Titan Lab"
@@ -24,12 +24,12 @@
       </a>
 
       <nav>
-        <a href="/" ">Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta" class="active">Dieta</a>
-        <a href="/planes">Planes</a>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+        <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+        <a href="{{ url_for('rutina') }}">Rutina</a>
+        <a href="{{ url_for('dieta') }}" class="active">Dieta</a>
+        <a href="{{ url_for('planes') }}">Planes</a>
         {% if session.get('rol') == 'admin' %}
         <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
         {% endif %}
@@ -38,10 +38,10 @@
       <div class="auth-buttons">
         {% if session.get('id_usuario') %}
         <span class="user-name">{{ session['nombre'] }}</span>
-        <a href="/logout" class="btn-secondary">Cerrar sesión</a>
+        <a href="{{ url_for('logout') }}" class="btn-secondary">Cerrar sesión</a>
         {% else %}
-        <a href="/login" class="btn-secondary">Login</a>
-        <a href="/registro" class="btn-primary">Registrarse</a>
+        <a href="{{ url_for('login') }}" class="btn-secondary">Login</a>
+        <a href="{{ url_for('registro') }}" class="btn-primary">Registrarse</a>
         {% endif %}
       </div>
     </header>
@@ -308,23 +308,23 @@
 
       ["sexoGroup", "activityGroup", "objetivoGroup"].forEach(initGroup);
 
-        function getActive(groupId) {
-            const group = document.getElementById(groupId);
-            const btn = group.querySelector(".active");
-            return btn ? btn.dataset.value : null;
-        }
+      function getActive(groupId) {
+        const group = document.getElementById(groupId);
+        const btn = group.querySelector(".active");
+        return btn ? btn.dataset.value : null;
+      }
 
-        function calcularMacros() {
-            const age = parseFloat(document.getElementById("age").value);
-            const weight = parseFloat(document.getElementById("weight").value);
-            const height = parseFloat(document.getElementById("height").value);
-            const sex = getActive("sexoGroup");
-            const activity = parseFloat(getActive("activityGroup"));
-            const goalDelta = parseFloat(getActive("objetivoGroup"));
+      function calcularMacros() {
+        const age = parseFloat(document.getElementById("age").value);
+        const weight = parseFloat(document.getElementById("weight").value);
+        const height = parseFloat(document.getElementById("height").value);
+        const sex = getActive("sexoGroup");
+        const activity = parseFloat(getActive("activityGroup"));
+        const goalDelta = parseFloat(getActive("objetivoGroup"));
 
         if (!age || !weight || !height) {
-            shakeForm();
-            return;
+          shakeForm();
+          return;
         }
 
         let bmr;
@@ -344,36 +344,36 @@
         const carbsKcal = kcal - proteinKcal - fatKcal;
         const carbsG = Math.round(carbsKcal / 4);
 
-            document.getElementById("resKcal").textContent =
-            kcal.toLocaleString("es-ES");
-            document.getElementById("resProtein").textContent = proteinG;
-            document.getElementById("resCarbs").textContent =
-            carbsG > 0 ? carbsG : 0;
-            document.getElementById("resFat").textContent = fatG;
-            document.getElementById("resProteinKcal").textContent =
-            proteinKcal + " kcal";
-            document.getElementById("resCarbsKcal").textContent =
-            (carbsG > 0 ? carbsKcal : 0) + " kcal";
-            document.getElementById("resFatKcal").textContent = fatKcal + " kcal";
+        document.getElementById("resKcal").textContent =
+          kcal.toLocaleString("es-ES");
+        document.getElementById("resProtein").textContent = proteinG;
+        document.getElementById("resCarbs").textContent =
+          carbsG > 0 ? carbsG : 0;
+        document.getElementById("resFat").textContent = fatG;
+        document.getElementById("resProteinKcal").textContent =
+          proteinKcal + " kcal";
+        document.getElementById("resCarbsKcal").textContent =
+          (carbsG > 0 ? carbsKcal : 0) + " kcal";
+        document.getElementById("resFatKcal").textContent = fatKcal + " kcal";
 
         const total = proteinKcal + (carbsG > 0 ? carbsKcal : 0) + fatKcal;
-            document.getElementById("barProtein").style.width =
-            (proteinKcal / total) * 100 + "%";
-            document.getElementById("barCarbs").style.width =
-            (carbsG > 0 ? (carbsKcal / total) * 100 : 0) + "%";
-            document.getElementById("barFat").style.width =
-            (fatKcal / total) * 100 + "%";
-            document.getElementById("kcalFill").style.width = "100%";
+        document.getElementById("barProtein").style.width =
+          (proteinKcal / total) * 100 + "%";
+        document.getElementById("barCarbs").style.width =
+          (carbsG > 0 ? (carbsKcal / total) * 100 : 0) + "%";
+        document.getElementById("barFat").style.width =
+          (fatKcal / total) * 100 + "%";
+        document.getElementById("kcalFill").style.width = "100%";
 
-            document.getElementById("emptyState").classList.add("hidden");
-            document.getElementById("resultsContent").classList.remove("hidden");
-        }
+        document.getElementById("emptyState").classList.add("hidden");
+        document.getElementById("resultsContent").classList.remove("hidden");
+      }
 
-        function shakeForm() {
-            const form = document.getElementById("macroForm");
-            form.classList.add("shake");
-            setTimeout(() => form.classList.remove("shake"), 600);
-        }
-        </script>
-    </body>
+      function shakeForm() {
+        const form = document.getElementById("macroForm");
+        form.classList.add("shake");
+        setTimeout(() => form.classList.remove("shake"), 600);
+      }
+    </script>
+  </body>
 </html>
