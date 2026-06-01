@@ -4,17 +4,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from config import config_activa
 
-
 app = Flask(__name__)
-aplication = app
+application = app
 app.config.from_object(config_activa)
-
 
 mysql = MySQL(app)
 
-
 # ─────────────────────────────────────────
-#  DECORADORES DE AUTENTICACIÓN Y ROLES
+# DECORADORES DE AUTENTICACIÓN Y ROLES
 # ─────────────────────────────────────────
 def login_required(f):
     @wraps(f)
@@ -39,14 +36,13 @@ def rol_required(*roles):
 
 
 # ─────────────────────────────────────────
-#  DATOS ESTÁTICOS (página principal)
+# DATOS ESTÁTICOS
 # ─────────────────────────────────────────
 stats = [
     {"valor": "+3,000", "label": "Miembros activos"},
     {"valor": "180+", "label": "Ejercicios"},
     {"valor": "99%", "label": "Satisfacción"},
 ]
-
 
 suplementos = [
     {
@@ -87,7 +83,6 @@ suplementos = [
     },
 ]
 
-
 colaboradores = [
     {"imagen": "iogenix.logo-removebg-preview.jpg", "alt": "Io.Genix"},
     {"imagen": "logopaypal-removebg-preview.jpg", "alt": "PayPal"},
@@ -96,7 +91,7 @@ colaboradores = [
 
 
 # ─────────────────────────────────────────
-#  AUTENTICACIÓN
+# AUTENTICACIÓN
 # ─────────────────────────────────────────
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -174,7 +169,7 @@ def logout():
 
 
 # ─────────────────────────────────────────
-#  PANELES POR ROL
+# PANELES POR ROL
 # ─────────────────────────────────────────
 @app.route('/admin/panel')
 @login_required
@@ -285,7 +280,7 @@ def panel_coach():
 
 
 # ─────────────────────────────────────────
-#  MODERACIÓN DE CONTENIDO
+# MODERACIÓN DE CONTENIDO
 # ─────────────────────────────────────────
 @app.route('/admin/rutina/<int:id_rutina>/aprobar', methods=['POST'])
 @login_required
@@ -366,7 +361,7 @@ def rechazar_resena(tipo, id_resena):
 
 
 # ─────────────────────────────────────────
-#  RUTAS PÚBLICAS
+# RUTAS PÚBLICAS
 # ─────────────────────────────────────────
 @app.route("/")
 def index():
@@ -380,7 +375,7 @@ def index():
 
 @app.route("/planes")
 def planes():
-    return render_template("Plan.html")
+    return render_template("plan.html")
 
 
 @app.route("/dieta")
@@ -455,7 +450,7 @@ def pago_exitoso():
 
 
 # ─────────────────────────────────────────
-#  RUTINAS
+# RUTINAS
 # ─────────────────────────────────────────
 @app.route('/rutina')
 def rutina():
