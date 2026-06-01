@@ -6,8 +6,12 @@
     <title>Rutina Semanal — TitanLab</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='semanal.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"/>
 </head>
 <body>
+
+    <!-- Overlay de bloqueo (cubre toda la página hasta aceptar cookies) -->
+    <div id="cookie-overlay" class="cookie-overlay"></div>
 
     <header class="site-header">
         <a href="/" class="logo">
@@ -189,11 +193,35 @@
         </div>
     </div>
 
+    <!-- Banner de Cookies -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            Este sitio utiliza cookies propias y de terceros para mejorar tu experiencia.
+            Al continuar navegando, aceptas nuestra <a href="/politica-cookies">política de cookies</a>.
+        </p>
+        <button onclick="aceptarCookies()" class="cookie-btn">Aceptar</button>
+    </div>
+
     <footer>
         <p>&copy; 2026 Titan Labs</p>
     </footer>
 
     <script>
+    // Función para aceptar cookies
+    function aceptarCookies() {
+        localStorage.setItem('cookiesAceptadas', 'true');
+        document.getElementById('cookie-banner').style.display = 'none';
+        document.getElementById('cookie-overlay').style.display = 'none';
+        document.body.style.pointerEvents = 'auto';
+    }
+
+    // Verificar al cargar la página
+    if (!localStorage.getItem('cookiesAceptadas')) {
+        document.getElementById('cookie-banner').style.display = 'flex';
+        document.getElementById('cookie-overlay').style.display = 'block';
+        document.body.style.pointerEvents = 'none';
+    }
+
     const DIAS = {{ orden_dias | tojson }};
     const STORAGE_KEY = "rutina_semanal_titanlab";
     const ROUTINES_KEY = "rutinas_con_nombre_titanlab";
