@@ -12,20 +12,29 @@
   <body>
     <!-- Header -->
     <header>
-      <a href="/" class="logo">
-        <img src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}" alt="Titan Lab" class="logo-img" />
+      <a href="{{ url_for('index') }}" class="logo">
+        <img
+          src="{{ url_for('static', filename='Logo_Titan_Lab.png') }}"
+          alt="Titan Lab"
+          class="logo-img"
+        />
         <span>Titan</span>Lab
       </a>
 
       <nav>
-        <a href="/" class="active">Inicio</a>
-        <a href="/suplementacion">Suplementos</a>
-        <a href="/ejercicios">Ejercicios</a>
-        <a href="/rutina">Rutina</a>
-        <a href="/dieta">Dieta</a>
-        <a href="/planes">Planes</a>
+        <a href="{{ url_for('index') }}" class="active">Inicio</a>
+        <a href="{{ url_for('suplementacion') }}">Suplementos</a>
+        <a href="{{ url_for('ejercicios') }}">Ejercicios</a>
+        <a href="{{ url_for('rutina') }}">Rutina</a>
+        <a href="{{ url_for('dieta') }}">Dieta</a>
+        <a href="{{ url_for('planes') }}">Planes</a>
         {% if session.get('rol') == 'admin' %}
-        <a href="{{ url_for('dashboard_admin') }}" style="color: var(--primary, #d4f700); font-weight: 600">Panel Admin</a>
+        <a
+          href="{{ url_for('dashboard_admin') }}"
+          style="color: var(--primary, #d4f700); font-weight: 600"
+        >
+          Panel Admin
+        </a>
         {% endif %}
       </nav>
 
@@ -42,12 +51,16 @@
         >
           {{ session['nombre'] }}
         </span>
-        <a href="/logout"
-          ><button class="btn-secondary">Cerrar sesión</button></a
-        >
+        <a href="{{ url_for('logout') }}">
+          <button class="btn-secondary">Cerrar sesión</button>
+        </a>
         {% else %}
-        <a href="/login"><button class="btn-secondary">Login</button></a>
-        <a href="/registro"><button class="btn-primary">Registrarse</button></a>
+        <a href="{{ url_for('login') }}">
+          <button class="btn-secondary">Login</button>
+        </a>
+        <a href="{{ url_for('registro') }}">
+          <button class="btn-primary">Registrarse</button>
+        </a>
         {% endif %}
       </div>
     </header>
@@ -93,6 +106,7 @@
             tus músculos y recuperarte después de entrenamientos intensos.
           </p>
         </div>
+
         <div class="card">
           <h3>Creatina</h3>
           <img
@@ -105,6 +119,7 @@
             muscular y superar tus límites físicos.
           </p>
         </div>
+
         <div class="card">
           <h3>Pre-entreno</h3>
           <img
@@ -117,6 +132,7 @@
             sesión.
           </p>
         </div>
+
         <div class="card">
           <h3>BCAAs / EAAs</h3>
           <img
@@ -129,6 +145,7 @@
             rendimiento incluso en rutinas exigentes.
           </p>
         </div>
+
         <div class="card">
           <h3>Omega 3</h3>
           <img
@@ -141,10 +158,13 @@
             favorecer una recuperación más eficiente.
           </p>
         </div>
+
         <div class="card">
           <h3>Zinc / Magnesio</h3>
           <img
-            src="{{ url_for('static', filename='fotos_main/zmzinc_copy.png') }}" alt="Zinc y Magnesio" />
+            src="{{ url_for('static', filename='fotos_main/zmzinc_copy.png') }}"
+            alt="Zinc y Magnesio"
+          />
           <p>
             Mejora tu descanso, recuperación muscular y niveles de energía. Una
             combinación perfecta para optimizar el rendimiento físico y apoyar
@@ -161,7 +181,7 @@
         <a
           href="https://tienda.iogenixnutrition.com/"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           <img
             src="{{ url_for('static', filename='fotos_main/iogenix.logo-removebg-preview.png') }}"
@@ -170,7 +190,12 @@
             height="80"
           />
         </a>
-        <a href="https://www.paypal.com" target="_blank" rel="noopener">
+
+        <a
+          href="https://www.paypal.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             src="{{ url_for('static', filename='fotos_main/logopaypal-removebg-preview.png') }}"
             alt="Paypal"
@@ -178,10 +203,11 @@
             height="80"
           />
         </a>
+
         <a
           href="https://www.panattasport.com/es/"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           <img
             src="{{ url_for('static', filename='fotos_main/pannattaaa-removebg-preview.png') }}"
