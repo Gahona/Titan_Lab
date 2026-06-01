@@ -84,7 +84,7 @@ CREATE TABLE productos (
 ) ENGINE=InnoDB;
 
 -- =========================================
--- TABLA RESEÑAS DE PRODUCTOS (+ estado moderacion)
+-- TABLA RESEÑAS DE PRODUCTOS
 -- =========================================
 CREATE TABLE resenas_producto (
     id_resena INT AUTO_INCREMENT PRIMARY KEY,
@@ -124,7 +124,7 @@ CREATE TABLE ejercicios (
 ) ENGINE=InnoDB;
 
 -- =========================================
--- TABLA COMENTARIOS DE EJERCICIOS (+ estado moderacion)
+-- TABLA COMENTARIOS DE EJERCICIOS
 -- =========================================
 CREATE TABLE comentarios_ejercicio (
     id_comentario INT AUTO_INCREMENT PRIMARY KEY,
@@ -146,7 +146,7 @@ CREATE TABLE comentarios_ejercicio (
 ) ENGINE=InnoDB;
 
 -- =========================================
--- TABLA RUTINAS (+ estado moderacion)
+-- TABLA RUTINAS
 -- =========================================
 CREATE TABLE rutinas (
     id_rutina INT AUTO_INCREMENT PRIMARY KEY,
@@ -191,7 +191,7 @@ CREATE TABLE rutina_detalle (
 ) ENGINE=InnoDB;
 
 -- =========================================
--- TABLA RESEÑAS DE RUTINAS (+ estado moderacion)
+-- TABLA RESEÑAS DE RUTINAS
 -- =========================================
 CREATE TABLE resenas_rutina (
     id_resena_rutina INT AUTO_INCREMENT PRIMARY KEY,
