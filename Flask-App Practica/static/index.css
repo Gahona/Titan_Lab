@@ -308,22 +308,40 @@ nav a.active { color: var(--lime); }
 }
 
 /* =====================
-   Footer
+  Footer
    ===================== */
-footer {
+.footer {
+  position: relative;
   background: var(--header-bg);
   border-top: 1px solid rgba(212, 247, 0, 0.10);
   padding: 2rem 2.5rem;
+  min-height: 80px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+}
+
+.footer-copy {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--gray-dim);
   text-align: center;
 }
 
-footer p {
+.footer-about-link {
+  font-family: var(--font-ui);
   font-size: 0.8rem;
-  color: var(--gray-dim);
-  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gray);
+  transition: color 0.2s ease;
+}
+
+.footer-about-link:hover {
+  color: var(--lime);
 }
 
 /* =====================

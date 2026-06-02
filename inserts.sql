@@ -49,3 +49,25 @@ INSERT INTO usuarios (
     NULL,
     NULL
 );
+
+INSERT INTO usuarios (
+    nombre,
+    email,
+    password_hash,
+    rol,
+    edad,
+    sexo,
+    altura_cm,
+    peso_kg,
+    objetivo_principal
+) VALUES (
+    'jorge',
+    'jorge@titan.com',
+    'scrypt:32768:8:1$IJYYXQwG7XYspEzC$d89ccc1ec8110962c4bbfefc6ce8504d08db7e6dbabe370feadac0a40febda9bddd00bcefcf5a21d629307b965748a5d1feeff2f3185c5378107beab8ccc8aa4',
+    'admin',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+);

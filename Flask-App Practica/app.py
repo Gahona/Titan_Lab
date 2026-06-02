@@ -690,6 +690,9 @@ def suplementacion():
 def ejercicios():
     return render_template("ejercicio.html")
 
+@app.route('/sobre-nosotros')
+def sobre_nosotros():
+    return render_template('sobre_nosotros.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
