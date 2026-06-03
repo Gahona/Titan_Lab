@@ -6,15 +6,16 @@ from config import config_activa
 
 
 app = Flask(__name__)
-aplication = app
+application = app
 app.config.from_object(config_activa)
+app.secret_key = 'tu_clave_secreta_aqui'  # Necesario para sessions y flash messages
 
 
 mysql = MySQL(app)
 
 
 # ─────────────────────────────────────────
-#  DECORADORES DE AUTENTICACIÓN Y ROLES
+# DECORADORES DE AUTENTICACIÓN Y ROLES
 # ─────────────────────────────────────────
 def login_required(f):
     @wraps(f)
@@ -39,7 +40,7 @@ def rol_required(*roles):
 
 
 # ─────────────────────────────────────────
-#  DATOS ESTÁTICOS (página principal)
+# DATOS ESTÁTICOS (página principal)
 # ─────────────────────────────────────────
 stats = [
     {"valor": "+3,000", "label": "Miembros activos"},
@@ -96,7 +97,7 @@ colaboradores = [
 
 
 # ─────────────────────────────────────────
-#  AUTENTICACIÓN
+# AUTENTICACIÓN
 # ─────────────────────────────────────────
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -106,11 +107,13 @@ def registro():
         password = generate_password_hash(request.form['password'])
         rol = 'cliente'
 
+
         edad = request.form.get('edad') or None
         sexo = request.form.get('sexo') or None
         altura = request.form.get('altura_cm') or None
         peso = request.form.get('peso_kg') or None
         objetivo = request.form.get('objetivo_principal') or None
+
 
         try:
             cur = mysql.connection.cursor()
@@ -127,6 +130,7 @@ def registro():
         except Exception:
             flash('El email ya está registrado o ha ocurrido un error.', 'error')
 
+
     return render_template('registro.html')
 
 
@@ -135,9 +139,11 @@ def login():
     if 'id_usuario' in session:
         return redirect(url_for('index'))
 
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+
 
         cur = mysql.connection.cursor()
         cur.execute(
@@ -147,12 +153,15 @@ def login():
         usuario = cur.fetchone()
         cur.close()
 
+
         if usuario and check_password_hash(usuario['password_hash'], password):
             session['id_usuario'] = usuario['id_usuario']
             session['nombre'] = usuario['nombre']
             session['rol'] = usuario['rol']
 
+
             flash(f"Bienvenido, {usuario['nombre']}!", 'success')
+
 
             if session['rol'] == 'admin':
                 return redirect(url_for('panel_admin'))
@@ -162,6 +171,7 @@ def login():
                 return redirect(url_for('index'))
         else:
             flash('Email o contraseña incorrectos.', 'error')
+
 
     return render_template('login.html')
 
@@ -174,7 +184,7 @@ def logout():
 
 
 # ─────────────────────────────────────────
-#  PANELES POR ROL
+# PANELES POR ROL
 # ─────────────────────────────────────────
 @app.route('/admin/panel')
 @login_required
@@ -182,17 +192,22 @@ def logout():
 def panel_admin():
     cur = mysql.connection.cursor()
 
+
     cur.execute("SELECT COUNT(*) AS total FROM usuarios")
     total_usuarios = cur.fetchone()['total']
+
 
     cur.execute("SELECT COUNT(*) AS total FROM usuarios WHERE rol = 'admin'")
     total_admins = cur.fetchone()['total']
 
+
     cur.execute("SELECT COUNT(*) AS total FROM usuarios WHERE rol = 'cliente'")
     total_clientes = cur.fetchone()['total']
 
+
     cur.execute("SELECT COUNT(*) AS total FROM usuarios WHERE rol = 'coach'")
     total_coaches = cur.fetchone()['total']
+
 
     cur.execute("""
         SELECT r.id_rutina, r.titulo, r.descripcion, r.fecha_creacion, u.nombre AS nombre_usuario
@@ -203,6 +218,7 @@ def panel_admin():
     """)
     rutinas_pendientes = cur.fetchall()
 
+
     cur.execute("""
         SELECT c.id_comentario, c.comentario, c.fecha, u.nombre AS nombre_usuario
         FROM comentarios_ejercicio c
@@ -211,6 +227,7 @@ def panel_admin():
         ORDER BY c.fecha DESC
     """)
     comentarios_pendientes = cur.fetchall()
+
 
     cur.execute("""
         SELECT rp.id_resena, rp.comentario, rp.fecha, u.nombre AS nombre_usuario, 'producto' AS tipo
@@ -221,6 +238,7 @@ def panel_admin():
     """)
     resenas_producto = cur.fetchall()
 
+
     cur.execute("""
         SELECT rr.id_resena_rutina AS id_resena, rr.comentario, rr.fecha, u.nombre AS nombre_usuario, 'rutina' AS tipo
         FROM resenas_rutina rr
@@ -230,9 +248,12 @@ def panel_admin():
     """)
     resenas_rutina = cur.fetchall()
 
+
     resenas_pendientes = resenas_producto + resenas_rutina
 
+
     cur.close()
+
 
     return render_template(
         'dashboard_admin.html',
@@ -269,6 +290,7 @@ def cambiar_rol(id):
         flash('Rol no válido.', 'error')
         return redirect(url_for('panel_admin'))
 
+
     cur = mysql.connection.cursor()
     cur.execute("UPDATE usuarios SET rol = %s WHERE id_usuario = %s", (nuevo_rol, id))
     mysql.connection.commit()
@@ -285,7 +307,7 @@ def panel_coach():
 
 
 # ─────────────────────────────────────────
-#  MODERACIÓN DE CONTENIDO
+# MODERACIÓN DE CONTENIDO
 # ─────────────────────────────────────────
 @app.route('/admin/rutina/<int:id_rutina>/aprobar', methods=['POST'])
 @login_required
@@ -366,7 +388,7 @@ def rechazar_resena(tipo, id_resena):
 
 
 # ─────────────────────────────────────────
-#  RUTAS PÚBLICAS
+# RUTAS PÚBLICAS
 # ─────────────────────────────────────────
 @app.route("/")
 def index():
@@ -413,13 +435,16 @@ def procesar_paypal():
     paypal_email = request.form.get('paypal_email')
     plan_id = request.form.get('plan_id')
 
+
     if not paypal_email:
         flash('Debes introducir un email de PayPal.', 'error')
         return redirect(request.referrer or url_for('planes'))
 
+
     plan = PLANES.get(plan_id)
     if not plan:
         return redirect(url_for('planes'))
+
 
     return render_template(
         'pago_exitoso.html',
@@ -434,13 +459,16 @@ def procesar_applepay():
     apple_email = request.form.get('apple_email')
     plan_id = request.form.get('plan_id')
 
+
     if not apple_email:
         flash('Debes introducir un email de Apple Pay.', 'error')
         return redirect(request.referrer or url_for('planes'))
 
+
     plan = PLANES.get(plan_id)
     if not plan:
         return redirect(url_for('planes'))
+
 
     return render_template(
         'pago_exitoso.html',
@@ -455,7 +483,7 @@ def pago_exitoso():
 
 
 # ─────────────────────────────────────────
-#  RUTINAS
+# RUTINAS
 # ─────────────────────────────────────────
 @app.route('/rutina')
 def rutina():
@@ -469,6 +497,7 @@ def rutina():
         "Abdomen": ["Rueda abdominal", "Plancha"]
     }
 
+
     semanal = {
         "Lunes": [],
         "Martes": [],
@@ -479,6 +508,7 @@ def rutina():
         "Domingo": []
     }
 
+
     return render_template('semanal.html', catalogo=catalogo, semanal=semanal)
 
 
@@ -487,11 +517,13 @@ def rutina():
 def guardar_rutina():
     data = request.get_json()
 
+
     titulo = data.get('titulo')
     descripcion = data.get('descripcion') or None
     nivel = data.get('nivel')
     publica = bool(data.get('publica', False))
     rutina_json = data.get('rutina')
+
 
     if not titulo or not nivel:
         return jsonify({
@@ -499,22 +531,26 @@ def guardar_rutina():
             'mensaje': 'Faltan campos obligatorios (título o nivel).'
         }), 400
 
+
     if not isinstance(rutina_json, dict):
         return jsonify({
             'ok': False,
             'mensaje': 'Formato de rutina no válido.'
         }), 400
 
+
     total_ejercicios = 0
     for dia, ejercicios in rutina_json.items():
         if isinstance(ejercicios, list):
             total_ejercicios += len(ejercicios)
+
 
     if total_ejercicios == 0:
         return jsonify({
             'ok': False,
             'mensaje': 'La rutina debe tener al menos un ejercicio.'
         }), 400
+
 
     dias_validos = {
         "Lunes": "lunes",
@@ -528,10 +564,13 @@ def guardar_rutina():
         "Domingo": "domingo"
     }
 
+
     cur = None
+
 
     try:
         cur = mysql.connection.cursor()
+
 
         cur.execute("""
             INSERT INTO rutinas (
@@ -552,26 +591,34 @@ def guardar_rutina():
             'pendiente'
         ))
 
+
         id_rutina = cur.lastrowid
+
 
         for dia_front, ejercicios in rutina_json.items():
             if dia_front not in dias_validos:
                 continue
 
+
             dia_semana = dias_validos[dia_front]
+
 
             if not isinstance(ejercicios, list):
                 continue
 
+
             orden = 1
+
 
             for ej in ejercicios:
                 nombre_ej = ej.get('nombre')
                 series = int(ej.get('series') or 0)
                 reps = int(ej.get('reps') or 0)
 
+
                 if not nombre_ej or series <= 0 or reps <= 0:
                     continue
+
 
                 cur.execute(
                     "SELECT id_ejercicio FROM ejercicios WHERE nombre = %s",
@@ -579,10 +626,13 @@ def guardar_rutina():
                 )
                 fila_ej = cur.fetchone()
 
+
                 if not fila_ej:
                     continue
 
+
                 id_ejercicio = fila_ej['id_ejercicio']
+
 
                 cur.execute("""
                     INSERT INTO rutina_detalle (
@@ -607,9 +657,12 @@ def guardar_rutina():
                     None
                 ))
 
+
                 orden += 1
 
+
         mysql.connection.commit()
+
 
         return jsonify({
             'ok': True,
@@ -617,12 +670,14 @@ def guardar_rutina():
             'id_rutina': id_rutina
         }), 200
 
+
     except Exception as e:
         mysql.connection.rollback()
         return jsonify({
             'ok': False,
             'mensaje': f'Error al guardar la rutina: {str(e)}'
         }), 500
+
 
     finally:
         if cur:
@@ -635,6 +690,7 @@ def guardar_rutina():
 def ver_rutina_admin(id_rutina):
     cur = mysql.connection.cursor()
 
+
     cur.execute("""
         SELECT r.id_rutina, r.titulo, r.descripcion, r.nivel, r.publica, r.estado,
                r.fecha_creacion, u.nombre AS nombre_usuario
@@ -644,10 +700,12 @@ def ver_rutina_admin(id_rutina):
     """, (id_rutina,))
     rutina = cur.fetchone()
 
+
     if not rutina:
         cur.close()
         flash('Rutina no encontrada.', 'error')
         return redirect(url_for('panel_admin'))
+
 
     cur.execute("""
         SELECT rd.id_detalle, rd.dia_semana, rd.orden_ejercicio, rd.series, rd.repeticiones,
@@ -664,6 +722,7 @@ def ver_rutina_admin(id_rutina):
     detalles = cur.fetchall()
     cur.close()
 
+
     rutina_por_dias = {
         'lunes': [],
         'martes': [],
@@ -674,10 +733,12 @@ def ver_rutina_admin(id_rutina):
         'domingo': []
     }
 
+
     for detalle in detalles:
         dia = detalle['dia_semana']
         if dia in rutina_por_dias:
             rutina_por_dias[dia].append(detalle)
+
 
     return render_template(
         'detalle_rutina_admin.html',
@@ -696,13 +757,10 @@ def ejercicios():
     return render_template("ejercicio.html")
 
 
-# ─────────────────────────────────────────
-#  RUTA NUEVA: POLÍTICA DE COOKIES
-# ─────────────────────────────────────────
 @app.route('/politica-cookies')
 def politica_cookies():
     return render_template('politica_cookies.html')
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
