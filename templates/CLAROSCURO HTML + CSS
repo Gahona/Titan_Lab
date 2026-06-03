@@ -1,0 +1,45 @@
+HTML
+BUSCAS control + F = auth y al final antes de que se acabe el div pones esto
+<button class="btn-theme" id="themeToggle" title="Cambiar tema">🔅</button>
+
+
+BUSCAS BODY y al final de cada html el ultimo body encima pegas el script =
+<script>
+      const btn = document.getElementById('themeToggle');
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        btn.textContent = '🌑';
+      }
+      btn.addEventListener('click', () => {
+        const light = document.body.classList.toggle('light-mode');
+        btn.textContent = light ? '🌑' : '🔅';
+        localStorage.setItem('theme', light ? 'light' : 'dark');
+      });
+    </script>
+
+
+CSS todos lo mismo .
+
+.btn-theme {
+  background: transparent;
+  border: 1px solid var(--gray-dim);
+  color: var(--white);
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: border-color .2s;
+}
+.btn-theme:hover { border-color: var(--lime); }
+
+body.light-mode {
+  --bg:        #f0f0ec;
+  --header-bg: #e4e4e0;
+  --border:    #ccccca;
+  --white:     #111109;
+  --gray:      #444440;
+  --gray-dim:  #888884;
+  --card-bg:   #e8e8e4;
+}
+
+
